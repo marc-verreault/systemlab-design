@@ -1,0 +1,562 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>SystemLab_MainWindow</class>
+ <widget class="QMainWindow" name="SystemLab_MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1200</width>
+    <height>768</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>9</pointsize>
+    <weight>50</weight>
+    <italic>false</italic>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="acceptDrops">
+   <bool>false</bool>
+  </property>
+  <property name="windowTitle">
+   <string>SystemLab-Design (19.02)</string>
+  </property>
+  <property name="windowOpacity">
+   <double>1.000000000000000</double>
+  </property>
+  <property name="iconSize">
+   <size>
+    <width>64</width>
+    <height>64</height>
+   </size>
+  </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="font">
+    <font>
+     <family>Segoe UI</family>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="leftMargin">
+     <number>5</number>
+    </property>
+    <property name="rightMargin">
+     <number>5</number>
+    </property>
+    <property name="bottomMargin">
+     <number>5</number>
+    </property>
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget">
+      <property name="maximumSize">
+       <size>
+        <width>2000</width>
+        <height>1400</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+       </font>
+      </property>
+      <property name="toolTipDuration">
+       <number>-3</number>
+      </property>
+      <property name="tabPosition">
+       <enum>QTabWidget::North</enum>
+      </property>
+      <property name="tabShape">
+       <enum>QTabWidget::Rounded</enum>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>15</width>
+        <height>15</height>
+       </size>
+      </property>
+      <property name="elideMode">
+       <enum>Qt::ElideNone</enum>
+      </property>
+      <property name="tabsClosable">
+       <bool>true</bool>
+      </property>
+      <property name="movable">
+       <bool>true</bool>
+      </property>
+      <widget class="QWidget" name="newProjectTab">
+       <property name="maximumSize">
+        <size>
+         <width>2000</width>
+         <height>1400</height>
+        </size>
+       </property>
+       <attribute name="title">
+        <string>Tab 1</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="designLayout_1">
+        <property name="leftMargin">
+         <number>6</number>
+        </property>
+        <property name="topMargin">
+         <number>6</number>
+        </property>
+        <property name="rightMargin">
+         <number>6</number>
+        </property>
+        <property name="bottomMargin">
+         <number>6</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1200</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_NewProject"/>
+    <addaction name="action_OpenProject"/>
+    <addaction name="action_SaveProject"/>
+    <addaction name="action_SaveProjectAs"/>
+    <addaction name="action_CloseProject"/>
+    <addaction name="separator"/>
+    <addaction name="action_QuitApplication"/>
+   </widget>
+   <widget class="QMenu" name="menu_Edit">
+    <property name="title">
+     <string>&amp;Edit</string>
+    </property>
+    <addaction name="separator"/>
+    <addaction name="action_CopyPaste"/>
+    <addaction name="action_CopyPasteToAnotherProj"/>
+    <addaction name="separator"/>
+    <addaction name="action_Delete"/>
+    <addaction name="separator"/>
+    <addaction name="action_OpenScriptEditor"/>
+   </widget>
+   <widget class="QMenu" name="menuDesign">
+    <property name="title">
+     <string>Project</string>
+    </property>
+    <addaction name="action_AddFunctionalBlock"/>
+    <addaction name="action_AddDataBox"/>
+    <addaction name="action_AddDescriptionBox"/>
+    <addaction name="action_AddTextBox"/>
+    <addaction name="action_AddLineArrow"/>
+    <addaction name="separator"/>
+    <addaction name="action_ViewFunctionalBlocks"/>
+    <addaction name="separator"/>
+    <addaction name="action_ProjectLayoutSettings"/>
+    <addaction name="separator"/>
+    <addaction name="action_SceneBackgroundColor"/>
+    <addaction name="action_SaveImageScene"/>
+   </widget>
+   <widget class="QMenu" name="menuSimulation">
+    <property name="title">
+     <string>Simulation</string>
+    </property>
+    <addaction name="actionStart"/>
+    <addaction name="actionPause"/>
+    <addaction name="actionEnd"/>
+   </widget>
+   <widget class="QMenu" name="menuHelp">
+    <property name="title">
+     <string>Help</string>
+    </property>
+    <addaction name="actionHelp"/>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menu_File"/>
+   <addaction name="menu_Edit"/>
+   <addaction name="menuDesign"/>
+   <addaction name="menuSimulation"/>
+   <addaction name="menuHelp"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QToolBar" name="toolBar">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="windowTitle">
+    <string>Main settings</string>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextUnderIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionNew"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionSave"/>
+   <addaction name="separator"/>
+   <addaction name="action_StartSimulation"/>
+   <addaction name="action_PauseSimulation"/>
+   <addaction name="action_StopSimulation"/>
+   <addaction name="separator"/>
+   <addaction name="action_LineConnector"/>
+   <addaction name="action_AngledConnector"/>
+   <addaction name="separator"/>
+   <addaction name="actionProjectSettings"/>
+  </widget>
+  <action name="action_NewProject">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>&amp;New project</string>
+   </property>
+  </action>
+  <action name="action_Undo">
+   <property name="text">
+    <string>&amp;Undo</string>
+   </property>
+  </action>
+  <action name="action_Redo">
+   <property name="text">
+    <string>&amp;Redo</string>
+   </property>
+  </action>
+  <action name="action_Delete">
+   <property name="text">
+    <string>Delete selected items</string>
+   </property>
+  </action>
+  <action name="action_CopyPaste">
+   <property name="text">
+    <string>Copy/paste selected items</string>
+   </property>
+  </action>
+  <action name="action_Paste">
+   <property name="text">
+    <string>&amp;Paste</string>
+   </property>
+  </action>
+  <action name="action_SaveProject">
+   <property name="icon">
+    <iconset>
+     <normalon>GUI Icons/Save.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Save project</string>
+   </property>
+  </action>
+  <action name="action_StartSimulation">
+   <property name="text">
+    <string>&amp;StartSimulation</string>
+   </property>
+   <property name="iconText">
+    <string>Start</string>
+   </property>
+   <property name="toolTip">
+    <string>Start simulation</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="action_StopSimulation">
+   <property name="text">
+    <string>&amp;StopSimulation</string>
+   </property>
+   <property name="iconText">
+    <string>Stop</string>
+   </property>
+   <property name="toolTip">
+    <string>Stop simulation</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="action_PauseSimulation">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>&amp;PauseSimulation</string>
+   </property>
+   <property name="iconText">
+    <string>Pause</string>
+   </property>
+   <property name="toolTip">
+    <string>Pause simulation</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionStart">
+   <property name="text">
+    <string>Start</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="text">
+    <string>Pause</string>
+   </property>
+  </action>
+  <action name="actionEnd">
+   <property name="text">
+    <string>End</string>
+   </property>
+  </action>
+  <action name="action_AddFunctionalBlock">
+   <property name="text">
+    <string>Add functional block</string>
+   </property>
+  </action>
+  <action name="action_CloseProject">
+   <property name="text">
+    <string>&amp;Close project</string>
+   </property>
+  </action>
+  <action name="action_OpenProject">
+   <property name="icon">
+    <iconset>
+     <normalon>GUI Icons/Open.png</normalon>
+    </iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Open project</string>
+   </property>
+  </action>
+  <action name="action_SaveProjectAs">
+   <property name="text">
+    <string>Save project as...</string>
+   </property>
+  </action>
+  <action name="action_QuitApplication">
+   <property name="text">
+    <string>Quit application</string>
+   </property>
+  </action>
+  <action name="action_ProjectSettings">
+   <property name="text">
+    <string>Add functional block</string>
+   </property>
+  </action>
+  <action name="action_LineConnector">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>LineConnector</string>
+   </property>
+   <property name="iconText">
+    <string>Line</string>
+   </property>
+   <property name="toolTip">
+    <string>Use straight connector for linking ports</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="action_AngledConnector">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>AngledConnector</string>
+   </property>
+   <property name="iconText">
+    <string>Elbow</string>
+   </property>
+   <property name="toolTip">
+    <string>Use elbow connector for linking ports</string>
+   </property>
+   <property name="statusTip">
+    <string/>
+   </property>
+   <property name="whatsThis">
+    <string/>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="text">
+    <string>Open</string>
+   </property>
+   <property name="toolTip">
+    <string>Open project</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="text">
+    <string>Save</string>
+   </property>
+   <property name="toolTip">
+    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Save project&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note&lt;/span&gt;: Project will be saved (by default) to the directory where the SystemLab-Design main application is located. To change the directory location, update&lt;span style=&quot; font-style:italic;&quot;&gt; File path (project)&lt;/span&gt; under &lt;span style=&quot; font-weight:600;&quot;&gt;Project Settings&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionNew">
+   <property name="text">
+    <string>New</string>
+   </property>
+   <property name="toolTip">
+    <string>Create new project</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionProjectSettings">
+   <property name="text">
+    <string>actionProjectSettings</string>
+   </property>
+   <property name="iconText">
+    <string>Settings</string>
+   </property>
+   <property name="toolTip">
+    <string>Edit project settings</string>
+   </property>
+   <property name="whatsThis">
+    <string>Edit project settings</string>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+    </font>
+   </property>
+  </action>
+  <action name="actionHelp">
+   <property name="text">
+    <string>SystemLab|Design documentation</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>About SystemLab|Design</string>
+   </property>
+  </action>
+  <action name="action_AddDescriptionBox">
+   <property name="text">
+    <string>Add description box</string>
+   </property>
+  </action>
+  <action name="action_AddDataBox">
+   <property name="text">
+    <string>Add data panel</string>
+   </property>
+  </action>
+  <action name="action_AddLineArrow">
+   <property name="text">
+    <string>Add line-arrow</string>
+   </property>
+  </action>
+  <action name="action_ProjectLayoutSettings">
+   <property name="text">
+    <string>Project and layout settings</string>
+   </property>
+  </action>
+  <action name="action_ViewFunctionalBlocks">
+   <property name="text">
+    <string>View list of functional blocks</string>
+   </property>
+  </action>
+  <action name="action_SceneBackgroundColor">
+   <property name="text">
+    <string>Change scene background color</string>
+   </property>
+  </action>
+  <action name="action_SaveImageScene">
+   <property name="text">
+    <string>Save image of project view</string>
+   </property>
+  </action>
+  <action name="action_AddTextBox">
+   <property name="text">
+    <string>Add text box</string>
+   </property>
+  </action>
+  <action name="action_CopyPasteToAnotherProj">
+   <property name="text">
+    <string>Copy/paste selected items to another project</string>
+   </property>
+  </action>
+  <action name="action_LinksSelectable">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Make connection links selectable</string>
+   </property>
+  </action>
+  <action name="action_OpenScriptEditor">
+   <property name="text">
+    <string>Open code/script editor</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

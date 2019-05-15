@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>simulationStatus</class>
+ <widget class="QDialog" name="simulationStatus">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>558</width>
+    <height>553</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>558</width>
+    <height>553</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>558</width>
+    <height>553</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Simulation status</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>Icon_SystemLabDesigner.bmp</normaloff>Icon_SystemLabDesigner.bmp</iconset>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
+  </property>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>4</x>
+     <y>5</y>
+     <width>550</width>
+     <height>406</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>5</x>
+     <y>413</y>
+     <width>549</width>
+     <height>136</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Simulation status</string>
+   </property>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>265</x>
+      <y>30</y>
+      <width>278</width>
+      <height>19</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>120</x>
+      <y>28</y>
+      <width>138</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Total simulation progress:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>132</x>
+      <y>55</y>
+      <width>128</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Current/Total iterations:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="currentIteration">
+    <property name="geometry">
+     <rect>
+      <x>264</x>
+      <y>56</y>
+      <width>26</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="totalIterations">
+    <property name="geometry">
+     <rect>
+      <x>296</x>
+      <y>56</y>
+      <width>26</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="simulatedBlocks">
+    <property name="geometry">
+     <rect>
+      <x>264</x>
+      <y>108</y>
+      <width>36</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>6</x>
+      <y>106</y>
+      <width>253</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Functional blocks (simulated) - current iteration:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="totalBlocks">
+    <property name="geometry">
+     <rect>
+      <x>435</x>
+      <y>107</y>
+      <width>36</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="currentBlockName">
+    <property name="geometry">
+     <rect>
+      <x>264</x>
+      <y>82</y>
+      <width>207</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>74</x>
+      <y>82</y>
+      <width>186</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Functional block (being simulated):</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>306</x>
+      <y>107</y>
+      <width>126</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Total functional blocks:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
