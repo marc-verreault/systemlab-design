@@ -12,12 +12,15 @@ among peers.
 Future releases of SystemLab-Design are planned and your feedback on the performance
 and features of this software is greatly welcome. Also, if you wish to contribute to
 improving the capabilities of SystemLab-Design, please contact the primary
-author for further information
+author for further information (marc.verreault@systemlabdesign.com)
 
-For information on the software architecture see the intro comments to..
+For an overview of the software architecture please see the intro comments in the file 
+*systemlab_main_v1902_r1.py* (under *systemlab-design/source*) - this is the main application
+module for the software.
 
-Development and testing of the software has been done using the Spyder IDE (version 3.3.2), 
-which can be 
+Development and testing of the software is done using the Spyder IDE (version 3.3.2), 
+which can be installed using the PIP utility (**pip install spyder**). Other IDE's can be 
+used however.
 
 INSTRUCTIONS ON HOW TO CREATE A BUILD OF SYSTEMLAB|DESIGN
 
