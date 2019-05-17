@@ -26,9 +26,29 @@ SystemLab-Design is a Python-based application that includes library links to Py
 Numpy 1.16.3, Matplotlib 3.0.3, SciPy 1.2.1. It can be distributed to other users by preparing a 
 distribution (dist) folder using PyInstaller.
 
-1 - Creating the build environment
+Procedure:
 
-1A) Download and install the latest version (Windows x86-64 executable installer) of Python
+1) Download and install the latest version (Windows x86-64 executable installer) of Python
 from https://www.python.org/downloads/
 
-1B) After installation is complete, create a virtual project folder
+2) After installation is complete, create a python virtual environment for the project. See
+https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/
+
+3) Within the activated virtual environment (terminal session), install the following modules using pip
+- pip install pyqt5
+- pip install matplotlib
+- pip install numpy
+- pip install scipy
+- pip install pyinstaller
+
+4) Open the file "systemlab_build_V19.spec" and update the "pathex" (within "Analysis") to the root 
+path for the virtual environment folder. 
+
+5) For the exe = EXE (pyz, ...) command line make sure to update the file path for "icon" and "version" to
+include the full path (C:\\..) for the virtual environment folder.
+
+6) Deactivate the virtual environment by running the command "deactivate".
+
+7) Run PyInstaller using the following command in the terminal: "pyinstaller C:\path_to_virtual_folder\systemlab_build_V19.spec"
+
+8) The build process will issue several warnings but should complete successfully. The distribution folder (dist) should appear within the virtual directory.
