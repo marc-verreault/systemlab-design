@@ -34,6 +34,7 @@ from https://www.python.org/downloads/
 https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/
 
 3) Within the activated virtual environment (terminal session), install the following modules using pip
+
 -**pip install pyqt5**
 -**pip install matplotlib**
 -**pip install numpy**
