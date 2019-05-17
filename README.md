@@ -1,5 +1,4 @@
 # systemlab-design
-Multi-domain simulator for systems prototyping
 
 SystemLab-Design is a computational engineering software platform that can be used
 to design, model and simulate multi-domain systems across several technologies 
@@ -41,14 +40,14 @@ https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virt
 - pip install scipy
 - pip install pyinstaller
 
-4) Open the file "systemlab_build_V19.spec" and update the "pathex" (within "Analysis") to the root 
+4) Open the file *systemlab_build_V19.spec* and update the *pathex* (within **Analysis**) to the root 
 path for the virtual environment folder. 
 
-5) For the exe = EXE (pyz, ...) command line make sure to update the file path for "icon" and "version" to
+5) For the **exe = EXE (pyz, ...)** command line make sure to update the file path for *icon" and *version* to
 include the full path (C:\\..) for the virtual environment folder.
 
-6) Deactivate the virtual environment by running the command "deactivate".
+6) Deactivate the virtual environment by running the command **deactivate**.
 
-7) Run PyInstaller using the following command in the terminal: "pyinstaller C:\path_to_virtual_folder\systemlab_build_V19.spec"
+7) Run PyInstaller using the following command in the terminal: **pyinstaller C:\path_to_virtual_folder\systemlab_build_V19.spec**
 
-8) The build process will issue several warnings but should complete successfully. The distribution folder (dist) should appear within the virtual directory.
+8) The build process will issue several warnings but should complete successfully. The distribution folder (*dist*) should appear within the virtual directory.
