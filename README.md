@@ -35,11 +35,11 @@ https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virt
 
 3) Within the activated virtual environment (terminal session), install the following modules using pip
 
--**pip install pyqt5**
--**pip install matplotlib**
--**pip install numpy**
--**pip install scipy**
--**pip install pyinstaller**
+- **pip install pyqt5**
+- **pip install matplotlib**
+- **pip install numpy**
+- **pip install scipy**
+- **pip install pyinstaller**
     
 4) Open the file *systemlab_build_V19.spec* and update the *pathex* (within **Analysis**) to the root 
 path for the virtual environment folder. 
