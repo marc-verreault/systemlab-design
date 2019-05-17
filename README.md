@@ -29,5 +29,6 @@ distribution (dist) folder using PyInstaller.
 1 - Creating the build environment
 
 1A) Download and install the latest version (Windows x86-64 executable installer) of Python
-from "https://www.python.org/downloads/"
+from https://www.python.org/downloads/
+
 1B) After installation is complete, create a virtual project folder
