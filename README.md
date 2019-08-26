@@ -78,8 +78,13 @@ Procedure:
    config.py, and others, along with a source folder for adding images and reStructuredText documents*
    
 4) Under the *source* folder, replace the files *conf.py* and *index.rst* with the versions that are located under 
-   systemlab-design/documentation-source
+   *systemlab-design/documentation_source*.
    
-5) Add the files
+5) Under the *source* folder, add the files *LogoMakmr-9zOCZf* and the entire folder *syslab_documents* (These files are
+   located under *systemlab-design/documentation_source*)
+
+6) Under the *source/_static* folder add the file *custom-styles*.
+
+7) 
 
 
