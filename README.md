@@ -33,8 +33,8 @@ Procedure:
 1) Download and install the latest version (Windows x86-64 executable installer) of Python
 from https://www.python.org/downloads/
 
-2) After installation is complete, create a python virtual environment for the project. See
-https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/
+2) After installation is complete, create a python virtual environment for the project. See the following 
+link for further details on how to create a virtual env: https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/
 
 3) Within the activated virtual environment (terminal session), install the following modules using pip
 
@@ -57,9 +57,9 @@ include the full path (C:\\..) for the virtual environment folder.
 8) The build process will issue several warnings but should complete successfully. The distribution folder (*dist*) should appear within the virtual directory.
 
 NOTE: A pre-installed version of SciTE 4.1.4 (free source code editor for Win32 and X) has been included with the 
-source code. If you wish to install a newer version of SciTE, please make sure to retain the *SciTEGlobal.properties*
+source code. If you wish to install a newer version of SciTE, please make sure to set aside the *SciTEGlobal.properties*
 and *python.properties* files. These files have been customized for the SystemLab-Design application and it is recommended 
-the default versions of these files be replaced with these versions.
+to use these modified versions in lieu of the default installed versions.
 
 
 INSTRUCTIONS ON HOW TO CREATE A BUILD OF THE SYSTEMLAB|DESIGN DOCUMENTATION
@@ -77,4 +77,4 @@ Procedure:
    *Make sure to accept all the defaults during the quick start procedure. Once complete files will be created for index.rst,
    config.py, and others*
    
-4) Under the *source* folder, replace the 
+4) Under the *source* folder, replace the files *conf.py* and *index.rst* with the versions that are located under 
