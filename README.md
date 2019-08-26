@@ -66,25 +66,30 @@ INSTRUCTIONS ON HOW TO CREATE A BUILD OF THE SYSTEMLAB|DESIGN DOCUMENTATION
 
 The SystemLab-Design documentation is built using the Sphinx documentation generator (The Read the Docs theme layout is used).
 For information on getting started with Sphinx see: https://docs.readthedocs.io/en/stable/intro/getting-started-with-sphinx.html
+
 Procedure:
 
 1) From your project directory, launch a terminal session and install Sphinx: **pip install sphinx**
 
-2) After installation is complete, install the read the docs theme: **pip install sphinx_rtd_theme**
+2) After the installation is complete, install the read the docs theme: **pip install sphinx_rtd_theme**
 
 3) Create a documentation directory (if needed) and run quick start to create your build env: **sphinx-quickstart**
 
-   *Make sure to accept all the defaults during the quick start procedure. Once complete, files will be created for index.rst,
-   config.py, and others, along with a source folder for adding images and reStructuredText documents*
+   Make sure to accept all the defaults during the quick start procedure. Once complete, files will be created for *index.rst*,
+   *config.py* and others, along with a *source* folder for adding images and reStructuredText documents.
    
 4) Under the *source* folder, replace the files *conf.py* and *index.rst* with the versions that are located under 
    *systemlab-design/documentation_source*.
    
-5) Under the *source* folder, add the files *LogoMakmr-9zOCZf* and the entire folder *syslab_documents* (These files are
-   located under *systemlab-design/documentation_source*)
+5) Under the *source* folder, add the files *LogoMakmr-9zOCZf* and the entire folder *syslab_documents* (located under *systemlab-design/documentation_source*)
 
-6) Under the *source/_static* folder add the file *custom-styles*.
+6) Under the *source/_static* folder add the file *custom-styles* (located under *systemlab-design/documentation_source*)
 
-7) 
+7) From the terminal session window, run the following command: **make html**
+
+After the build is complete, go to the *build/html* folder and double-click on *index.html* to test the html 
+documentation.
+   
+ 
 
 
