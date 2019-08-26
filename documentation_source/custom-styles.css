@@ -1,0 +1,55 @@
+h1, h2, .rst-content .toctree-wrapper p.caption, h3, h4, h5, h6, legend {
+    font-family: "Lato","ff-tisa-web-pro","Georgia",Arial,sans-serif;
+}
+
+/*
+"Lato","ff-tisa-web-pro","Georgia",Arial,sans-serif;
+.fa-exclamation-circle:before,
+.wy-inline-validate.wy-inline-validate-warning .wy-input-context:before,
+.wy-inline-validate.wy-inline-validate-info .wy-input-context:before,
+.rst-content .admonition-title:before {
+    content: "\0021"
+}
+
+.fa-arrow-circle-left:before,
+.icon-circle-arrow-left:before {content: "\00AB"}
+
+.fa-arrow-circle-right:before,
+.icon-circle-arrow-right:before {content: "\00BB"}
+
+.fa-plus-square-o:before,
+.wy-menu-vertical li span.toctree-expand:before {content: "\229E"}
+
+.fa-minus-square-o:before,
+.wy-menu-vertical li.on a span.toctree-expand:before,
+.wy-menu-vertical li.current > a span.toctree-expand:before
+{content: "\229F"}*/
+
+/*.rst-content .note:before {
+    content: "\f075" }*/
+
+/*Override settings for 'Admonition' admonition*/
+.rst-content .admonition-title:before{
+    content: "\f059"
+}
+
+/*Override settings for 'Note' admonition*/
+.rst-content .note .admonition-title:before{
+    content: "\f05a"
+}
+
+/*Override settings for 'Important' admonition*/
+.rst-content .important .admonition-title:before{
+    content: "\f071"
+}
+.rst-content .important {
+    background: #ffe8c4
+}
+.rst-content .important .admonition-title{
+    background: #ff9a00
+}
+
+/*Override settings for 'Tip' admonition*/
+.rst-content .tip .admonition-title:before{
+    content: "\f0eb"
+
