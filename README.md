@@ -74,7 +74,12 @@ Procedure:
 
 3) Create a documentation directory (if needed) and run quick start to create your build env: **sphinx-quickstart**
 
-   *Make sure to accept all the defaults during the quick start procedure. Once complete files will be created for index.rst,
-   config.py, and others*
+   *Make sure to accept all the defaults during the quick start procedure. Once complete, files will be created for index.rst,
+   config.py, and others, along with a source folder for adding images and reStructuredText documents*
    
 4) Under the *source* folder, replace the files *conf.py* and *index.rst* with the versions that are located under 
+   systemlab-design/documentation-source
+   
+5) Add the files
+
+
