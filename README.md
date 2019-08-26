@@ -56,6 +56,12 @@ include the full path (C:\\..) for the virtual environment folder.
 
 8) The build process will issue several warnings but should complete successfully. The distribution folder (*dist*) should appear within the virtual directory.
 
+NOTE: A pre-installed version of SciTE 4.1.4 (free source code editor for Win32 and X) has been included with the 
+source code. If you wish to install a newer version of SciTE, please make sure to retain the *SciTEGlobal.properties*
+and *python.properties* files. These files have been customized for the SystemLab-Design application and it is recommended 
+the default versions of these files be replaced with these versions.
+
+
 INSTRUCTIONS ON HOW TO CREATE A BUILD OF THE SYSTEMLAB|DESIGN DOCUMENTATION
 
 The SystemLab-Design documentation is built using the Sphinx documentation generator (The Read the Docs theme layout is used).
