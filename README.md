@@ -15,16 +15,15 @@ improving the capabilities of SystemLab-Design, please contact the primary
 author for further information (marc.verreault@systemlabdesign.com)
 
 For an overview of the software architecture please see the intro comments in the file 
-*systemlab_main_v1902_r1.py* (under *systemlab-design/source*) - this is the main application
-module for the software.
+*systemlab_main_v1902_r1.py* (under *systemlab-design/source*). This file is the main 
+application module for the software.
 
-Development and testing of the software is done using the Spyder IDE (version 3.3.2), 
-which can be installed using the PIP utility (**pip install spyder**). Other IDE's can be 
-used however.
+Development and testing of the software can be done through the Spyder IDE and can be installed 
+using the PIP utility (**pip install spyder**). Other IDE's can be used however.
 
 INSTRUCTIONS ON HOW TO CREATE A BUILD OF SYSTEMLAB|DESIGN
 
-SystemLab-Design is a Python-based application that includes library links to PyQt 5.12.2/Qt 5.12.3, 
+SystemLab-Design 19.02 is a Python-based application that includes library links to PyQt 5.12.2/Qt 5.12.3, 
 Numpy 1.16.3, Matplotlib 3.0.3, SciPy 1.2.1. It can be distributed to other users by preparing a 
 distribution (dist) folder using PyInstaller.
 
@@ -33,7 +32,7 @@ Procedure:
 1) Download and install the latest version (Windows x86-64 executable installer) of Python
 from https://www.python.org/downloads/
 
-2) After installation is complete, create a python virtual environment for the project. See the following 
+2) After installation is complete, create a python virtual environment for the project. Please see the following 
 link for further details on how to create a virtual env: https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/
 
 3) Within the activated virtual environment (terminal session), install the following modules using pip
@@ -54,17 +53,18 @@ include the full path (C:\\..) for the virtual environment folder.
 
 7) Run PyInstaller using the following command in the terminal: **pyinstaller C:\path_to_virtual_folder\systemlab_build_V19.spec**
 
-8) The build process will issue several warnings but should complete successfully. The distribution folder (*dist*) should appear within the virtual directory.
+8) The build process may issue several warnings but should complete successfully. The distribution folder (*dist*) 
+should appear within the virtual directory.
 
 NOTE: A pre-installed version of SciTE 4.1.4 (free source code editor for Win32 and X) has been included with the 
-source code. If you wish to install a newer version of SciTE, please make sure to set aside the *SciTEGlobal.properties*
+source code. If you wish to install a newer version of SciTE, please make sure to set aside the current *SciTEGlobal.properties*
 and *python.properties* files. These files have been customized for the SystemLab-Design application and it is recommended 
 to use these modified versions in lieu of the default installed versions.
 
 
 INSTRUCTIONS ON HOW TO CREATE A BUILD OF THE SYSTEMLAB|DESIGN DOCUMENTATION
 
-The SystemLab-Design documentation is built using the Sphinx documentation generator (The Read the Docs theme layout is used).
+The SystemLab-Design documentation is built using the Sphinx documentation generator (*Read the Docs* theme).
 For information on getting started with Sphinx see: https://docs.readthedocs.io/en/stable/intro/getting-started-with-sphinx.html
 
 Procedure:
@@ -73,7 +73,7 @@ Procedure:
 
 2) After the installation is complete, install the read the docs theme: **pip install sphinx_rtd_theme**
 
-3) Create a documentation directory (if needed) and run quick start to create your build env: **sphinx-quickstart**
+3) Run quick start to create your build env: **sphinx-quickstart**
 
    Make sure to accept all the defaults during the quick start procedure. Once complete, files will be created for *index.rst*,
    *config.py* and others, along with a *source* folder for adding images and reStructuredText documents.
@@ -81,15 +81,14 @@ Procedure:
 4) Under the *source* folder, replace the files *conf.py* and *index.rst* with the versions that are located under 
    *systemlab-design/documentation_source*.
    
-5) Under the *source* folder, add the files *LogoMakmr-9zOCZf* and the entire folder *syslab_documents* (located under *systemlab-design/documentation_source*)
+5) Under the *source* folder, add the files *LogoMakmr-9zOCZf* and the entire folder *syslab_documents* (located 
+   under *systemlab-design/documentation_source*)
 
 6) Under the *source/_static* folder add the file *custom-styles* (located under *systemlab-design/documentation_source*)
 
 7) From the terminal session window, run the following command: **make html**
 
-After the build is complete, go to the *build/html* folder and double-click on *index.html* to test the html 
-documentation.
-   
- 
+8) After the build is complete, go to the *build/html* folder and double-click on *index.html* to test the html 
+   documentation.
 
 
