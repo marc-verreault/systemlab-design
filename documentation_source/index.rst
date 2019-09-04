@@ -40,6 +40,7 @@ Welcome to SystemLab|Design's documentation!
    syslab_documents/AddDataPanels
    syslab_documents/CreatingCustomizedGraphs
    syslab_documents/WorkingWithFunctionalBlockLibrary
+   syslab_documents/MatlabEngineAPI
    
 .. toctree::
    :caption: References
