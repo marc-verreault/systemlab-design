@@ -79,7 +79,7 @@ SystemLab|Design.
            
    When **Feedback mode** is enabled for a simulation (feedback_mode == 2), the change in 
    temperature for a defined time span is calculated using the differential equation 
-   *dT/dt = -k(T-Ta)* where k is the cooling rate parameter and Ta is the ambient temp [1]_.
+   *dT/dt = -k(T-Ta)* where k is the cooling rate parameter and Ta is the ambient temp **[Ref 1]**.
    
    The **Feedback segments** setting is used to define the number segments for the simulation 
    iteration. This regulates the time step delta (dt), which is represented numerically 
@@ -110,7 +110,9 @@ SystemLab|Design.
      
   .. image:: Feedback_4.png
      :align: center 
-     :width: 450     
-   
-.. [1] Other differential equations, https://www.ugrad.math.ubc.ca/coursedoc/math100/notes/diffeqs/cool.html
-       (accessed April 26, 2019). 
+     :width: 450   
+
+References
+^^^^^^^^^^
+  
+  **[1]** Other differential equations, https://www.ugrad.math.ubc.ca/coursedoc/math100/notes/diffeqs/cool.html (accessed April 26, 2019).

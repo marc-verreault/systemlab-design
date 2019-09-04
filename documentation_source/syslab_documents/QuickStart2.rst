@@ -108,7 +108,7 @@ iterations, data panels, and customized graphs.
     group box). Once these settings have been entered, select the **Apply** button at the 
     bottom of the group box.
 10. Under the **Y-axis min/max settings** group box, set the **Start value** and **End value** 
-to "100" and "-100" and select **Apply**. 
+    to "100" and "-100" and select **Apply**. 
     
     *The graph will be refreshed and should look similar to the plot shown in Fig 5. 
     The Integrate and Dump receiver is called a matched filter in that it is designed to provide 

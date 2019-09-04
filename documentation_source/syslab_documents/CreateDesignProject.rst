@@ -102,7 +102,7 @@ generator that is connected to an amplifier) and assemble these into a design pr
 15. Before saving the project, go to the *systemlab_design* main folder and create a new folder 
     called *'gaussian_pulse_generator'*.
     
-  .. warning::
+  .. important::
     If the path which defines the location of a Python script contains empty spaces, the 
     file may not be directly accessible to the script editor. It is thus recommended to remove any blank 
     spaces in your project path definitions (this is why we have added underscores to our 

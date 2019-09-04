@@ -25,7 +25,7 @@ Optical signal
 The **Optical** signal type can be used to represent an optical analog signal (continuously 
 varying with time) that is either guided (e.g. fiber or waveguide confined) or un-guided 
 (free space - geometric). To model the optical signal in a simulation environment, the 
-slowly varying envelope approximation is used [1]_: 
+slowly varying envelope approximation is used **[Ref 1]**: 
 
 .. math:: E(z,t) = E_{o}(z,t)exp(i(kz-w_{0}t))
 
@@ -123,8 +123,7 @@ The data structure of the analog signal is as follows: ::
     # time_array (1D array): Time samples for the signal
     # amplitude_array (1D array): Sampled amplitude values of the signal
 
-.. [1] Wikipedia contributors, "Slowly varying envelope approximation," Wikipedia, The Free 
-       Encyclopedia, https://en.wikipedia.org/w/index.php?title=Slowly_varying_envelope_approximation&oldid=871400462 
-       (accessed April 3, 2019). 
-
-      
+References
+^^^^^^^^^^
+  
+  **[1]** Wikipedia contributors, "Slowly varying envelope approximation," Wikipedia, The Free Encyclopedia, https://en.wikipedia.org/w/index.php?title=Slowly_varying_envelope_approximation&oldid=871400462 (accessed April 3, 2019).

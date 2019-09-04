@@ -17,8 +17,8 @@ libraries for:
 
 To install and run SystemLab|Design, complete the following steps:
 
-1. Download the latest version of SystemLab|Design from: 
-   https://systemlabdesign.com/systemlab_design/systemlab_design_1902.zip
+1. Download the latest version of SystemLab|Design from the following link:
+   `SystemLab|Design 19.02 <https://systemlabdesign.com/systemlab_design/systemlab_design_1902.zip>`_
 
   .. note::   
     If prompted by your web browser, select the "Save file" option.
@@ -47,6 +47,17 @@ To install and run SystemLab|Design, complete the following steps:
     
 5. **Double left-click** on the application file to launch the software (or optionally 
    **right-click + open**).   
+
+  .. tip::
+  
+	To quickly access the SystemLab|Design application for future use, you can create a short-cut to the 
+	*SystemLab-Design.exe* file. To add a short-cut, right-click on the file and select **Create shortcut** from 
+	the pull-down menu. The short-cut application icon can then moved to any other location on your computer.
+	
+	Similarly, you can add a link to the SystemLab-Design executable in the Windows **Start** menu by right-clicking 
+	on the file and selecting **Pin to Start** from the pull-down menu. A tile icon will appear on the **Tiles** panel 
+	of the **Start** menu and can be re-sized and/or moved if needed.
+ 
 6. **Windows Defender SmartScreen** (or similar anti-virus software) will likely initially 
    flag *"SystemLab-Design.exe"* as an unrecognized app (this is normal as it has 
    been downloaded from the internet). Select **More Info** to verify the publisher.
@@ -66,12 +77,12 @@ To install and run SystemLab|Design, complete the following steps:
    certificate, thus verifying the source and integrity of the software. Once the publisher 
    is verified, select **Run anyway** to launch the application. 
    
-   *For further information on digital signature see the section below: About software digital signatures...*. 
+   *For further information on digital signatures see the section below: About software digital signatures...*. 
    **Note**: If the publisher field displays unknown, **we do not recommend** that you launch the 
    application. Please contact us at info@systemlabdesign.com for assistance.
    
   .. note::   
-    When launching SystemLab|Design for the first time there will be an initial delay (~15 seconds) 
+    When launching SystemLab|Design for the first time there will be an initial delay (~10 seconds) 
     before the application appears (Fig 5) (during this time Python compiles the code into bytecode 
     (.pyc files)). After these cached files are built, subsequent instances of the 
     application will load more quickly.

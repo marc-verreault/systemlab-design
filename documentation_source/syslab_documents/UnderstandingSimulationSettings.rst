@@ -39,7 +39,7 @@ data collection) and operate at defined symbols/sec rate(s) (also called
 `baud rate <https://www.electronicdesign.com/communications/what-s-difference-between-bit-rate-and-baud-rate>`_). 
 
 The **Symbol rate** is defined separately from the **Sample rate** but as a general rule, 
-when running communications models, it’s recommended to maintain a **Sample rate** that is 
+when running communication models, it’s recommended to maintain a **Sample rate** that is 
 twice or greater than that of the **Symbol rate**.
 
   .. figure:: Simulation_Settings_1.png
@@ -64,8 +64,11 @@ calculation (1E-11 sec) from the **Simulation settings** tab.
     
     Fig 2: Example view of Time data tab (Electrical signal data viewer)
 
-The inverse of the **Sample period** is the **Sample rate** (set to 1E+11 Hz) and is 
-equivalent to the spacing between the data points in the frequency-domain graph (Fig 3).
+The inverse of the **Sample period** is the **Sample rate** (1E+11 Hz) and is 
+equivalent to the delta between the maximum and minimum x-axis points (or simulation bandwidth) 
+displayed on the frequency-domain graph (Fig 3). The spacing between the frequency 
+points is linked to the inverse of the time window of the simulation. For a fixed sample rate, 
+the longer the simulation time, the tighter the spacing (resolution) between the frequency points.
 
   .. figure:: Simulation_Settings_3.png
     :figclass: align-center
