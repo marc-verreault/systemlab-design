@@ -32,8 +32,13 @@ Procedure:
 1) Download and install the latest version (Windows x86-64 executable installer) of Python
 from https://www.python.org/downloads/
 
-2) After installation is complete, create a python virtual environment for the project. Please see the following 
-link for further details on how to create a virtual env: https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/
+2) After installation is complete, create a python virtual environment for the project. 
+
+- Install the virtual environment feature by entering the command: **pip install virtualenv**
+- Create a new virtual project folder by entering the command: **virtualenv new_project**
+- Activate the new project as follows: **new_project\scripts\activate**
+
+Note: Please see the following link for further details on how to create a virtual env: https://uoa-eresearch.github.io/eresearch-cookbook/recipe/2014/11/26/python-virtual-env/
 
 3) Within the activated virtual environment (terminal session), install the following modules using pip
 
