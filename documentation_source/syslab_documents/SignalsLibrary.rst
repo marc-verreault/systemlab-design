@@ -32,25 +32,29 @@ slowly varying envelope approximation is used **[Ref 1]**:
 where *k* and *w* are the wave number and angular frequency of the optical carrier, and 
 E\ :sub:`o` is the complex field envelope of the forward propagating wave (which is 
 assumed to be slowly varying compared to the optical carrier wavelength cycle). The data 
-structure of the optical signal includes the optical_signal (collection of optical channels 
-or carriers which is linked to a port) and the optical_channel(s): ::
+structure of the optical signal includes data common to all channels and an optical 
+group list (the collection of optical channels or carriers that is linked to the optical 
+signal port): ::
 
-    optical_signal = [portID, sig_type, fs, time_array, optical group]
+    optical_signal = [portID, sig_type, fs, time_array, psd_array, optical group]
     
     # portID (int): integer ID of the port that is linked to the optical signal
     # sig_type (string): The signal type, identified by 'Optical'
     # fs (float): The sampling frequency used to capture the sampled signal data
     # time_array (1D array): Time samples for the signal
+	# psd_array (2D array-freq points,psd_points): Optical noise groups (wide bandwidth)
     # optical group: The list of optical channels
     
-    optical_channel = [[wave_key, wave_freq, jones_vector, e_field_array, noise_array, psd_array]]
+	# Example of two channel optical group:
+    channel_1 = [wave_key_1, wave_freq_1, jones_vector_1, e_field_array_1, noise_array_1]
+	channel_2 = [wave_key_2, wave_freq_2, jones_vector_2, e_field_array_2, noise_array_2]
+	optical_group = [channel_1, channel_2]
     
     # wave_key (int): Wavelength channel key
     # wave_freq (float): Frequency of the optical carrier (THz)
     # jones_vector: Polarization state data for the electric field
     # e_field_array (1D array): Complex envelope of the the electric field (Eo)
     # noise_array (1D array): Time-domain noise values (narrow bandwidth - centered @ optical freq)
-    # psd_array (2D array-freq points,psd_points): Optical noise groups (wide bandwidth)
     
 An example of an optical signal output for a continuous wave laser is shown in Fig 1. The 
 noise resulting from relative intensity noise (RIN) is shown in red (obtained 

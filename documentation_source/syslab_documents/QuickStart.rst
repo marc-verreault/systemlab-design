@@ -13,7 +13,7 @@ demonstrate a simple sinusoidal adder design.
 #.  Go to the **Functional block library** (left panel of GUI) and hover over the triangle
     in front of the *Waveform generators* group (under **Electrical**).
 #.  Left-click mouse to expand the menu.
-#.  Left-click select and hold over the **Sine Generator** component and starting moving
+#.  Left-click select and hold over the **Sine Generator** component and start moving
     your mouse towards the design scene for Project_1.
 #.  Release the mouse button anywhere over the design layout.     
     *[An icon representing a sinusoidal signal generator should appear on the layout]*.                
