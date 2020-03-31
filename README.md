@@ -15,7 +15,7 @@ improving the capabilities of SystemLab-Design, please contact the primary
 author for further information (marc.verreault@systemlabdesign.com)
 
 For an overview of the software architecture please see the intro comments in the file 
-*systemlab_main_v1902_r1.py* (under *systemlab-design/source*). This file is the main 
+*systemlab_main_v2001_r2.py* (under *systemlab-design/source*). This file is the main 
 application module for the software.
 
 Development and testing of the software can be done through the Spyder IDE and can be installed 
@@ -23,7 +23,7 @@ using the PIP utility (**pip install spyder**). Other IDE's can be used however.
 
 INSTRUCTIONS ON HOW TO CREATE A BUILD OF SYSTEMLAB|DESIGN
 
-SystemLab-Design 19.02 is a Python-based application that includes library links to PyQt 5.12.2/Qt 5.12.3, 
+SystemLab-Design 20.01 is a Python-based application that includes library links to PyQt 5.12.2/Qt 5.12.3, 
 Numpy 1.16.3, Matplotlib 3.0.3, SciPy 1.2.1. It can be distributed to other users by preparing a 
 distribution (dist) folder using PyInstaller.
 
