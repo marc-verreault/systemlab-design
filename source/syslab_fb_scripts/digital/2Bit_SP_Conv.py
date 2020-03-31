@@ -4,6 +4,7 @@ Version 1.0 (19.02 23 Feb 2019)
 """
 import numpy as np
 import config
+import project_optical_qpsk as project
 
 def run(input_signal_data, parameters_input, settings):
     
@@ -34,6 +35,10 @@ def run(input_signal_data, parameters_input, settings):
     #Parameters table
     signal_gen_parameters = []
     
+    '''==OUTPUT PARAMETERS LIST============================================='''
+    sp_parameters = []
+    sp_parameters = parameters_input
+    
     '''==CALCULATIONS======================================================='''   
     binary = input_signal_data[0][6]
     time = input_signal_data[0][5]    
@@ -43,19 +48,19 @@ def run(input_signal_data, parameters_input, settings):
     
     for i in range(0, binary_seq_length):  
         if i % 2 == 0:
-            binary_even[int(round(i/2)] = binary[i]
+            binary_even[int(round(i/2))] = binary[i]
         else:
             binary_odd[int(round((i-1)/2))] = binary[i]
   
     '''==RESULTS============================================================'''
-    signal_gen_results = []
+    sp_results = []
     bin_even = ['Bit sequence length - Even', binary_seq_length/2, 'bits', ' ']
     bin_odd = ['Bit sequence length - Odd', binary_seq_length/2, 'bits', ' ']    
-    signal_gen_results = [bin_even, bin_odd]
+    sp_results = [bin_even, bin_odd]
         
     return  ([[2, signal_type, symbol_rate, bit_rate, order, time,
               binary_even], [3, signal_type, symbol_rate, bit_rate, order, 
-              time, binary_odd]], signal_gen_parameters, signal_gen_results)
+              time, binary_odd]], sp_parameters, sp_results)
 
 
 

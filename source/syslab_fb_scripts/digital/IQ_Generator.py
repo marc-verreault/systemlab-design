@@ -27,6 +27,7 @@ def run(input_signal_data, parameters_input, settings):
                                           
     '''==PARAMETERS========================================================='''
     signal_type = 'Digital'
+    N = float(parameters_input[0][1])
     
     '''==CALCULATIONS=========================================================='''
     bit_rate = input_signal_data[0][3]
@@ -36,12 +37,12 @@ def run(input_signal_data, parameters_input, settings):
     samples_per_bit = int(round(fs/bit_rate))
     
     #Create I and Q symbol arrays
-    N = 2
     symbol_rate = bit_rate/N
     I = [-1, 1]
     Q = [-1, 1]
-    num_symbols = int(round(binary_seq_length/N))
-    bit_groups = np.reshape(binary_input, (num_symbols, N))
+    num_symbols = int(round(binary_seq_length/int(N)))
+    bit_groups = np.reshape(binary_input, (num_symbols, int(N)))
+    print(bit_groups)
     i_symbols = np.zeros(num_symbols)
     q_symbols = np.zeros(num_symbols)  
     

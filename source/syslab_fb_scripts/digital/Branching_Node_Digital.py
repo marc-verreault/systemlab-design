@@ -1,14 +1,14 @@
 """
-2Bit Parallel to Serial Converter
-Version 1.0 (19.02 23 Feb 2019)
+SystemLab-Design Version 20.01.r1
+Branching node (digital)
+Version 1.0 (3-Oct-2019)
 """
-import numpy as np
 import config
 
 def run(input_signal_data, parameters_input, settings):
     
     '''==PROJECT SETTINGS==================================================='''
-    module_name = '2 bit P-S Conv' 
+    module_name = 'Branching node (digital)' 
     n = settings['num_samples']
     n = int(round(n))
     iteration = settings['current_iteration']
@@ -27,37 +27,24 @@ def run(input_signal_data, parameters_input, settings):
    
     '''==INPUT PARAMETERS=================================================================
     '''
-    bit_rate = float(parameters_input[0][1])
-    order = 1
-    symbol_rate = bit_rate/order
-    signal_type = 'Digital'
-    binary_seq_length = int(round(bit_rate*time_win))
+    signal_type = input_signal_data[0][1]
+    symbol_rate = input_signal_data[0][2]
+    bit_rate = input_signal_data[0][3]
+    order = input_signal_data[0][4]
+    time_array = input_signal_data[0][5]
+    binary_received = input_signal_data[0][6]
     
     #Parameters table
-    signal_gen_parameters = []
-    signal_gen_parameters = parameters_input
+    node_parameters = []
+    node_parameters = parameters_input
     
     '''==CALCULATIONS=====================================================================
     '''
-    binary_even = input_signal_data[0][6] # Port 2 (North) Even IN
-    binary_odd = input_signal_data[1][6] # Port 3 (South) Odd IN
-    time = input_signal_data[0][5]
-    binary_received = np.zeros(binary_seq_length)
-    
-    for i in range(0, binary_seq_length):
-        if i % 2 == 0:
-            binary_received[i] = binary_even[int((i/2))]
-        else:
-            binary_received[i] = binary_odd[int((i/2))]
-  
+
     '''==RESULTS==========================================================================
     '''
-    signal_gen_results = []
+    node_results = []
         
-    return ([[1, signal_type, symbol_rate, bit_rate, order, time,
-              binary_received]], signal_gen_parameters, signal_gen_results)
-
-
-
-
-
+    return ([[2, signal_type, symbol_rate, bit_rate, order, time_array, binary_received],
+                  [3, signal_type, symbol_rate, bit_rate, order, time_array, binary_received]],
+                  node_parameters, node_results)
