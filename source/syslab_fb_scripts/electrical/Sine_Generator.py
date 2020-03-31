@@ -24,11 +24,11 @@ def run(input_signal_data, parameters_input, settings):
     config.app.processEvents()
     
     '''==INPUT PARAMETERS==================================================='''
-    freq = float(parameters_input[0][1])
-    signal_amp = float(parameters_input[1][1])
-    bias = int(parameters_input[2][1])
+    freq = float(parameters_input[0][1]) #Hz
+    signal_amp = float(parameters_input[1][1]) #Peak amplitude (crest-to-crest = 2*Peak amplitude)
+    bias = float(parameters_input[2][1]) #
     
-    carrier = 0
+    carrier = freq
     sig_type = 'Electrical'
     
     #Parameters table

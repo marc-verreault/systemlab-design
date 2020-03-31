@@ -1,7 +1,7 @@
 """
 SystemLab-Design Version 19.02
 Functional block script: Analog Filter
-Version 1.0 (19.02 13-Mar-2019)
+Version 1.0 (13-Mar-2019)
 
 Refs:
 1) Chapter 8, Analog Filters 
@@ -32,9 +32,9 @@ import numpy as np
 import config
 
 #import systemlab_viewers as view
-import importlib
-custom_viewers_path = str('syslab_config_files.systemlab_viewers')
-view = importlib.import_module(custom_viewers_path)
+#import importlib
+#custom_viewers_path = str('syslab_config_files.systemlab_viewers')
+#view = importlib.import_module(custom_viewers_path)
 
 def run(input_signal_data, parameters_input, settings):
     
@@ -106,8 +106,11 @@ def run(input_signal_data, parameters_input, settings):
         mag = 20*np.log10(mag)
         ph = np.angle(Y_trans/Y)
         ph = np.rad2deg(ph)
-        freq_response = view.FilterAnalyzer(frq, mag, ph, n, freq_cut_off, filter_type)
-        freq_response.show()
+        # Create instance of graphing object
+        config.analog_filter_graph = config.view.FilterAnalyzer(frq, 
+                                                             mag, ph, n, freq_cut_off,
+                                                             filter_type)
+        config.analog_filter_graph.show()
         
     sig_out = np.fft.ifft(Y_trans*2) 
     # NOTE: Multiply by 2 to account for dual-power spectrum (neg/pos frequencies)

@@ -74,17 +74,6 @@ def run(input_signal_data, parameters_input, settings):
     noise_pwr_measured_dbm = ['Noise power measured (dBm)',  total_noise_dbm, 'dBm', ' ', False]
     psd_result = ['PSD measured (dBm/Hz)', psd, 'dBm/Hz', ' ', False]
     noise_results = [noise_pwr_measured, noise_pwr_measured_dbm, psd_result]
-    
-    #Send update to data box (data_table_1)
-#    config.data_table_1 = []
-#    data_1 = ['Iteration #', i, '.0f', ' ']
-#    data_2 = ['Frequency', freq, '0.4E', 'Hz']
-#    data_3 = ['Test data 2', 4.32e09, '0.4E', 'a.u.']
-#    config.data_table_1.append(data_1)
-#    config.data_table_1.append(data_2)
-#    config.data_table_1.append(data_3)
-#
-#    config.sim_status_win.textEdit.append('Data: ' + str(config.data_table_1))
 
     return ( [[1, sig_type, carrier, fs, time_array, signal_array, noise_array]], 
                 noise_parameters, noise_results )
