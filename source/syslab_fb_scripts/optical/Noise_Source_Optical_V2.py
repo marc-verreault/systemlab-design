@@ -1,7 +1,7 @@
 """
-SystemLab-Design Version 19.02
+SystemLab-Design Version 20.01.r1
 Functional block script: Optical Noise Source
-Version 1.0 (19.02 23 Feb 2019)
+Version 2.0 (26 Sep 2019)
 
 Refs:
 1) Cvijetic, M., and Djordjevic, Ivan B.; Advanced Optical Communication Systems and Networks, 
@@ -42,9 +42,6 @@ def run(input_signal_data, parameters_input, settings):
     freq_start = float(parameters_input[4][1])
     freq_end = float(parameters_input[5][1])
     add_ase = int(parameters_input[6][1])
-    # Polarization settings (header)
-    pol_azimuth = float(parameters_input[8][1])
-    pol_ellipticity = float(parameters_input[9][1])
 
     # Additional parameters
     signal_type = 'Optical'
@@ -52,13 +49,7 @@ def run(input_signal_data, parameters_input, settings):
     wave_freq = constants.c/(wavelength*1e-9) #Hz
     
     '''==CALCULATIONS======================================================='''
-    # Polarization settings
-    pol_azimuth_rad = (pol_azimuth/180)*np.pi
-    pol_ellipticity_rad = (pol_ellipticity/180)*np.pi
-    jones_vector = ([np.cos(pol_azimuth_rad)*np.cos(pol_ellipticity_rad) - 
-                     1j*np.sin(pol_azimuth_rad)*np.sin(pol_ellipticity_rad),  
-                     np.sin(pol_azimuth_rad)*np.cos(pol_ellipticity_rad) + 
-                     1j*np.cos(pol_azimuth_rad)*np.sin(pol_ellipticity_rad)])
+    jones_vector = ([1/np.sqrt(2)+ 1j*0, 1/np.sqrt(2) + 1j*0]) # 50% in X, 50% in Y
 
     # Prepare initial electrical field definition for optical signal
     time_array = np.linspace(0, time, n)
@@ -86,7 +77,6 @@ def run(input_signal_data, parameters_input, settings):
         frq = (k/T)
         frq = frq - frq[int(round(n/2))] + wave_freq
         ng_w = psd_array[0, 1] - psd_array[0, 0]
-        print(frq)
         pwr_opt_noise = 0
         for i in range(0, ng):
             if psd_array[0, i] > frq[0] and psd_array[0, i] < frq[n-1]:

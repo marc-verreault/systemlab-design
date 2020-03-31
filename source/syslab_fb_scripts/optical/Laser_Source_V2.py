@@ -1,7 +1,7 @@
 """
-SystemLab-Design Version 19.02
+SystemLab-Design Version 20.01.r1
 Functional block script: Laser Source
-Version 1.0 (19.02 23 Feb 2019)
+Version 2.0 (26 Sep 2019)
 
 Refs:
 1) Cvijetic, M., and Djordjevic, Ivan B.; Advanced Optical Communication Systems and Networks, 
@@ -37,23 +37,27 @@ def run(input_signal_data, parameters_input, settings):
     # Load parameters from FB parameters table
     # Parameter name(0), Value(1), Units(2), Notes(3)   
     #General parameters (header)
-    wavelength = float(parameters_input[1][1]) #Optical wavelength (nm)
-    optical_pwr = float(parameters_input[2][1]) #Optical power (mW)
-    line_width = float(parameters_input[3][1]) #Laser linewidth (MHz)
-    phase_deg = float(parameters_input[4][1]) #Optical phase (deg)
+    wave_units = str(parameters_input[1][1])
+    wavelength = float(parameters_input[2][1]) #Optical wavelength (nm or THz)
+    if wave_units == 'Frequency (THz)':
+        wavelength = 1e-3*constants.c/wavelength
+    optical_pwr = float(parameters_input[3][1]) #Optical power (mW)
+    line_width = float(parameters_input[4][1]) #Laser linewidth (MHz)
+    phase_deg = float(parameters_input[5][1]) #Optical phase (deg)
     # Relative intensity noise (header)
-    ref_bw = float(parameters_input[6][1]) #Reference bandwidth (Hz)
-    rin = float(parameters_input[7][1]) #RIN (dB/Hz)
-    add_rin_to_signal = int(parameters_input[8][1]) #Add RIN to signal
+    ref_bw = float(parameters_input[7][1]) #Reference bandwidth (Hz)
+    rin = float(parameters_input[8][1]) #RIN (dB/Hz)
+    add_rin_to_signal = int(parameters_input[9][1]) #Add RIN to signal
     # Polarization settings (header)
-    pol_azimuth = float(parameters_input[10][1])
-    pol_ellipticity = float(parameters_input[11][1])
+    pol_azimuth = float(parameters_input[11][1])
+    pol_ellipticity = float(parameters_input[12][1])
+    e_field_format = str(parameters_input[13][1])
     # Frequency domain noise groups (header)
-    psd_freq = float(parameters_input[13][1])
-    ng = int(parameters_input[14][1])
-    freq_start = float(parameters_input[15][1])
-    freq_end = float(parameters_input[16][1])
-    add_ase = int(float(parameters_input[17][1]))
+    psd_freq = float(parameters_input[15][1])
+    ng = int(parameters_input[16][1])
+    freq_start = float(parameters_input[17][1])
+    freq_end = float(parameters_input[18][1])
+    add_ase = int(float(parameters_input[19][1]))
 
     # Additional parameters
     signal_type = 'Optical'
@@ -83,20 +87,28 @@ def run(input_signal_data, parameters_input, settings):
         noise_array = np.random.normal(0, sigma_field , n)
         e_field_array = e_field_array + noise_array
     
-    # Build electrial field
+    # Initialize electric field arrays
     # Slowly varying envelope approximation ( E(z,t) = Eo(z, t)*exp(i(kz - wt)) )
     # e_field_env = E(z,t); w is carried separately as wave_freq = c/optical wavelength
     phase_rad = (phase_deg/180)*np.pi
     e_field_array_real = np.zeros(n)
     e_field_array_imag = np.zeros(n)
-    e_field_env = np.full(n, 0 + 1j*0, dtype=complex) 
+    if e_field_format == 'Exy':
+        e_field_env = np.full(n, 0 + 1j*0, dtype=complex)
+    else:
+        e_field_env = np.full([2, n], 0 + 1j*0, dtype=complex) 
     
-    for i in range(0,n): #Add intial phase setting to complex envelope
+    #Add intial phase setting to complex envelope(s)
+    for i in range(0,n): 
         e_field_array_real[i] = e_field_array[i]*np.cos(phase_rad)
         e_field_array_imag[i] = e_field_array[i]*np.sin(phase_rad)
-        e_field_env[i] = e_field_array_real[i] + 1j*e_field_array_imag[i]   
-    
-    #Noise groups (freq domain)
+        if e_field_format == 'Exy':
+            e_field_env[i] = e_field_array_real[i] + 1j*e_field_array_imag[i]  
+        else:
+            e_field_env[0][i] = e_field_array_real[i] + 1j*e_field_array_imag[i]
+            e_field_env[1][i] = e_field_array_real[i] + 1j*e_field_array_imag[i] 
+        
+    #Create noise groups (freq domain)
     freq_delta = freq_end - freq_start
     ng_w = freq_delta/ng
     freq_points = np.linspace(freq_start + (ng_w/2), freq_end - (ng_w/2), ng)
@@ -105,7 +117,6 @@ def run(input_signal_data, parameters_input, settings):
     
     # Integrate ase noise with time-domain noise?
     if add_ase == 2:
-        # Build time-domain freq points
         T = n/fs
         k = np.arange(n)
         frq = (k/T)
@@ -115,7 +126,6 @@ def run(input_signal_data, parameters_input, settings):
         for i in range(0, ng):
             if psd_array[0, i] > frq[0] and psd_array[0, i] < frq[n-1]:
                 pwr_ase += psd_array[1, i]*ng_w
-                
         #Convert to time-domain noise
         sigma_ase = np.sqrt(pwr_ase)
         noise_ase = np.random.normal(0, sigma_ase , n)
@@ -125,14 +135,24 @@ def run(input_signal_data, parameters_input, settings):
     phase_sigma = np.sqrt(np.pi*2*line_width*1e6)
     phase = phase_rad
     phase_array = np.full(n, phase)
-    
     for i in range(1,n):
         phase_walk = np.random.normal(0, phase_sigma)*np.sqrt(t_step)
         phase_array[i] = phase_array[i-1] + phase_walk
         e_field_array_real[i] = e_field_array[i]*np.cos(phase_array[i])
         e_field_array_imag[i] = e_field_array[i]*np.sin(phase_array[i])
-        e_field_env[i] = e_field_array_real[i] + 1j*e_field_array_imag[i]
-        
+        if e_field_format == 'Exy':
+            e_field_env[i] = e_field_array_real[i] + 1j*e_field_array_imag[i]
+        else:
+            e_field_env[0][i] = e_field_array_real[i] + 1j*e_field_array_imag[i]
+            e_field_env[1][i] = e_field_array_real[i] + 1j*e_field_array_imag[i]
+            
+    #config.display_xy_data('Phase noise transmitter', time_array, phase_array)
+            
+    # Apply Jones vector to Ex and Ey complex arrays
+    if e_field_format == 'Ex-Ey':
+        e_field_env[0] = jones_vector[0]*e_field_env[0]
+        e_field_env[1] = jones_vector[1]*e_field_env[1]
+    
     '''==OUTPUT PARAMETERS LIST===========================================================
     '''
     laser_parameters = []
@@ -141,14 +161,19 @@ def run(input_signal_data, parameters_input, settings):
     '''==RESULTS==========================================================================
     '''
     laser_results = []
-    laser_pwr = np.sum(np.abs(e_field_env)*np.abs(e_field_env))/n
+    laser_pwr = np.sum(np.abs(e_field_env[0])*np.abs(e_field_env[0]))/n
     laser_pwr_dbm = 10*np.log10(laser_pwr*1e3)
     spectral_linewidth = ((wavelength*1e-9)**2)*(line_width*1e6)/constants.c
     
+    header_main_results = ['General data', '', '', '', True]
     laser_pwr_dbm_result = ['Laser power (dBm)', laser_pwr_dbm, 'dBm', ' ', False]
-    laser_frequency_result = ['Laser frequency (THz)', wave_freq*1e-12, 'THz', ' ', False]
+    laser_frequency_result = ['Laser frequency (THz)', wave_freq*1e-12, 'THz', ' ', False, '3.5f']
     spectral_linewidth_result = ['Laser linewidth (nm)', spectral_linewidth*1e9, 'nm', ' ', False]
-    laser_results = [laser_pwr_dbm_result, laser_frequency_result, spectral_linewidth_result]
+    header_pol_results = ['Polarization data', '', '', '', True]
+    azimuth_result = ['Polarization (azimuth)', pol_azimuth, 'deg', ' ', False]
+    ellipticity_result = ['Polarization (ellipticity)', pol_ellipticity, 'deg', ' ', False]
+    laser_results = [header_main_results, laser_pwr_dbm_result, laser_frequency_result, 
+                             spectral_linewidth_result, header_pol_results, azimuth_result, ellipticity_result]
 
     '''==RETURN (Output Signals, Parameters, Results)=================================='''
     optical_1 = [wave_key, wave_freq, jones_vector, e_field_env, noise_array]

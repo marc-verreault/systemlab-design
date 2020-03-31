@@ -1,9 +1,8 @@
 """
-SystemLab-Design Version 19.02
+SystemLab-Design Version 20.01.r1
 Functional block script: PIN_APD_Model
 Version 1.0 (19.02.r1 23 Feb 2019)
-
-Version 2.0 (19.02.r2)
+Version 2.0 (15 Nov 2019)
 Added support for multiple wavelengths (optical fields of different angular 
 frequency being received at detector)
 
@@ -12,10 +11,15 @@ Refs:
 (Artech House, 2013, Norwood, MA, USA). Kindle Edition.
 2) Optical Communication Systems(OPT428), Govind P. Agrawal, Institute of Optics University of Rochester
 http://www2.optics.rochester.edu/users/gpa/opt428a.pdf (accessed 14 Feb 2019)
+3) Sfez, Tristan; Investigation of Surface Electromagnetic Waves with Multi-Heterodyne Scanning Near-Field
+Optical Microscopy, Thesis No 4671, École Polytechnique Fédérale de Lausanne (2010)
+Source: https://pdfs.semanticscholar.org/8f29/d261b038c5634118ae330bf95869741fbd31.pdf
+(Accessed 12-Nov-2019)
 
 """
 import os
 import numpy as np
+import copy
 import config
 from scipy import constants, special #https://docs.scipy.org/doc/scipy/reference/constants.html
 
@@ -49,120 +53,126 @@ def run(input_signal_data, parameters_input, settings):
     #Load parameters from FB parameters table
     #Parameter name(0), Value(1), Units(2), Notes(3)
     #General parameters (header)
-    detection_model = str(parameters_input[1][1]) # Detection model (PIN, APD)
-    r_qe_active = str(parameters_input[2][1]) #Responsivity model type (QE, direct)
-    r_direct = float(parameters_input[3][1]) #Responsivity (W/A)
-    i_d = float(parameters_input[4][1]) #Dark current (A)
-    rbw = float(parameters_input[5][1]) #Receiver bandwidth (Hz)
-    Q_target = float(parameters_input[6][1])
+    opt_regime = str(parameters_input[1][1]) # Optical regime (Coherent, Incoherent)
+    detection_model = str(parameters_input[2][1]) # Detection model (PIN, APD)
+    r_qe_active = str(parameters_input[3][1]) #Responsivity model type (QE, direct)
+    qe = float(parameters_input[4][1]) #Quantum efficiency
+    r_direct = float(parameters_input[5][1]) #Responsivity (W/A)
+    i_d = float(parameters_input[6][1]) #Dark current (A)
+    rbw = float(parameters_input[7][1]) #Receiver bandwidth (Hz)
+    Q_target = float(parameters_input[8][1])
     #APD parameters (header)
-    gain = float(parameters_input[8][1]) #Average avalanche gain
-    x = float(parameters_input[9][1]) #Noise coefficient
+    gain = float(parameters_input[10][1]) #Average avalanche gain
+    x = float(parameters_input[11][1]) #Noise coefficient
     #Noise parameters (header)
-    th_noise_active = int(parameters_input[11][1])#Thermal noise ON/OFF
-    th_noise_model = str(parameters_input[12][1])
-    th_noise_psd = float(parameters_input[13][1]) #Thermal noise PSD (A^2/Hz)
-    shot_noise_active = int(parameters_input[14][1]) #Shot noise ON/OFF
-    shot_noise_model = str(parameters_input[15][1]) 
-    include_optical_noise = int(parameters_input[16][1]) 
-    optical_noise_model = str(parameters_input[17][1]) 
-    add_noise_to_signal = int(parameters_input[18][1]) 
+    th_noise_active = int(parameters_input[13][1])#Thermal noise ON/OFF
+    th_noise_model = str(parameters_input[14][1])
+    th_noise_psd = float(parameters_input[15][1]) #Thermal noise PSD (A^2/Hz)
+    T = float(parameters_input[16][1]) #Thermal noise temperature (K)
+    r_load = float(parameters_input[17][1]) #Load resistance (ohm)
+    shot_noise_active = int(parameters_input[18][1]) #Shot noise ON/OFF
+    shot_noise_model = str(parameters_input[19][1]) 
+    include_optical_noise = int(parameters_input[20][1]) 
+    optical_noise_model = str(parameters_input[21][1]) 
+    add_noise_to_signal = int(parameters_input[22][1])
 
-    #Additional parameters
-    qe = 1 #Quantum efficiency of detector
-    r_load = 50 #Load resistance (ohm)
-    T = 290 #Temperature (K)
-    signal_type = 'Electrical'
-    
     '''==INPUT SIGNAL======================================================='''
     time_array = input_signal_data[0][3]
-    #optical_in = input_signal_data[0][4]  
-    #wave_key = optical_in[0][0]
-    #wave_freq = optical_in[0][1]
-    #jones_vector = optical_in[0][2]
-    #e_field_input = optical_in[0][3]
-    #noise_field = optical_in[0][4]
-    #psd_array = optical_in[0][5]
-    
-    #================================
-    opt_channels = input_signal_data[0][4]
-    psd_array = opt_channels[0][5]
+    psd_array = input_signal_data[0][4]
+    opt_channels = input_signal_data[0][5] #Optical channel list
     channels = len(opt_channels)
-    print(str(opt_channels))
-    print(channels)
     
-    wave_freq = np.empty(channels) #Track all received angular frequencies
-    opt_field_rcv = np.full([channels, n], 0 + 1j*0, dtype=complex) 
-    noise_field_rcv = np.full([channels, n], 0 + 1j*0, dtype=complex) 
+    # Extract signal and noise field envelopes for each optical channel
+    signal_type = 'Electrical'
+    wave_freq = np.empty(channels)
+    if opt_channels[0][3].ndim == 2:
+        opt_field_rcv = np.full([channels, 2, n], 0 + 1j*0, dtype=complex) 
+    else:
+        opt_field_rcv = np.full([channels, n], 0 + 1j*0, dtype=complex)
+    noise_field_rcv = np.full([channels, n], 0 + 1j*0, dtype=complex)  
     
-    for ch in range(0, channels):
+    for ch in range(0, channels): #Load wavelength channels
         wave_freq[ch] = opt_channels[ch][1]
-        opt_field_rcv[ch, :] = opt_channels[ch][3]
-        noise_field_rcv[ch, :] = opt_channels[ch][4]
-        
-    #=======================================
-    
+        opt_field_rcv[ch] = copy.deepcopy(opt_channels[ch][3])
+        noise_field_rcv[ch] = copy.deepcopy(opt_channels[ch][4])
 
     '''==CALCULATIONS======================================================='''
     q = constants.e # Electron charge
     h = constants.h # Planck constant
+    pi = constants.pi
 
-    #Calculate responsivity
-    r = r_direct
+    #Calculate responsivities (for each channel)-------------------------
+    r = np.empty(channels)
+    for ch in range(0, channels):
+        r[ch] = r_direct
     if r_qe_active == 'QE':
-        r = (qe*q)/(h*(wave_freq[0])) # R = QE*q/h*(wave_freq)  (Ref 1, Eq 2.117)
+        for ch in range(0, channels):
+            r[ch] = (qe*q)/(h*(wave_freq[ch])) # R = QE*q/h*(wave_freq)  (Ref 1, Eq 2.117)
     if detection_model == 'APD':
-        r = r*gain
-        
-    # Calculate total and average received optical signal power
-    #rcv_pwr_total = np.sum(np.abs(e_field_input)*np.abs(e_field_input))
-    #rcv_pwr = np.mean(np.abs(e_field_input)*np.abs(e_field_input))
+        for ch in range(0, channels):
+            r[ch] = r[ch]*gain
+            
+    #Calculate total received fields--------------------------------------------------------------------------------
+    e_field_input_super_x = np.full(n, 0 + 1j*0, dtype=complex) 
+    e_field_input_super_y = np.full(n, 0 + 1j*0, dtype=complex)
+    e_field_noise_super = np.full(n, 0 + 1j*0, dtype=complex)  
+
+    for ch in range(0, channels):
+        if opt_regime == 'Coherent': #Interference effects (signal beating) will be modeled
+            for i in range (0, n):
+                if opt_channels[0][3].ndim == 2:
+                    opt_field_rcv[ch, 0, i] = opt_field_rcv[ch, 0, i]*np.exp(1j*2*pi*wave_freq[ch]*time_array[i])
+                    opt_field_rcv[ch, 1, i] = opt_field_rcv[ch, 1, i]*np.exp(1j*2*pi*wave_freq[ch]*time_array[i])
+                else:
+                    opt_field_rcv[ch, i] = opt_field_rcv[ch, i]*np.exp(1j*2*pi*wave_freq[ch]*time_array[i])
+                noise_field_rcv[ch, i] = noise_field_rcv[ch, i]*np.exp(1j*2*pi*wave_freq[ch]*time_array[i])
+        #Add channel fields together (linear superposition)
+        if opt_channels[0][3].ndim == 2:
+            e_field_input_super_x += opt_field_rcv[ch, 0]
+            e_field_input_super_y += opt_field_rcv[ch, 1]
+        else:
+            e_field_input_super_x += opt_field_rcv[ch]
+        e_field_noise_super += noise_field_rcv[ch]
+        if include_optical_noise == 2 and optical_noise_model == 'Numerical':
+            e_field_input_super_x += e_field_noise_super
     
-    # Calculate received optical noise power
-    noise_field = noise_field_rcv[0, :]
-    
-    opt_noise_pwr = np.sum(np.abs(noise_field)*np.abs(noise_field))
+    # Calculate received optical noise powers
+    # Optical power received: |E(t)|^2
+    if opt_channels[0][3].ndim == 2:
+        rcv_pwr_total = ( np.sum(np.abs(e_field_input_super_x)*np.abs(e_field_input_super_x))
+                                 + np.sum(np.abs(e_field_input_super_y)*np.abs(e_field_input_super_y)) )
+        rcv_pwr = np.mean( (np.abs(e_field_input_super_x)*np.abs(e_field_input_super_x))
+                                       + (np.abs(e_field_input_super_y)*np.abs(e_field_input_super_y)) )
+    else:
+        rcv_pwr_total = np.sum(np.abs(e_field_input_super_x)*np.abs(e_field_input_super_x))
+        rcv_pwr = np.mean(np.abs(e_field_input_super_x)*np.abs(e_field_input_super_x))
+    opt_noise_pwr = np.sum(np.abs(e_field_noise_super)*np.abs(e_field_noise_super))
     opt_noise_psd = opt_noise_pwr/fs
     if opt_noise_psd > 0:
         opt_noise_psd_dbm = 10*np.log10(opt_noise_psd*1e3)
     else:
         opt_noise_psd_dbm = 'NA'
-    i_noise_opt = r*np.real(noise_field*np.conjugate(noise_field))
     
     
-    #==================================================
-    #Calculate superimposed field
-    #Apply angular frequency
-    # Assumption of infinite coherence time & length (for interference linear superposition)
-    # Think aslo about quasi-monochromatic
-    e_field_input_super = np.full(n, 0 + 1j*0, dtype=complex) 
-    
-    #Add exponential for heterodyne case
-    freq_delta = np.abs(wave_freq[0]-wave_freq[1])
-    for i in range (0, n):
-        opt_field_rcv[1, i] = opt_field_rcv[1, i]*np.exp(1j*2*constants.pi*freq_delta*time_array[i])
-        
-    for ch in range(0, channels):
-        e_field_input_super += opt_field_rcv[ch, :]
-    
-    
-    #==================================================
-    
-    #Convert optical power input signal to current signal
-    if include_optical_noise == 2 and optical_noise_model == 'Numerical':
-        #Signal and noise electrical field envelopes are added
-        e_field_input += noise_field
-    #i_signal = r*np.real(e_field_input*np.conjugate(e_field_input)) 
-    i_signal = r*np.real(e_field_input_super*np.conjugate(e_field_input_super)) 
+    #Calculate detector currents ----------------------------------------------------------------
+    r_mean = np.mean(r)
+    # Ref 3 (Eq 3.10): I(t) = [E1(Ch1) + E(Ch2) + ... + E(ChN)] x [(E1(Ch1) + E(Ch2) + ... + E(ChN)]*
+    # i_received = responsivity*I(t)
+    if opt_channels[0][3].ndim == 2:
+        i_signal = r_mean*np.real(e_field_input_super_x*np.conjugate(e_field_input_super_x)) 
+        i_signal += r_mean*np.real(e_field_input_super_y*np.conjugate(e_field_input_super_y)) 
+    else:
+        i_signal = r_mean*np.real(e_field_input_super_x*np.conjugate(e_field_input_super_x))
     i_signal_mean = np.mean(i_signal)
+    i_noise_opt = r_mean*np.real(e_field_noise_super*np.conjugate(e_field_noise_super))
     
     #Calculate average number of received photons (per symbol period)
-    photons_avg = round( ((i_signal_mean*t_step)/(q*r)) * samples_per_sym )
+    photons_avg = np.round( ((i_signal_mean*t_step)/(q*r[0])) * samples_per_sym )
 
     #APD calculations
     enf = np.power(gain, x) #Excess noise factor
     
-    #Calculate thermal noise (Ref 1, Section 4.1.6)
+    #Calculate thermal noise (Ref 1, Section 4.1.6)------------------------------------------------
     i_th = np.zeros(n)
     th_sigma = 0
     th_variance = 0
@@ -175,7 +185,7 @@ def run(input_signal_data, parameters_input, settings):
         th_sigma = np.sqrt(th_variance)
         i_th = np.random.normal(0, th_sigma , n) #Thermal noise current array
     
-    #Calculate shot noise (Ref 1, Section 4.1.4)
+    #Calculate shot noise (Ref 1, Section 4.1.4)-----------------------------------------------------
     i_shot = np.zeros(n)
     shot_sigma = 0
     shot_sigma_avg = 0
@@ -197,8 +207,9 @@ def run(input_signal_data, parameters_input, settings):
         shot_variance_avg = 2*q*i_signal_mean*rbw
         shot_sigma_avg = np.sqrt(shot_variance_avg)
         
-    #Calculate noise variances (analytical) for case of optical pre-amplifier
+    #Calculate noise variances (analytical) for case of optical pre-amplifier---------------------
     #Ref 1, Eq 4.41 and 4.4.2
+    wave_freq_mean = np.mean(wave_freq)
     i_sig_ase = np.zeros(n)
     i_ase_ase = np.zeros(n)
     sig_ase_variance = 0
@@ -209,11 +220,11 @@ def run(input_signal_data, parameters_input, settings):
     if include_optical_noise == 2 and optical_noise_model == 'Analytical':
          # Perform these calculations if using equations to calculate beating 
          # components of optical signal and noise
-        psd_ase = (gain - 1)*nf*constants.h*wave_freq[0]
+        psd_ase = (gain - 1)*nf*constants.h*wave_freq_mean
         #Signal-ASE beating: 4*(R)^2*G*amp_in_pwr*S_ase*rbw  (sig pwr is relative to amplifier in)
-        sig_ase_variance = 4*(r**2)*rcv_pwr*psd_ase*rbw 
+        sig_ase_variance = 4*(r_mean**2)*rcv_pwr*psd_ase*rbw 
         #ASE-ASE beating: 2*(R)^2*(S_ase)^2*(2*opt_bw - rbw)*rbw
-        ase_ase_variance = 2*(r**2)*(psd_ase**2)*((2*bw_opt) - rbw)*rbw
+        ase_ase_variance = 2*(r_mean**2)*(psd_ase**2)*((2*bw_opt) - rbw)*rbw
         sigma_sig_ase  = np.sqrt(sig_ase_variance)
         sigma_ase_ase  = np.sqrt(ase_ase_variance)
         i_sig_ase = np.random.normal(0, sigma_sig_ase , n)
@@ -299,11 +310,11 @@ def run(input_signal_data, parameters_input, settings):
     if detection_model == 'APD':
         M = gain
         F_M = enf
-    pwr_sensitivity = (Q_target/r) * ((th_noise_current_measured/M) + (q*Q_target*F_M*rbw))
+    pwr_sensitivity = (Q_target/r_mean) * ((th_noise_current_measured/M) + (q*Q_target*F_M*rbw))
     pwr_sensitivity_dbm = 10*np.log10(pwr_sensitivity*1e3)
     
     #Pre-amplifier (optical noise) Ref 1 - Eq 4.75
-    pwr_sensitivity_amp = ( nf*constants.h*wave_freq[0]*rbw*((Q_target**2)
+    pwr_sensitivity_amp = ( nf*constants.h*wave_freq_mean*rbw*((Q_target**2)
                                          + Q_target*np.sqrt((bw_opt/rbw)-0.5)) )
     pwr_sensitivity_amp_dbm = 10*np.log10(pwr_sensitivity_amp*1e3)
     
@@ -321,7 +332,7 @@ def run(input_signal_data, parameters_input, settings):
                                photons_avg, '', '', False]
     opt_noise_psd_in_result = ['Optical noise PSD (before detection)',
                                opt_noise_psd_dbm, 'dBm/Hz', '', False]
-    responsivity_result = ['Responsivity', r, 'A/W', ' ', False]
+    responsivity_result = ['Responsivity (mean)', r_mean, 'A/W', ' ', False]
     excess_noise_factor = ['Excess noise factor (APD)', enf, ' ', ' ', False]
     
     # Noise data (thermal)

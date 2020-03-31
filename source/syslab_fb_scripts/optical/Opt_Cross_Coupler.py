@@ -3,6 +3,8 @@ SystemLab-Design Version 19.02
 Functional block script: Optical Cross Coupler (Uni-directional)
 Version 1.0 (19.02 23 Feb 2019)
 
+Version 2.0 (19.02.r2 9-Sep-2019)
+
 Refs:
 1) Cvijetic, M., and , Advanced Optical Communication Systems and Networks, 
 (Artech House Applied Photonics) (Kindle Locations 18576-18577). Artech House.
@@ -38,15 +40,16 @@ def run(input_signal_data, parameters_input, settings):
     '''==INPUT SIGNALS======================================================'''
     signal_type = 'Optical'
     time_array = input_signal_data[0][3]  
-    optical_in_P1 = input_signal_data[0][4]
+    psd_array_P1 = input_signal_data[0][4]  
+    optical_in_P1 = input_signal_data[0][5]
     wave_key = optical_in_P1[0][0]
     wave_freq = optical_in_P1[0][1]
     e_field_input_P1 = optical_in_P1[0][3]
     jones_vector_P1 = optical_in_P1[0][2]
     noise_array_P1 = optical_in_P1[0][4]
-    psd_array_P1 = optical_in_P1[0][5]
     
-    optical_in_P2 = input_signal_data[1][4]
+    psd_array_P2 = input_signal_data[1][4]  
+    optical_in_P2 = input_signal_data[1][5]
     wave_key = optical_in_P2[0][0]
     wave_freq = optical_in_P2[0][1]
     e_field_input_P2 = optical_in_P2[0][3]

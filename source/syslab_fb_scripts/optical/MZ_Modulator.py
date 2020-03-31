@@ -44,7 +44,8 @@ def run(input_signal_data, parameters_input, settings):
     '''==INPUT SIGNALS====================================================================
     '''
     time_array = input_signal_data[0][3] 
-    optical_in = input_signal_data[0][4]
+    psd_array =  input_signal_data[0][4]
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
     e_field_input = optical_in[0][3]
@@ -52,7 +53,6 @@ def run(input_signal_data, parameters_input, settings):
     v2 = input_signal_data[2][5] #Lower arm (input port ID = 4)
     jones_vector = optical_in[0][2]
     noise_array = optical_in[0][4]
-    psd_array = optical_in[0][5]
     
     '''==CALCULATIONS=====================================================================
     '''   
