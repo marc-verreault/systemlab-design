@@ -52,8 +52,7 @@ def run(input_signal_data, parameters_input, settings):
     '''==RESULTS============================================================'''
     signal_gen_results = []
     res_seq = ['Bit sequence length', binary_seq_length, 'bits', ' ']
-    res_test = ['Test result', 3.2345e8, 'a.u.', 'Test 123']
-    signal_gen_results = [res_seq, res_test]
+    signal_gen_results = [res_seq]
 
     return ([[1, signal_type, bit_rate, symbol_rate, order, time_array, seq_binary], 
             [2, signal_type, bit_rate, symbol_rate, order, time_array, seq_binary]],

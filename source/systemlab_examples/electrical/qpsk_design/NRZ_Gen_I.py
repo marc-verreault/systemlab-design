@@ -7,11 +7,8 @@ import numpy as np
 from scipy import special
 import config
 import project_qpsk as project
+
 import importlib
-
-data_panels_path = str('syslab_config_files.config_data_panels')
-config_data_panel = importlib.import_module(data_panels_path)
-
 custom_viewers_path = str('syslab_config_files.systemlab_viewers')
 view = importlib.import_module(custom_viewers_path)
 
@@ -115,7 +112,7 @@ def run(input_signal_data, parameters_input, settings):
     '''==UPDATES FOR DATA BOXES===========================================================
     '''
     #Send update to data box (data_table_2)
-    config_data_panel.data_table_qpsk_2 = []
+    config.data_tables['qpsk_2'] = []
     data_1 = ['Iteration #', iteration, '.0f', ' ']
     data_2 = ['SNR per sym', SNR_per_sym_linear , '0.4E', 'a.u.']
     data_3 = ['SNR per sym (dB)', SNR_per_sym_dB, '0.4E', 'a.u.']                
@@ -125,7 +122,7 @@ def run(input_signal_data, parameters_input, settings):
     data_7 = ['Noise power', noise_pwr, '0.4E', 'W']
     data_8 = ['PSD measured', PSD_measured, '0.4E', 'W/Hz']
     data_list = [data_1, data_2, data_3, data_4, data_5, data_6, data_7, data_8]
-    config_data_panel.data_table_qpsk_2.extend(data_list)
+    config.data_tables['qpsk_2'].extend(data_list)
 
     '''==UPDATES FOR SIM DATA WINDOW======================================================
     '''

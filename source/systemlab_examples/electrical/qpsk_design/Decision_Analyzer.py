@@ -11,9 +11,6 @@ import importlib
 custom_viewers_path = str('syslab_config_files.systemlab_viewers')
 view = importlib.import_module(custom_viewers_path)
 
-data_panels_path = str('syslab_config_files.config_data_panels')
-config_data_panel = importlib.import_module(data_panels_path)
-
 def run(input_signal_data, parameters_input, settings):
     
     '''==PROJECT SETTINGS==================================================='''
@@ -106,8 +103,9 @@ def run(input_signal_data, parameters_input, settings):
     if iteration == 1:
         project.ser = []
         project.ser.append(ser)
-        project.simulation_analyzer = view.IterationsAnalyzer_QPSK(project.snr_per_sym,
-                              project.ser, project.snr_per_sym, project.ser_th)
+        project.simulation_analyzer = view.IterationsAnalyzer_BER_SER(project.snr_per_sym,
+                              project.ser, project.snr_per_sym, project.ser_th,  'SER results', 'Symbol error rate',
+                              'SNR per sym', 'log', 'linear', 'SER (simulation)', 'SER (theoretical)')
         project.simulation_analyzer.show()
     else:
         project.ser.append(ser)
@@ -132,24 +130,23 @@ def run(input_signal_data, parameters_input, settings):
     project.evm_results_db [iteration] = evm_db
     
     if iteration == iterations:
-        project.constellation = view.SignalSpaceAnalyzer(project.decision_samples_dict_i,
-                                                         project.decision_samples_dict_q,
-                                                         project.recovered_sig_dict_i,
-                                                         project.recovered_sig_dict_q,
-                                                         project.evm_results_per,
-                                                         project.evm_results_db)
+        project.constellation = view.SignalSpaceAnalyzer('Electrical QPSK', 
+                                                        project.decision_samples_dict_i,
+                                                        project.decision_samples_dict_q,
+                                                        project.recovered_sig_dict_i,
+                                                        project.recovered_sig_dict_q,
+                                                        project.evm_results_per,
+                                                        project.evm_results_db)
         project.constellation.show()
   
     '''==RESULTS============================================================'''
     decision_results = []
-    
     #Send update to data box (data_table_1)
-    config_data_panel.data_table_qpsk_3 = []
+    config.data_tables['qpsk_3'] = []
     data_1 = ['Iteration #', iteration, '.0f', ' ']
     data_2 = ['Number symbols received', n_sym, '0.2E', 'a.u.']        
     data_3 = ['SER', ser, '0.4E', 'a.u.']
-    config_data_panel.data_table_qpsk_3.append(data_1)
-    config_data_panel.data_table_qpsk_3.append(data_2)
-    config_data_panel.data_table_qpsk_3.append(data_3)
+    data_list = [data_1, data_2, data_3]
+    config.data_tables['qpsk_3'].extend(data_list)
 
     return ([], decision_parameters, decision_results)

@@ -7,10 +7,6 @@ import matplotlib.pyplot as plt
 import config
 import project_qpsk as project
 
-import importlib
-data_panels_path = str('syslab_config_files.config_data_panels')
-config_data_panel = importlib.import_module(data_panels_path)
-
 def run(input_signal_data, parameters_input, settings):
     
     '''==PROJECT SETTINGS==================================================='''
@@ -54,15 +50,13 @@ def run(input_signal_data, parameters_input, settings):
     ber_results = []
     
     #Send update to data box (data_table_1)
-    config_data_panel.data_table_qpsk_1 = []
+    config.data_tables['qpsk_1'] = []
     data_1 = ['Iteration #', iteration, '.0f', ' ']
     data_2 = ['Binary sequence length', binary_seq_length, '0.2E', ' ']
     data_3 = ['Errored bits', err_count, '0.2E', ' ']
     data_4 = ['Bit error rate', ber, '0.2E', ' ']
-    config_data_panel.data_table_qpsk_1.append(data_1)
-    config_data_panel.data_table_qpsk_1.append(data_2)
-    config_data_panel.data_table_qpsk_1.append(data_3)
-    config_data_panel.data_table_qpsk_1.append(data_4)
+    data_list = [data_1, data_2, data_3, data_4]
+    config.data_tables['qpsk_1'].extend(data_list)
     
     # Add BER data to graph
     if iteration == 1:
