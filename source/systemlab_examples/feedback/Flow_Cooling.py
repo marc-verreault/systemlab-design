@@ -11,9 +11,6 @@ import importlib
 custom_viewers_path = str('syslab_config_files.systemlab_viewers')
 view = importlib.import_module(custom_viewers_path)
 
-data_panels_path = str('syslab_config_files.config_data_panels')
-config_data_panel = importlib.import_module(data_panels_path)
-
 def run(input_signal_data, parameters_input, settings):
     
     '''==PROJECT SETTINGS=================================================================
@@ -102,13 +99,13 @@ def run(input_signal_data, parameters_input, settings):
     flow_results = []
     
     #Send update to data box (data_table_cooling_1)
-    config_data_panel.data_table_cooling_1 = []
+    config.data_tables['cooling_1'] = []
     data1 = ['Iteration #', i, 'n','']
     data2 = ['Ambient temp.', amb_temp_in[0], '0.2f','deg C']
     data3 = ['Intial stock temp', stock_temp_in[0], '0.2f','deg C']
     data4 = ['Final stock temp', feed_temp_in[start_index], '0.3f', 'deg C']
     data_list = [data1, data2, data3, data4]
-    config_data_panel.data_table_cooling_1.extend(data_list)
+    config.data_tables['cooling_1'] .extend(data_list)
         
     return ([[2, signal_type, fs, time, fdk.temp_sig_out]],
             flow_parameters, flow_results)
