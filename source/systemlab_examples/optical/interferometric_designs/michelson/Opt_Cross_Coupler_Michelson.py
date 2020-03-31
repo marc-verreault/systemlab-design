@@ -36,16 +36,15 @@ def run(input_signal_data, parameters_input, settings):
     '''==INPUT SIGNALS======================================================'''
     signal_type = 'Optical'
     time_array = input_signal_data[0][3]  
-    optical_in = input_signal_data[0][4]
+    psd_array_P1 = input_signal_data[0][4]
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
-    e_field_input_P1 = optical_in[0][3]
     jones_vector_P1 = optical_in[0][2]
+    e_field_input_P1 = optical_in[0][3]
     noise_array_P1 = optical_in[0][4]
-    psd_array_P1 = optical_in[0][5]
-
-    e_field_input_P2 = np.full(n, 0 + 1j*0, dtype=complex)   
     
+    e_field_input_P2 = np.full(n, 0 + 1j*0, dtype=complex)   
     
     '''==CALCULATIONS=======================================================
     '''
@@ -67,9 +66,9 @@ def run(input_signal_data, parameters_input, settings):
         e_field_input_P4 = np.full(n, 0 + 1j*0, dtype=complex)
     else:
         # Retrieve signal data from In-Feedback ports (ports 3/4)
-        optical_in_P3 = input_signal_data[1][4]
+        optical_in_P3 = input_signal_data[1][5]
         e_field_input_P3 = optical_in_P3[0][3]
-        optical_in_P4 = input_signal_data[2][4]
+        optical_in_P4 = input_signal_data[2][5]
         e_field_input_P4 = optical_in_P4[0][3]
     
     if feedback_mode == 2:
@@ -97,12 +96,12 @@ def run(input_signal_data, parameters_input, settings):
     optical_coupler_results = []
 
     '''==RETURN (Output Signals, Parameters, Results)=========================='''
-    optical_P3 = [[wave_key, wave_freq, jones_vector_P1, e_field_output_P3, noise_array_P1, psd_array_P1]]
-    optical_P4 = [[wave_key, wave_freq, jones_vector_P1, e_field_output_P4, noise_array_P1, psd_array_P1]] 
-    optical_P2 = [[wave_key, wave_freq, jones_vector_P1, fdk.e_field_output_P2, noise_array_P1, psd_array_P1]] 
+    optical_P3 = [[wave_key, wave_freq, jones_vector_P1, e_field_output_P3, noise_array_P1]]
+    optical_P4 = [[wave_key, wave_freq, jones_vector_P1, e_field_output_P4, noise_array_P1]] 
+    optical_P2 = [[wave_key, wave_freq, jones_vector_P1, fdk.e_field_output_P2, noise_array_P1]] 
       
-    return ([[5, signal_type, fs, time_array, optical_P3],
-             [7, signal_type, fs, time_array, optical_P4],
-             [4, signal_type, fs, time_array, optical_P2]], 
+    return ([[5, signal_type, fs, time_array, psd_array_P1, optical_P3],
+             [7, signal_type, fs, time_array, psd_array_P1, optical_P4],
+             [4, signal_type, fs, time_array, psd_array_P1, optical_P2]], 
               optical_coupler_parameters, optical_coupler_results)
 

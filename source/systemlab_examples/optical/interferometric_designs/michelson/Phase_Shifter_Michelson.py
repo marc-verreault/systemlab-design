@@ -36,13 +36,13 @@ def run(input_signal_data, parameters_input, settings):
     '''==INPUT SIGNALS======================================================'''
     signal_type = 'Optical'
     time_array = input_signal_data[0][3]  
-    optical_in = input_signal_data[0][4]
+    psd_array = input_signal_data[0][4]
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
-    e_field_input = optical_in[0][3]
     jones_vector = optical_in[0][2]
+    e_field_input = optical_in[0][3]
     noise_array = optical_in[0][4]
-    psd_array = optical_in[0][5]
     
     '''==CALCULATIONS=======================================================
     '''
@@ -55,7 +55,7 @@ def run(input_signal_data, parameters_input, settings):
         e_field_input_reflector = np.full(n, 0 + 1j*0, dtype=complex)
     else:
         # Retrieve signal data from In-Feedback ports (ports 3/4)
-        optical_reflector_in = input_signal_data[0][4]
+        optical_reflector_in = input_signal_data[0][5]
         e_field_input_reflector = optical_reflector_in[0][3]
     
     if feedback_mode == 2:
@@ -76,10 +76,10 @@ def run(input_signal_data, parameters_input, settings):
     phase_shift_results = []
 
     '''==RETURN (Output Signals, Parameters, Results)=========================='''
-    optical_out_2 = [[wave_key, wave_freq, jones_vector, e_field_output, noise_array, psd_array]]
-    optical_out_4 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_ph_shifter, noise_array, psd_array]] 
+    optical_out_2 = [[wave_key, wave_freq, jones_vector, e_field_output, noise_array]]
+    optical_out_4 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_ph_shifter, noise_array]]
       
-    return ([[2, signal_type, fs, time_array, optical_out_2],
-             [4, signal_type, fs, time_array, optical_out_4]], 
+    return ([[2, signal_type, fs, time_array, psd_array, optical_out_2],
+             [4, signal_type, fs, time_array, psd_array, optical_out_4]], 
               phase_shift_parameters, phase_shift_results)
 
