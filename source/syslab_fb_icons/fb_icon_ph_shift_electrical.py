@@ -19,8 +19,8 @@ def run (x, y):
     font.setItalic(True)
     icon_path_1.addText(x, y, font, phi_sym)
     icon_1.setPath(icon_path_1)
-    icon_1.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.darkRed), 0.25))
-    icon_1.setBrush(QtGui.QBrush(QtCore.Qt.darkRed))
+    icon_1.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.blue), 0.25))
+    icon_1.setBrush(QtGui.QBrush(QtCore.Qt.blue))
        
     icon_paths = [icon_1]
     return icon_paths
