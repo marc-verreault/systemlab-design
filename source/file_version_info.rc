@@ -6,8 +6,8 @@ VSVersionInfo(
   ffi=FixedFileInfo(
     # filevers and prodvers should be always a tuple with four items: (1, 2, 3, 4)
     # Set not needed items to zero 0.
-    filevers=(19, 2, 0, 0),
-    prodvers=(19, 2, 0, 0),
+    filevers=(20, 1, 0, 0),
+    prodvers=(20, 1, 0, 0),
     # Contains a bitmask that specifies the valid bits 'flags'r
     mask=0x3f,
     # Contains a bitmask that specifies the Boolean attributes of the file.
@@ -32,13 +32,13 @@ VSVersionInfo(
         [StringStruct(u'Comments', u'Multi-domain systems simulator'),
         StringStruct(u'CompanyName', u'SystemLab Inc.'),
         StringStruct(u'FileDescription', u'Multi-domain systems simulator'),
-        StringStruct(u'FileVersion', u'19.02'),
+        StringStruct(u'FileVersion', u'20.01'),
         StringStruct(u'InternalName', u'SystemLab-Design.exe'),
-        StringStruct(u'LegalCopyright', u'Copyright © 2019 SystemLab Inc.'),
+        StringStruct(u'LegalCopyright', u'Copyright © 2019-2020 SystemLab Inc.'),
         StringStruct(u'LegalTrademarks', u''),
-        StringStruct(u'OriginalFilename', u'SystemLab-Design-19.02.exe'),
+        StringStruct(u'OriginalFilename', u'SystemLab-Design-20.01.exe'),
         StringStruct(u'ProductName', u'SystemLab-Design'),
-        StringStruct(u'ProductVersion', u'19.02.r1')])
+        StringStruct(u'ProductVersion', u'20.01.r2')])
       ]),
 VarFileInfo([VarStruct(u'Translation', [0, 1200])])
   ]
