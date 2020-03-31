@@ -19,10 +19,13 @@ def run(input_signal_data, parameters_input, settings):
     '''==PARAMETERS========================================================='''
     #Load parameters from FB parameters table
     #Format: Parameter name(0), Value(1), Units(2), Notes(3)
-    pp_amplitude = float(parameters_input[0][1])
-    bias = float(parameters_input[1][1])
+    rf_upper = float(parameters_input[0][1])
+    bias_upper = float(parameters_input[1][1])
+    rf_lower = float(parameters_input[2][1])
+    bias_lower = float(parameters_input[3][1])
     #Additional parameters
     symbol_rate_input = input_signal_data[0][2]
+    print(symbol_rate_input)
     signal_type = 'Electrical'
     carrier_freq = 0
     
@@ -34,20 +37,20 @@ def run(input_signal_data, parameters_input, settings):
     '''
     symbol_seq_length = np.size(sym_i_input)
     samples_per_symbol = int(round(fs/symbol_rate_input))
+    print(samples_per_symbol)
     v1_out = np.zeros(n)
     v2_out = np.zeros(n) 
     noise_v1 = np.zeros(n)
     noise_v2 = np.zeros(n)
     
-    # Driver is set to push-push configuration (bias: -v_pi/2 (-2.5V), v_swing = v_pi ()
     # Ref: Coherent Optical Systems, Lecture Notes, Photonics Communications Research Lab, 
     # National Technical University of Athens (NTUA)
     # http://www.photonics.ntua.gr/OptikaDiktyaEpikoinwnias/Lecture_4_CoherentOptical_DSP.pdf
-    # accessed: 24 Apr 2019
+    # Accessed: 24 Apr 2019
     
     for sym in range(0, symbol_seq_length):
-        signal_v1 = (sym_i_input[sym] * pp_amplitude) + bias
-        signal_v2 = ((sym_i_input[sym] * pp_amplitude) + bias)
+        signal_v1 = (sym_i_input[sym] * rf_upper) + bias_upper
+        signal_v2 = (sym_i_input[sym] * rf_lower) + bias_lower
         start_index = int(sym*int(samples_per_symbol))
         v1_out[start_index : start_index+samples_per_symbol] = signal_v1
         v2_out[start_index : start_index+samples_per_symbol] = signal_v2
@@ -63,5 +66,4 @@ def run(input_signal_data, parameters_input, settings):
     return ([[2, signal_type, carrier_freq, fs, time_array, v1_out, noise_v1],
              [3, signal_type, carrier_freq, fs, time_array, v2_out, noise_v2]], 
             driver_i_parameters, driver_i_results)
-
 

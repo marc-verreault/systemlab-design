@@ -14,7 +14,7 @@ def run(input_signal_data, parameters_input, settings):
     n = int(round(n))
     iteration = settings['current_iteration']
     time_win = settings['time_window']
-    symbol_rate = settings['symbol_rate']
+    #symbol_rate = settings['symbol_rate']
 
     if config.sim_status_win_enabled == True:
         config.sim_status_win.textEdit.append('Running ' + module_name + 
@@ -28,8 +28,7 @@ def run(input_signal_data, parameters_input, settings):
                                           ' - Iteration #: ' + str(iteration))
     
     '''==PROJECT SETTINGS==================================================='''
-    signal_type = 'Digital'
-    order = 1
+
     
     '''==PARAMETERS========================================================='''
     #Load parameters from FB parameters table
@@ -39,6 +38,8 @@ def run(input_signal_data, parameters_input, settings):
     seq_defined = parameters_input[2][1]    
     #Additional parameters
     signal_type = 'Digital'
+    order = 1
+    symbol_rate = bit_rate/order
     
     '''==CALCULATIONS======================================================='''
     binary_seq_length = int(round(bit_rate*time_win))
@@ -59,7 +60,8 @@ def run(input_signal_data, parameters_input, settings):
     res_seq = ['Bit sequence length', binary_seq_length, 'bits', ' ']    
     prbs_results = [res_seq]
     
-    return ([[1, signal_type, bit_rate, symbol_rate, order, time_array, seq_binary]],
+    return ([[1, signal_type, symbol_rate, bit_rate, order, time_array, seq_binary],
+                 [2, signal_type, symbol_rate, bit_rate, order, time_array, seq_binary]],
                 prbs_parameters, prbs_results)
 
 

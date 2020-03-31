@@ -5,13 +5,11 @@ Decision Analyzer module
 import numpy as np
 import config
 import project_optical_qpsk as project
+
 #import systemlab_viewers as view
 import importlib
 custom_viewers_path = str('syslab_config_files.systemlab_viewers')
 view = importlib.import_module(custom_viewers_path)
-
-data_panels_path = str('syslab_config_files.config_data_panels')
-config_data_panel = importlib.import_module(data_panels_path)
 
 def run(input_signal_data, parameters_input, settings):
     
@@ -32,7 +30,10 @@ def run(input_signal_data, parameters_input, settings):
                                           ' - Iteration #: ' + str(iteration))
     
     '''==INPUT PARAMETERS==================================================='''
-#    bit_rate_input = input_signal_data[0][3]
+    enable_diff_decoding = int(parameters_input[0][1])
+    ignore_start_samples = int(parameters_input[1][1])
+    ignore_end_samples = int(parameters_input[2][1])
+    
     carrier = 0
     
     #Parameters table
@@ -40,31 +41,64 @@ def run(input_signal_data, parameters_input, settings):
     
     '''==CALCULATIONS======================================================='''
     #Calculate symbol error rate
-    bit_rate = 10e9
-    symbol_rate = 5e9
+    bit_rate = 100e9
+    symbol_rate = 50e9
    
     samples_per_bit = int(fs/bit_rate)
     samples_per_symbol = int(fs/symbol_rate)
     n_sym = int(round(n/samples_per_symbol))
     
-    sym_i_in = input_signal_data[2][6]
-    sym_q_in = input_signal_data[3][6]   
-#    sym_i_ref = project.symbol_seq_even
-#    sym_q_ref = project.symbol_seq_odd
+    # Symbols based on Decision I/Decision Q
+    sym_i_in = input_signal_data[2][6] #Port ID 3
+    sym_q_in = input_signal_data[3][6] #Port ID 4
+    n_samples = np.size(sym_i_in)
+    iq_decision = np.full(n_samples, 0 + 0j)
+    iq_decision = sym_i_in + 1j*sym_q_in
     
-    int_sig_in_i = input_signal_data[0][5]
-    int_sig_in_q = input_signal_data[1][5]
+    # Access reference (transmitted) symbol values for simulation (held in project)
+    sym_i_ref = project.sym_ref_i
+    sym_q_ref = project.sym_ref_q
+    # Sampled signal and noise arrays
+    sig_in_i = input_signal_data[0][5]
+    sig_in_q = input_signal_data[1][5]
     time = input_signal_data[0][4]
-    int_noise_i = input_signal_data[0][6]
-    int_noise_q = input_signal_data[1][6]
+    noise_i = input_signal_data[0][6]
+    noise_q = input_signal_data[1][6]
+    
+    # Differential decoding of received symbols
+    # http://staff.ustc.edu.cn/~jingxi/Lecture%209_10.pdf
+    hyp = np.abs(iq_decision[0])
+    if enable_diff_decoding == 2:
+        iq_decision_decoded = np.full(n_samples, 0 + 0j)
+        iq_decision_decoded[0] = iq_decision[0]
+        for g in range(1, n_samples):
+            ph_coded = np.angle(iq_decision[g])
+            if ph_coded < 0:
+                 ph_coded += 2*np.pi
+            ph_ref = np.angle(iq_decision[g-1])
+            if ph_ref < 0:
+                 ph_ref += 2*np.pi
+            # Modulo 2 subtraction including rotation of pi/4
+            ph_decoded = np.mod((ph_coded - ph_ref - np.pi/4), 2*np.pi) 
+            x = np.round(hyp*np.cos(ph_decoded))
+            y = np.round(hyp*np.sin(ph_decoded))
+            iq_decision_decoded[g] = x + 1j*y
+            
+        #Set decision array to decoded symbol phases
+        iq_decision = iq_decision_decoded
+    
+    
+    
+    
+    
+    
     
     #Calculate symbol error rate (SER)
-#    err_count = 0
-#    for sym in range (0, n_sym):
-#        if sym_i_in[sym] != sym_i_ref[sym] or sym_q_in[sym] != sym_q_ref[sym]:
-#            err_count += 1
-#
-#    ser = err_count/n_sym
+    err_count = 0
+    for sym in range (0, n_sym):
+        if sym_i_in[sym] != sym_i_ref[sym] or sym_q_in[sym] != sym_q_ref[sym]:
+            err_count += 1
+    ser = err_count/n_sym
     
     #Calculate EVM and prepare constellation
     decision_samples_i = np.array([])
@@ -73,10 +107,10 @@ def run(input_signal_data, parameters_input, settings):
     decision_noise_q = np.array([])
     
     for sym in range(1, n_sym+1):
-        decision_samples_i = np.append(decision_samples_i, int_sig_in_i[int(sym*samples_per_symbol) - 1])
-        decision_samples_q = np.append(decision_samples_q, int_sig_in_q[int(sym*samples_per_symbol) - 1])
-        decision_noise_i = np.append(decision_noise_i, int_noise_i[int(sym*samples_per_symbol) - 1])
-        decision_noise_q = np.append(decision_noise_q, int_noise_q[int(sym*samples_per_symbol) - 1])
+        decision_samples_i = np.append(decision_samples_i, sig_in_i[int(sym*samples_per_symbol) - 1])
+        decision_samples_q = np.append(decision_samples_q, sig_in_q[int(sym*samples_per_symbol) - 1])
+        decision_noise_i = np.append(decision_noise_i, noise_i[int(sym*samples_per_symbol) - 1])
+        decision_noise_q = np.append(decision_noise_q, noise_q[int(sym*samples_per_symbol) - 1])
 
         recovered_symbol_i = decision_samples_i - decision_noise_i
         recovered_symbol_q = decision_samples_q - decision_noise_q
@@ -99,18 +133,18 @@ def run(input_signal_data, parameters_input, settings):
     else:
         evm_db = 0
 
-#    #Prepare data for ser waterfall curve
-#    if iteration == 1:
-#        project.ser = []
-#        project.ser.append(ser)
-#        project.simulation_analyzer = view.IterationsAnalyzer_1(project.snr_per_sym,
-#                              project.ser, project.snr_per_sym, project.ser_th)
-#        project.simulation_analyzer.show()
-#    else:
-#        project.ser.append(ser)
-#        project.simulation_analyzer.figure.tight_layout(pad=0)
-#        project.simulation_analyzer.plot_xy()
-#        project.simulation_analyzer.canvas.draw()
+#Prepare data for ser waterfall curve
+    '''if iteration == 1:
+        project.ser = []
+        project.ser.append(ser)
+        project.simulation_analyzer = view.IterationsAnalyzer_Optical_QPSK(project.photons_per_bit,
+                              project.ser, project.photons_per_bit, project.ser_th)
+        project.simulation_analyzer.show()
+    else:
+        project.ser.append(ser)
+        project.simulation_analyzer.figure.tight_layout(pad=0)
+        project.simulation_analyzer.plot_xy()
+        project.simulation_analyzer.canvas.draw()'''
    
     #Prepare data for constellation view
     if iteration == 1:
@@ -121,39 +155,44 @@ def run(input_signal_data, parameters_input, settings):
         project.evm_results_per = {}
         project.evm_results_db = {}
         
+        # Ignore sampling points (for viewing)
+        #   i_q_sampled = np.delete(i_q_sampled, slice(0, ignore_start_samples))
+        #    last_index = len(i_q_sampled)
+        #  i_q_sampled = np.delete(i_q_sampled, slice(int(last_index - ignore_end_samples), last_index))
+        
+    i_sampled = np.real(i_q_sampled)
+    q_sampled = np.imag(i_q_sampled)
+    
     project.decision_samples_dict_i [iteration] = decision_samples_i
     project.decision_samples_dict_q [iteration] = decision_samples_q
-    project.recovered_sig_dict_i [iteration] = recovered_symbol_i
-    project.recovered_sig_dict_q [iteration] = recovered_symbol_q
-    project.evm_results_per [iteration] = evm_per
-    project.evm_results_db [iteration] = evm_db
+    project.recovered_sig_dict_i [iteration] = decision_samples_i
+    project.recovered_sig_dict_q [iteration] = decision_samples_q
+    project.evm_results_per [iteration] = 0
+    project.evm_results_db [iteration] = 0
     
     if iteration == iterations:
-        project.constellation = view.SignalSpaceAnalyzer(project.decision_samples_dict_i,
-                                                         project.decision_samples_dict_q,
-                                                         project.recovered_sig_dict_i,
-                                                         project.recovered_sig_dict_q,
-                                                         project.evm_results_per,
-                                                         project.evm_results_db)
+        project.constellation = view.SignalSpaceAnalyzer('Optical QPSK Analytical Model', 
+                                                        project.decision_samples_dict_i,
+                                                        project.decision_samples_dict_q,
+                                                        project.recovered_sig_dict_i,
+                                                        project.recovered_sig_dict_q,
+                                                        project.evm_results_per,
+                                                        project.evm_results_db)
         project.constellation.show()
     
   
     '''==RESULTS============================================================'''
     decision_results = []
-#    res_freq = ['Freq', freq, 'Hz', 'Sinusoidal']
-#    res_test = ['Test result', 3.2345e8, 'a.u.', 'Test 123']
-#    
-#    signal_gen_results = [res_freq, res_test]
     
-    #Send update to data box (data_table_1)
-#    config.data_table_3 = []
-#    data_1 = ['Iteration #', iteration, '.0f', ' ']
-#    data_2 = ['Number symbols received', n_sym, '0.2E', 'a.u.']        
-#    data_3 = ['SER', ser, '0.4E', 'a.u.']
-#    config.data_table_3.append(data_1)
-#    config.data_table_3.append(data_2)
-#    config.data_table_3.append(data_3)
+    #Send update to data panel (opt_qpsk_1)
+    config.data_tables['opt_qpsk_1'] = []
+    data_1 = ['Iteration #', iteration, '.0f', ' ']
+    data_2 = ['Number symbols received', n_sym, '.0f', 'a.u.']     
+    data_3 = ['Number of errored symbols', err_count, '.0f', 'a.u.']  
+    data_4 = ['SER', ser, '0.5E', 'a.u.']
+    ser_th = project.ser_th[iteration-1]
+    data_5 = ['SER (Th)', ser_th, '0.5E', 'a.u.']
+    data_list = [data_1, data_2, data_3, data_4, data_5]
+    config.data_tables['opt_qpsk_1'].extend(data_list)
 
-
-    #As this is a single port transmitter, the returned signals will be allocated to the output port (portID 1)
     return ([], decision_parameters, decision_results)

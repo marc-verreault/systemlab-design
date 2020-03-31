@@ -29,13 +29,14 @@ def run(input_signal_data, parameters_input, settings):
     '''==INPUT PARAMETERS=================================================================
     '''
     bit_rate = float(parameters_input[0][1])
-    order = 2
-    symbol_rate = bit_rate/2
+    order = float(parameters_input[1][1])
+    symbol_rate = bit_rate/4
     signal_type = 'Digital'
     
     samples_per_symbol = int(fs/symbol_rate)
     n_sym = int(round(n/samples_per_symbol))
-    binary_seq_length = int(round(bit_rate*time_win))
+    print(n_sym)
+    binary_seq_length = int(round(bit_rate*time_win/2))
     
     #Parameters table
     signal_gen_parameters = []
@@ -50,17 +51,17 @@ def run(input_signal_data, parameters_input, settings):
     
     for i in range(0, n_sym):
         if [i_sym[i], q_sym[i]] == [1, 1]:
-            binary_received[int(2*i)] = 1
-            binary_received[int(2*i+1)] = 1
+            binary_received[int(2*i)] = 0
+            binary_received[int(2*i+1)] = 0
         elif [i_sym[i], q_sym[i]] == [-1, 1]:
-            binary_received[int(2*i)] = 0
-            binary_received[int(2*i+1)] = 1
-        elif [i_sym[i], q_sym[i]] == [1, -1]:
             binary_received[int(2*i)] = 1
             binary_received[int(2*i+1)] = 0
-        else:
+        elif [i_sym[i], q_sym[i]] == [1, -1]:
             binary_received[int(2*i)] = 0
-            binary_received[int(2*i+1)] = 0
+            binary_received[int(2*i+1)] = 1
+        else:
+            binary_received[int(2*i)] = 1
+            binary_received[int(2*i+1)] = 1
   
     '''==RESULTS==========================================================================
     '''
