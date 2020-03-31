@@ -23,8 +23,8 @@ using the PIP utility (**pip install spyder**). Other IDE's can be used however.
 
 INSTRUCTIONS ON HOW TO CREATE A BUILD OF SYSTEMLAB|DESIGN
 
-SystemLab-Design 20.01 is a Python-based application that includes library links to PyQt 5.12.2/Qt 5.12.3, 
-Numpy 1.16.3, Matplotlib 3.0.3, SciPy 1.2.1. It can be distributed to other users by preparing a 
+SystemLab-Design 20.01 is a Python-based application that includes library links to PyQt 5.13.1, 
+Numpy 1.17.2, Matplotlib 3.1.1, SciPy 1.3.1. It can be distributed to other users by preparing a 
 distribution (dist) folder using PyInstaller.
 
 Procedure:
@@ -48,7 +48,7 @@ Note: Please see the following link for further details on how to create a virtu
 - **pip install scipy**
 - **pip install pyinstaller**
     
-4) Open the file *systemlab_build_V19.spec* and update the *pathex* (within **Analysis**) to the root 
+4) Open the file *systemlab_build_V2001.spec* and update the *pathex* (within **Analysis**) to the root 
 path for the virtual environment folder. 
 
 5) For the **exe = EXE (pyz, ...)** command line make sure to update the file path for *icon* and *version* to
@@ -56,7 +56,7 @@ include the full path (C:\\..) for the virtual environment folder.
 
 6) Deactivate the virtual environment by running the command **deactivate**.
 
-7) Run PyInstaller using the following command in the terminal: **pyinstaller C:\path_to_virtual_folder\systemlab_build_V19.spec**
+7) Run PyInstaller using the following command in the terminal: **pyinstaller C:\path_to_virtual_folder\systemlab_build_V2001.spec**
 
 8) The build process may issue several warnings but should complete successfully. The distribution folder (*dist*) 
 should appear within the virtual directory.
