@@ -46,13 +46,14 @@ def run(input_signal_data, parameters_input, settings):
     '''==INPUT SIGNALS======================================================'''
     signal_type = 'Optical'
     time_array = input_signal_data[0][3]  
-    optical_in = input_signal_data[0][4]
+    psd_array = input_signal_data[0][4]  
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
     e_field_input_port_1 = optical_in[0][3]
     jones_vector = optical_in[0][2]
     noise_array = optical_in[0][4]
-    psd_array = optical_in[0][5]
+
     
     '''==CALCULATIONS=======================================================
     '''
@@ -60,9 +61,7 @@ def run(input_signal_data, parameters_input, settings):
     time_delay = 2*index*d/constants.c
     if time_delay > 0:
         fsr = 1/time_delay
-    
     t = 1-r
-
     e_field_trans = np.full(n, 0 + 1j*0, dtype=complex) 
     e_field_ref = np.full(n, 0 + 1j*0, dtype=complex)
     
@@ -84,9 +83,9 @@ def run(input_signal_data, parameters_input, settings):
 
     '''==RESULTS============================================================'''
     cavity_results = []
-    ph_shift_result = ['Phase shift (one-way)', ph_shift, 'rad', ' ']
-    time_delay_result = ['Optical time delay (one-way)', time_delay, 's', ' ']
-    fsr_result = ['Free spectral range', fsr*1e-12, 'THz', ' ']
+    ph_shift_result = ['Phase shift (one-way)', ph_shift, 'rad', ' ', False]
+    time_delay_result = ['Optical time delay (one-way)', time_delay, 's', ' ', False]
+    fsr_result = ['Free spectral range', fsr*1e-12, 'THz', ' ', False]
     cavity_results = [ph_shift_result, time_delay_result, fsr_result]
     
     trans_power = np.average(np.abs(e_field_trans)*np.abs(e_field_trans))/n
@@ -104,10 +103,10 @@ def run(input_signal_data, parameters_input, settings):
         project.simulation_analyzer.canvas.draw()
 
     '''==RETURN (Output Signals, Parameters, Results)=========================='''
-    optical_out_2 = [[wave_key, wave_freq, jones_vector, e_field_trans, noise_array, psd_array]]
-    optical_out_3 = [[wave_key, wave_freq, jones_vector, e_field_ref, noise_array, psd_array]] 
+    optical_out_2 = [[wave_key, wave_freq, jones_vector, e_field_trans, noise_array]]
+    optical_out_3 = [[wave_key, wave_freq, jones_vector, e_field_ref, noise_array]] 
       
-    return ([[2, signal_type, fs, time_array, optical_out_2],
-             [3, signal_type, fs, time_array, optical_out_3]], 
+    return ([[2, signal_type, fs, time_array, psd_array, optical_out_2],
+             [3, signal_type, fs, time_array, psd_array, optical_out_3]], 
               cavity_parameters, cavity_results)
 

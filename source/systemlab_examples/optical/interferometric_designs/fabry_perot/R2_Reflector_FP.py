@@ -32,13 +32,13 @@ def run(input_signal_data, parameters_input, settings):
     r = float(parameters_input[0][1]) #Reflectivity Mirror 2
     signal_type = 'Optical'
     time_array = input_signal_data[0][3]  
-    optical_in = input_signal_data[0][4]
+    psd_array = input_signal_data[0][4]
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
     e_field_input = optical_in[0][3]
     jones_vector = optical_in[0][2]
     noise_array = optical_in[0][4]
-    psd_array = optical_in[0][5]
     
     '''==CALCULATIONS=======================================================
     '''
@@ -61,9 +61,8 @@ def run(input_signal_data, parameters_input, settings):
     
     '''==RESULTS============================================================'''
     reflector_results = []
-    
-    optical_out = [[wave_key, wave_freq, jones_vector, e_field_reflected, e_noise_reflected, psd_array]]
+    optical_out = [[wave_key, wave_freq, jones_vector, e_field_reflected, e_noise_reflected]]
       
-    return ([[3, signal_type, fs, time_array, optical_out]], 
+    return ([[3, signal_type, fs, time_array, psd_array, optical_out]], 
               reflector_parameters, reflector_results)
 

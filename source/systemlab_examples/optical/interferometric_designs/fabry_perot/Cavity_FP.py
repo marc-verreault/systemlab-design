@@ -40,13 +40,13 @@ def run(input_signal_data, parameters_input, settings):
     '''==INPUT SIGNALS======================================================'''
     signal_type = 'Optical'
     time_array = input_signal_data[0][3]  
-    optical_in = input_signal_data[0][4]
+    psd_array = input_signal_data[0][4]
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
     e_field_input_port_1 = optical_in[0][3]
     jones_vector = optical_in[0][2]
     noise_array = optical_in[0][4]
-    psd_array = optical_in[0][5]
     
     '''==CALCULATIONS======================================================='''
     
@@ -60,9 +60,9 @@ def run(input_signal_data, parameters_input, settings):
         e_field_input_port_3 = np.full(n, 0 + 1j*0, dtype=complex)
     else:
         # Retrieve signal data from In-Feedback port (3)
-        optical_in = input_signal_data[0][4]
+        optical_in = input_signal_data[0][5]
         e_field_input_port_1 = optical_in[0][3]
-        optical_r2_in = input_signal_data[1][4]
+        optical_r2_in = input_signal_data[1][5]
         e_field_input_port_3 = optical_r2_in[0][3]
     
     if feedback_mode == 2:
@@ -84,15 +84,15 @@ def run(input_signal_data, parameters_input, settings):
   
     '''==RESULTS============================================================'''
     cavity_results = []
-    ph_shift_result = ['Phase shift (one-way)', ph_shift, 'rad', ' ']
-    time_delay_result = ['Optical time delay (one-way)', time_delay, 's', ' ']
+    ph_shift_result = ['Phase shift (one-way)', ph_shift, 'rad', ' ', False]
+    time_delay_result = ['Optical time delay (one-way)', time_delay, 's', ' ', False]
     cavity_results = [ph_shift_result, time_delay_result]
 
     '''==RETURN (Output Signals, Parameters, Results)=========================='''
-    optical_out_2 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_cavity_port_2, noise_array, psd_array]]
-    optical_out_4 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_cavity_port_4, noise_array, psd_array]] 
+    optical_out_2 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_cavity_port_2, noise_array]]
+    optical_out_4 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_cavity_port_4, noise_array]] 
       
-    return ([[2, signal_type, fs, time_array, optical_out_2],
-             [4, signal_type, fs, time_array, optical_out_4]], 
+    return ([[2, signal_type, fs, time_array, psd_array, optical_out_2],
+             [4, signal_type, fs, time_array, psd_array, optical_out_4]], 
               cavity_parameters, cavity_results)
 

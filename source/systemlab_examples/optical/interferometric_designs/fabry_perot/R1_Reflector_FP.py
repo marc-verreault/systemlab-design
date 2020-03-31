@@ -34,13 +34,14 @@ def run(input_signal_data, parameters_input, settings):
     signal_type = 'Optical'
     time_array = input_signal_data[0][3] 
     #Input signal Port ID 1 - from 2x2 coupler
-    optical_in = input_signal_data[0][4]
+    psd_array = input_signal_data[0][4]
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
     e_field_input_port_1 = optical_in[0][3]
     jones_vector = optical_in[0][2]
     noise_array = optical_in[0][4]
-    psd_array = optical_in[0][5]
+
     #Input signal Port ID 3 - from mirror r2
 #    e_field_input_port_3 = np.full(n, 0 + 1j*0, dtype=complex)
 
@@ -58,7 +59,7 @@ def run(input_signal_data, parameters_input, settings):
         e_field_input_port_3 = np.full(n, 0 + 1j*0, dtype=complex)
     else:
         # Retrieve signal data from port ID 3
-        optical_input_port_3 = input_signal_data[1][4]
+        optical_input_port_3 = input_signal_data[1][5]
         e_field_input_port_3 = optical_input_port_3[0][3]
     
     if feedback_mode == 2:
@@ -89,10 +90,10 @@ def run(input_signal_data, parameters_input, settings):
     '''==RESULTS============================================================'''
     reflector1_results = []
     
-    optical_port_2 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_port_2, noise_array, psd_array]]
-    optical_port_4 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_port_4, noise_array, psd_array]] 
+    optical_port_2 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_port_2, noise_array]]
+    optical_port_4 = [[wave_key, wave_freq, jones_vector, fdk.e_field_output_port_4, noise_array]] 
       
-    return ([[2, signal_type, fs, time_array, optical_port_2],
-             [4, signal_type, fs, time_array, optical_port_4]], 
+    return ([[2, signal_type, fs, time_array, psd_array, optical_port_2],
+             [4, signal_type, fs, time_array, psd_array, optical_port_4]], 
               reflector1_parameters, reflector1_results)
 

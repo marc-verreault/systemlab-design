@@ -46,7 +46,7 @@ def run(input_signal_data, parameters_input, settings):
 
     #Additional parameters
     signal_type = 'Optical'
-    wave_key_1 = 'Ch1'
+    wave_key_1 = 1
     
     '''==CALCULATIONS======================================================='''        
     freq_start = 100e12 #Hz
@@ -129,8 +129,8 @@ def run(input_signal_data, parameters_input, settings):
     else:
         project.wave.append(wave_freq)
     
-    optical_1 = [wave_key_1, wave_freq, jones_vector, e_field_env, noise_array, psd_array]
+    optical_1 = [wave_key_1, wave_freq, jones_vector, e_field_env, noise_array]
     optical = [optical_1]
     
-    return ([[1, signal_type, fs, time_array, optical]], laser_parameters, laser_results)
+    return ([[1, signal_type, fs, time_array, psd_array, optical]], laser_parameters, laser_results)
 
