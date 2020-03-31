@@ -56,14 +56,14 @@ def run(input_signal_data, parameters_input, settings):
     
     '''==INPUT SIGNALS======================================================'''
     signal_type = 'Optical'
-    time_array = input_signal_data[0][3]  
-    optical_in = input_signal_data[0][4]
+    time_array = input_signal_data[0][3] 
+    psd_array = input_signal_data[0][4] 
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
     e_field_input = optical_in[0][3]
     jones_vector = optical_in[0][2]
     noise_array = optical_in[0][4]
-    psd_array = optical_in[0][5]
     
     '''==CALCULATIONS======================================================='''       
     # Gain calculation
@@ -159,13 +159,13 @@ def run(input_signal_data, parameters_input, settings):
      
     if iteration == iterations: 
         # Last iteration - instantiate the xy graph and display results
-        project.amplifier_analyzer = view.IterationsAnalyzer_Opt_Amp(project.amp_input_power_dbm, 
+        project.amplifier_analyzer = view.IterationsAnalyzer_Optical_Amp(project.amp_input_power_dbm, 
                                                                                                     project.gain_db)
         project.amplifier_analyzer.show()
 
     '''==RETURN (Output Signals, Parameters, Results)=========================='''      
-    optical_P2 = [[wave_key, wave_freq, jones_vector, e_field_output, noise_array, psd_out]]
+    optical_P2 = [[wave_key, wave_freq, jones_vector, e_field_output, noise_array]]
       
-    return ([[2, signal_type, fs, time_array, optical_P2]], 
+    return ([[2, signal_type, fs, time_array, psd_out, optical_P2]], 
               opt_amp_parameters, opt_amp_results)
 

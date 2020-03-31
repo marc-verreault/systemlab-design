@@ -167,8 +167,8 @@ def run(input_signal_data, parameters_input, settings):
     project.amp_input_power_dbm.append(laser_pwr_dbm) 
     
     '''==RETURN (Output Signals, Parameters, Results)=================================='''
-    optical_1 = [wave_key, wave_freq, jones_vector, e_field_env, noise_array, psd_array]
+    optical_1 = [wave_key, wave_freq, jones_vector, e_field_env, noise_array]
     optical = [optical_1]
     
-    return ([[1, signal_type, fs, time_array, optical]], laser_parameters, laser_results)
+    return ([[1, signal_type, fs, time_array, psd_array, optical]], laser_parameters, laser_results)
 
