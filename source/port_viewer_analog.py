@@ -1,24 +1,24 @@
 '''
-    SystemLab-Design Version 19.02
+    SystemLab-Design Version 20.01
     Primary author: Marc Verreault
     E-mail: marc.verreault@systemlabdesign.com
-    Copyright © 2019 SystemLab Inc. All rights reserved.
+    Copyright © 2019-2020 SystemLab Inc. All rights reserved.
     
     NOTICE================================================================================   
-    This file is part of SystemLab-Design 19.02.
+    This file is part of SystemLab-Design 20.01.
     
-    SystemLab-Design 19.02 is free software: you can redistribute it 
+    SystemLab-Design 20.01 is free software: you can redistribute it 
     and/or modify it under the terms of the GNU General Public License
     as published by the Free Software Foundation, either version 3 of the License,
     or (at your option) any later version.
 
-    SystemLab-Design 19.02 is distributed in the hope that it will be useful,
+    SystemLab-Design 20.01 is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with SystemLab-Design 19.02.  If not, see <https://www.gnu.org/licenses/>.    
+    along with SystemLab-Design 20.01.  If not, see <https://www.gnu.org/licenses/>.    
     ======================================================================================
     
     SystemLab module for port analyzer(GUI) classes: SignalAnalogGeneric
@@ -26,6 +26,18 @@
 import os
 import config
 gui_ui_path = config.root_path
+
+import sys # MV 20.01.r2 24-Feb-20
+import traceback # MV 20.01.r2 24-Feb-20
+
+# MV 20.01.r1 29-Oct-2019
+# Import config_port_viewers as cfg_analog
+import importlib
+cfg_port_viewers_path = str('syslab_config_files.config_port_viewers')
+cfg_analog = importlib.import_module(cfg_port_viewers_path)
+cfg_special_path = str('syslab_config_files.config_special')
+cfg_special = importlib.import_module(cfg_special_path)
+
 import numpy as np
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
@@ -54,7 +66,9 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         self.setupUi(self)
         syslab_icon = set_icon_window()
         self.setWindowIcon(syslab_icon)       
-        self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)      
+        self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)
+        self.setStyleSheet(cfg_special.global_font) # MV 20.01.r1 17-Dec-2019
+        #self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowStaysOnTopHint)
         self.fb_name = fb_name
         self.port_name = port_name
         self.direction = direction
@@ -163,7 +177,8 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         self.Y_pos = self.Y[range(int(self.n/2))]
 
         '''Setup background colors for frames=========================================='''
-        color = QtGui.QColor(252,252,252)
+        # MV 20.01.r1 29-Oct-19 Added link to port viewers config file (frame bkrd clr)
+        color = QtGui.QColor(cfg_analog.analog_frame_background_color) 
         p = self.graphFrame.palette() 
         p.setColor(self.graphFrame.backgroundRole(), color)
         self.graphFrame.setPalette(p)       
@@ -236,40 +251,85 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         self.canvas.draw()
         
     def plot_time_domain(self, axis_adjust):
-        ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
-        ax.clear()
+        try:
+            self.figure.clf() #MV Rel 20.01.r1 15-Sep-19
+            # MV 20.01.r1 Added new feature to select plot area background color
+            back_color = cfg_analog.analog_time_plot_back_color
+            ax = self.figure.add_subplot(111, facecolor = back_color)
+            ax.clear()
+                
+            if axis_adjust == 1:
+                if self.minTime.text() and self.maxTime.text():
+                    start_time = self.minTime.text()
+                    end_time = self.maxTime.text()
+                    ax.set_xlim(float(start_time), float(end_time))
+                if self.startYAxisTime.text() and self.endYAxisTime.text():
+                    start_val = self.startYAxisTime.text()
+                    end_val = self.endYAxisTime.text()
+                    ax.set_ylim(float(start_val), float(end_val))
+                
+            ax.set_ylabel('Magnitude')
+            ax.plot(self.time, self.signal, 
+                    color = cfg_analog.analog_time_signal_color, 
+                    linestyle = cfg_analog.analog_time_signal_linestyle,
+                    linewidth = cfg_analog.analog_time_signal_linewidth, 
+                    marker = cfg_analog.analog_time_signal_marker, 
+                    markersize = cfg_analog.analog_time_signal_markersize,
+                    label = 'Analog signal')
             
-        if axis_adjust == 1:
-            if self.minTime.text() and self.maxTime.text():
-                start_time = self.minTime.text()
-                end_time = self.maxTime.text()
-                ax.set_xlim(float(start_time), float(end_time))
-            if self.startYAxisTime.text() and self.endYAxisTime.text():
-                start_val = self.startYAxisTime.text()
-                end_val = self.endYAxisTime.text()
-                ax.set_ylim(float(start_val), float(end_val))
+            # MV 19.02.r2 15-Sep-19 (Cleaned up title - was getting too long & causing 
+            # issues with tight layout)
+            ax.set_title('Time data - ' + str(self.sig_type) 
+                         + ' (' + str(self.fb_name) + ', Port:' 
+                         + str(self.port_name)
+                         + ', Dir:' + str(self.direction) + ')')
             
-        ax.set_ylabel('Magnitude')
-        ax.plot(self.time, self.signal, color = 'b', linestyle = '--',
-                        linewidth= 0.8, marker = 'o', markersize = 3,
-                        label='Analog signal')
-
-        ax.set_title('Sampled data - ' + str(self.sig_type) + ' (' + self.fb_name + ': ' +
-                                self.port_name + ' ' + str(self.direction) + ')')
-        ax.set_xlabel('Time (sec)')
-        ax.set_aspect('auto')
-        ax.format_coord = self.format_coord_time
+            ax.set_xlabel('Time (sec)')
+            ax.set_aspect('auto')
+            ax.format_coord = self.format_coord_time
             
-        if self.checkBoxMajorGrid.checkState() == 2:
-            ax.grid(True)  
-            ax.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
-       
-        if self.checkBoxMinorGrid.checkState() == 2:
-            ax.minorticks_on()
-            ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
+            # MV 20.01.r1 3-Nov-2019 Color settings for x and y-axis labels and tick marks    
+            ax.xaxis.label.set_color(cfg_analog.analog_time_labels_axes_color)
+            ax.yaxis.label.set_color(cfg_analog.analog_time_labels_axes_color)
+            ax.tick_params(axis='both', which ='both', 
+                                colors=cfg_analog.analog_time_labels_axes_color)
             
-        if self.checkBoxLegend.isChecked() == 1:
-            ax.legend()
+            # MV 20.01.r1 Linked plot settings to config file variables (to provide ability to
+            # manage look and feel of plots)    
+            if self.checkBoxMajorGrid.checkState() == 2:
+                ax.grid(True)  
+                ax.grid(which='major', 
+                        linestyle = cfg_analog.analog_time_maj_grid_linestyle, 
+                        linewidth = cfg_analog.analog_time_maj_grid_linewidth, 
+                        color = cfg_analog.analog_time_maj_grid_color)
+           
+            if self.checkBoxMinorGrid.checkState() == 2:
+                ax.minorticks_on()
+                ax.grid(which='minor', 
+                        linestyle = cfg_analog.analog_time_min_grid_linestyle, 
+                        linewidth = cfg_analog.analog_time_min_grid_linewidth, 
+                        color = cfg_analog.analog_time_min_grid_color)
+                
+            if self.checkBoxLegend.isChecked() == 1:
+                ax.legend()
+        
+        except: # MV 20.01.r2 24-Feb-20
+            e0 = sys.exc_info() [0]
+            e1 = sys.exc_info() [1]
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            syslab_icon = set_icon_window()
+            msg.setWindowIcon(syslab_icon)
+            msg.setText('Error plotting time domain signals')
+            msg.setInformativeText(str(e0) + ' ' + str(e1))
+            msg.setInformativeText(str(traceback.format_exc()))
+            msg.setStyleSheet("QLabel{height: 150px; min-height: 150px; max-height: 150px;}")
+            msg.setStyleSheet("QLabel{width: 500px; min-width: 400px; max-width: 500px;}")
+            msg.setWindowTitle("Plotting error (Analog port viewer)")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)	
+            rtnval = msg.exec()
+            if rtnval == QtWidgets.QMessageBox.Ok:
+                msg.close()
     
     def format_coord_time(self, x, y):
         return 'Time=%0.7E, Mag=%0.7E' % (x, y)
@@ -294,45 +354,94 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         self.canvas_freq.draw()
         
     def plot_freq_domain(self, axis_adjust):
-        self.af = self.figure_freq.add_subplot(111, facecolor = '#f9f9f9')
-        self.af.clear()  
-        
-        if axis_adjust == 1:
-            if self.minFreq.text() and self.maxFreq.text():
-                start_freq = self.minFreq.text()
-                end_freq = self.maxFreq.text()
-                self.af.set_xlim(float(start_freq), float(end_freq))
-            if self.startYAxisFreq.text() and self.endYAxisFreq.text():
-                start_val = self.startYAxisFreq.text()
-                end_val = self.endYAxisFreq.text()
-                self.af.set_ylim(float(start_val), float(end_val))    
+        try:
+            self.figure_freq.clf() #MV Rel 20.01.r1 15-Sep-19
+            # MV 20.01.r1 Added new feature to select plot area background color
+            back_color = cfg_analog.analog_freq_plot_back_color
+            self.af = self.figure_freq.add_subplot(111, facecolor = back_color)
+            self.af.clear()  
             
-        self.af.set_ylabel('Abs')
-        
-        if self.checkBoxDisplayNegFreq.checkState() == 2:
-            self.af.plot(self.freq, np.abs(self.Y)/self.n, color = 'b', linestyle = '--', 
-                     linewidth= 0.8, marker = 'o', markersize = 3,
-                     label='Analog signal') 
-        else:
-            self.af.plot(self.frq_pos, np.abs(self.Y_pos)/self.n, color = 'b', linestyle = '--', 
-                     linewidth= 0.8, marker = 'o', markersize = 3,
-                     label='Analog signal')             
+            if axis_adjust == 1:
+                if self.minFreq.text() and self.maxFreq.text():
+                    start_freq = self.minFreq.text()
+                    end_freq = self.maxFreq.text()
+                    self.af.set_xlim(float(start_freq), float(end_freq))
+                if self.startYAxisFreq.text() and self.endYAxisFreq.text():
+                    start_val = self.startYAxisFreq.text()
+                    end_val = self.endYAxisFreq.text()
+                    self.af.set_ylim(float(start_val), float(end_val))    
+                
+            self.af.set_ylabel('Abs')
+                    
+            # MV 20.01.r1 Linked plot settings to config file variables (to provide ability to
+            # manage look and feel of plots) 
+            if self.checkBoxDisplayNegFreq.checkState() == 2:
+                self.af.plot(self.freq, np.abs(self.Y)/self.n, 
+                             color = cfg_analog.analog_freq_signal_color, 
+                             linestyle = cfg_analog.analog_freq_signal_linestyle, 
+                             linewidth= cfg_analog.analog_freq_signal_linewidth, 
+                             marker = cfg_analog.analog_freq_signal_marker,
+                             markersize = cfg_analog.analog_req_signal_markersize,
+                             label = 'Analog signal') 
+            else:
+                self.af.plot(self.frq_pos, np.abs(self.Y_pos)/self.n, 
+                             color = cfg_analog.analog_freq_signal_color, 
+                             linestyle = cfg_analog.analog_freq_signal_linestyle, 
+                             linewidth = cfg_analog.analog_freq_signal_linewidth, 
+                             marker = cfg_analog.analog_freq_signal_marker,
+                             markersize = cfg_analog.analog_freq_signal_markersize,
+                             label = 'Analog signal')             
             
-        self.af.set_title('Freq data - analog ('+ self.fb_name + ': ' +
-                            self.port_name + ' ' + str(self.direction) + ')')
-        self.af.set_xlabel('Freq (Hz)')
-        self.af.set_aspect('auto')
-        self.af.format_coord = self.format_coord_freq
-        
-        if self.checkBoxMajorGridFreq.checkState() == 2:
-            self.af.grid(True)  
-            self.af.grid(which='major', linestyle=':', linewidth=0.5,
-                         color='gray')
-       
-        if self.checkBoxMinorGridFreq.checkState() == 2:
-            self.af.minorticks_on()
-            self.af.grid(which='minor', linestyle=':', linewidth=0.5,
-                         color='lightGray')
+            
+            # MV 19.02.r2 15-Sep-19 (Cleaned up title - was getting too long & causing 
+            # issues with tight layout)
+            self.af.set_title('Freq data - ' + str(self.sig_type) + ' (' + str(self.fb_name) + ', Port:' 
+                                                 + str(self.port_name) +
+                                              ', Dir:' + str(self.direction) + ')')
+    
+            self.af.set_xlabel('Freq (Hz)')
+            self.af.set_aspect('auto')
+            self.af.format_coord = self.format_coord_freq
+            
+            # MV 20.01.r1 3-Nov-2019 Color settings for x and y-axis labels and tick marks    
+            self.af.xaxis.label.set_color(cfg_analog.analog_freq_labels_axes_color)
+            self.af.yaxis.label.set_color(cfg_analog.analog_freq_labels_axes_color)
+            self.af.tick_params(axis='both', which ='both', 
+                                colors=cfg_analog.analog_freq_labels_axes_color)
+            
+            # MV 20.01.r1 Linked plot settings to config file variables (to provide ability to
+            # manage look and feel of plots)  
+            if self.checkBoxMajorGridFreq.checkState() == 2:
+                self.af.grid(True)  
+                self.af.grid(which='major', 
+                             linestyle = cfg_analog.analog_freq_maj_grid_linestyle, 
+                             linewidth = cfg_analog.analog_freq_maj_grid_linewidth, 
+                             color = cfg_analog.analog_freq_maj_grid_color)
+           
+            if self.checkBoxMinorGridFreq.checkState() == 2:
+                self.af.minorticks_on()
+                self.af.grid(which='minor', 
+                             linestyle = cfg_analog.analog_freq_min_grid_linestyle, 
+                             linewidth = cfg_analog.analog_freq_min_grid_linewidth, 
+                             color = cfg_analog.analog_freq_min_grid_color)
+                
+        except: # MV 20.01.r2 24-Feb-20
+            e0 = sys.exc_info() [0]
+            e1 = sys.exc_info() [1]
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            syslab_icon = set_icon_window()
+            msg.setWindowIcon(syslab_icon)
+            msg.setText('Error plotting frequency domain signals')
+            msg.setInformativeText(str(e0) + ' ' + str(e1))
+            msg.setInformativeText(str(traceback.format_exc()))
+            msg.setStyleSheet("QLabel{height: 150px; min-height: 150px; max-height: 150px;}")
+            msg.setStyleSheet("QLabel{width: 500px; min-width: 400px; max-width: 500px;}")
+            msg.setWindowTitle("Plotting error (Analog port viewer)")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)	
+            rtnval = msg.exec()
+            if rtnval == QtWidgets.QMessageBox.Ok:
+                msg.close()
         
     def format_coord_freq(self, x, y):
         return 'Freq=%0.7E, Abs=%0.7E' % (x, y)
@@ -347,66 +456,85 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         self.update_signal_data()
         
     def update_signal_data(self):
-        self.tabData.setCurrentWidget(self.tab_signal)
-        self.signalBrowser.clear()
-        #Signal data (base data)
-        self.font_bold = QtGui.QFont("Arial", 8, QtGui.QFont.Bold)
-        self.font_normal = QtGui.QFont("Arial", 8, QtGui.QFont.Normal)
-        self.signalBrowser.setCurrentFont(self.font_bold)
-        self.signalBrowser.setTextColor(QtGui.QColor('#007900'))
-        i = int(self.spinBoxSignalData.value())
-        #Signal data type, iteration # and fb/port information
-        self.signalBrowser.append('Signal analog - Iteration '+str(i))
-        self.signalBrowser.append(self.fb_name + ', Port:' +
-                            self.port_name + ', Dir:' + str(self.direction))
-        self.signalBrowser.setCurrentFont(self.font_normal)
-        self.signalBrowser.setTextColor(QtGui.QColor('#000000'))
-        self.signalBrowser.append('Sample rate (Hz): ' + str(self.fs))
-        #Signal data units
-        self.signalBrowser.setCurrentFont(self.font_bold)
-        if self.radioButtonSigTime.isChecked() == 1:
-            self.signalBrowser.append('Signal analog (index, time(s), magnitude):')
-        else:
-            self.signalBrowser.append('Signal analog (index, freq(Hz), abs):') 
-        self.signalBrowser.setCurrentFont(self.font_normal)
-        
-        #Adjust for new index range (if required)
-        self.start_index = int(self.minIndexSignalData.text())
-        self.end_index = int(self.maxIndexSignalData.text()) + 1     
-        index_array = np.arange(self.start_index, self.end_index, 1)
-        array_size = self.end_index - self.start_index
-        self.adjustedSamplesSignalData.setText(str(format(array_size, 'n')))
-        
-        #Prepare structured array for string output to text browser
-        data = np.zeros(array_size, dtype={'names':('index', 'x', 'y'),
-                                               'formats':('i4', 'f8', 'f8')})
-      
-        data['index'] = index_array
-        
-        if self.radioButtonSigTime.isChecked() == 1:
-            data['x'] = self.time[self.start_index-1:self.end_index-1]
-            data['y'] = self.signal[self.start_index-1:self.end_index-1]
-        else:
-            data['x'] = self.frq[self.start_index-1:self.end_index-1]
-            data['y'] = self.Y[self.start_index-1:self.end_index-1]
-        
-        self.linewidth = 60
-        if self.linewidthSignalData.text():
-            self.linewidth = int(self.linewidthSignalData.text())
-
-        self.signalBrowser.append(np.array2string(data, max_line_width = self.linewidth))
-        
-        cursor = self.signalBrowser.textCursor()
-        cursor.setPosition(0);
-        self.signalBrowser.setTextCursor(cursor);
+        try:
+            self.tabData.setCurrentWidget(self.tab_signal)
+            self.signalBrowser.clear()
+            #Signal data (base data)
+            self.font_bold = QtGui.QFont("Arial", 8, QtGui.QFont.Bold)
+            self.font_normal = QtGui.QFont("Arial", 8, QtGui.QFont.Normal)
+            self.signalBrowser.setCurrentFont(self.font_bold)
+            self.signalBrowser.setTextColor(QtGui.QColor('#007900'))
+            i = int(self.spinBoxSignalData.value())
+            #Signal data type, iteration # and fb/port information
+            self.signalBrowser.append('Signal analog - Iteration '+str(i))
+            self.signalBrowser.append(self.fb_name + ', Port:' +
+                                self.port_name + ', Dir:' + str(self.direction))
+            self.signalBrowser.setCurrentFont(self.font_normal)
+            self.signalBrowser.setTextColor(QtGui.QColor('#000000'))
+            self.signalBrowser.append('Sample rate (Hz): ' + str(self.fs))
+            #Signal data units
+            self.signalBrowser.setCurrentFont(self.font_bold)
+            if self.radioButtonSigTime.isChecked() == 1:
+                self.signalBrowser.append('Signal analog (index, time(s), magnitude):')
+            else:
+                self.signalBrowser.append('Signal analog (index, freq(Hz), abs):') 
+            self.signalBrowser.setCurrentFont(self.font_normal)
+            
+            #Adjust for new index range (if required)
+            self.start_index = int(self.minIndexSignalData.text())
+            self.end_index = int(self.maxIndexSignalData.text()) + 1     
+            index_array = np.arange(self.start_index, self.end_index, 1)
+            array_size = self.end_index - self.start_index
+            self.adjustedSamplesSignalData.setText(str(format(array_size, 'n')))
+            
+            #Prepare structured array for string output to text browser
+            data = np.zeros(array_size, dtype={'names':('index', 'x', 'y'),
+                                                   'formats':('i4', 'f8', 'f8')})
+          
+            data['index'] = index_array
+            
+            if self.radioButtonSigTime.isChecked() == 1:
+                data['x'] = self.time[self.start_index-1:self.end_index-1]
+                data['y'] = self.signal[self.start_index-1:self.end_index-1]
+            else:
+                data['x'] = self.frq[self.start_index-1:self.end_index-1]
+                data['y'] = self.Y[self.start_index-1:self.end_index-1]
+            
+            self.linewidth = 60
+            if self.linewidthSignalData.text():
+                self.linewidth = int(self.linewidthSignalData.text())
+    
+            self.signalBrowser.append(np.array2string(data, max_line_width = self.linewidth))
+            
+            cursor = self.signalBrowser.textCursor()
+            cursor.setPosition(0)
+            self.signalBrowser.setTextCursor(cursor)
+            
+        except: # MV 20.01.r2 24-Feb-20
+            e0 = sys.exc_info() [0]
+            e1 = sys.exc_info() [1]
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            syslab_icon = set_icon_window()
+            msg.setWindowIcon(syslab_icon)
+            msg.setText('Error displaying signal data')
+            msg.setInformativeText(str(e0) + ' ' + str(e1))
+            msg.setInformativeText(str(traceback.format_exc()))
+            msg.setStyleSheet("QLabel{height: 150px; min-height: 150px; max-height: 150px;}")
+            msg.setStyleSheet("QLabel{width: 500px; min-width: 400px; max-width: 500px;}")
+            msg.setWindowTitle("Plotting error (Analog  port viewer)")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)	
+            rtnval = msg.exec()
+            if rtnval == QtWidgets.QMessageBox.Ok:
+                msg.close()
 
     '''Signal metrics tab=============================================================='''
     def iteration_change_signal_metrics(self):
         new_iteration = int(self.spinBoxSignalMetrics.value())
         signal_updated = self.signals[new_iteration]
-        self.carrier = signal_updated[2]
+        #self.carrier = signal_updated[2]
         self.signal = signal_updated[5] #Electrical amplitudes
-        self.noise = signal_updated[6]
+        #self.noise = signal_updated[6]
         self.update_signal_metrics() 
     
     def update_signal_metrics(self):
@@ -428,7 +556,7 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
 #                     lambda sel: sel.annotation.get_bbox_patch().set(fc="lightyellow", alpha=1))
     
 def set_icon_window():
-    icon_path = os.path.join(config.root_path, 'syslab_gui_icons', 'SysLab_64.png')
+    icon_path = os.path.join(config.root_path, 'syslab_gui_icons', 'SysLabIcon128.png')
     icon_path = os.path.normpath(icon_path)
     icon = QtGui.QIcon()
     icon.addFile(icon_path)

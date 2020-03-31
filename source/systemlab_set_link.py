@@ -1,22 +1,22 @@
 '''
-    SystemLab-Design Version 19.02
-    Copyright © 2019 SystemLab Inc. All rights reserved.
+    SystemLab-Design Version 20.01
+    Copyright © 2019-2020 SystemLab Inc. All rights reserved.
     
     NOTICE================================================================================   
-    This file is part of SystemLab-Design 19.02.
+    This file is part of SystemLab-Design 20.01.
     
-    SystemLab-Design 19.02 is free software: you can redistribute it 
+    SystemLab-Design 20.01 is free software: you can redistribute it 
     and/or modify it under the terms of the GNU General Public License
     as published by the Free Software Foundation, either version 3 of the License,
     or (at your option) any later version.
 
-    SystemLab-Design 19.02 is distributed in the hope that it will be useful,
+    SystemLab-Design 20.01 is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with SystemLab-Design 19.02.  If not, see <https://www.gnu.org/licenses/>.    
+    along with SystemLab-Design 20.01.  If not, see <https://www.gnu.org/licenses/>.    
     ======================================================================================
 
     ABOUT THIS MODULE
@@ -31,6 +31,10 @@
     Source - Creating a diagram editor,
     http://www.windel.nl/?section=pyqtdiagrameditor (downloaded 11 Feb 2018)
 '''
+ # MV 20.01.r1 3-Nov-2019
+import importlib
+config_special_path = str('syslab_config_files.config_special')
+config_sp = importlib.import_module(config_special_path)
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
@@ -67,22 +71,20 @@ class SetLink():
             self.toPort.posCallbacks.append(self.setEndPos)
             
     def setEndPos(self, endpos):
-        self.pos2 = endpos
-        
+        self.pos2 = endpos        
         if self.lineMode == True:
             self.set_linear_link()
         else:
-            self.set_polygon_link()
+            self.set_polygon_link() 
 
     def setBeginPos(self, pos1):
-        self.pos1 = pos1
-        
+        self.pos1 = pos1        
         if self.lineMode == True:
             self.set_linear_link()
         else:
             self.set_polygon_link()
             
-    def set_linear_link(self):   
+    def set_linear_link(self): #Create straight line connection 
         path = QtGui.QPainterPath()
         pos_start = QtCore.QPointF(self.pos1)        
         pos_end = QtCore.QPointF(self.pos2)
@@ -90,12 +92,12 @@ class SetLink():
         path.addPolygon(QtGui.QPolygonF([pos_start, pos_end]))
         self.portlink.setPath(path)
 
-    def set_polygon_link(self):
+    def set_polygon_link(self): #Create elbow connection
         path = QtGui.QPainterPath()
         pos_start = QtCore.QPointF(self.pos1)   
         delta_x = abs(self.pos2.x() - self.pos1.x())
         delta_y = abs(self.pos2.y() - self.pos1.y())
-        self.pos_int_count = 2
+        pos_int_count = 2
         
         #Upper left quadrant to lower right quadrant===========================
         if self.pos2.x() > self.pos1.x() and self.pos2.y() > self.pos1.y():
@@ -118,11 +120,11 @@ class SetLink():
                                                    self.pos1.y() + delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x + self.port_offset,
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 1  
+                        pos_int_count = 1  
                 
             elif self.fromPort.port_cardinal == 'North':
                 if self.endConnectState == True:
@@ -140,7 +142,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y + self.port_offset)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() + delta_x,
                                                    self.pos1.y() + delta_y + self.port_offset)                       
-                        self.pos_int_count = 4
+                        pos_int_count = 4
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() - self.port_offset)
@@ -148,7 +150,7 @@ class SetLink():
                                                    self.pos1.y() - self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x + self.port_offset,
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(),
                                                    self.pos1.y() - self.port_offset)
@@ -156,14 +158,14 @@ class SetLink():
                                                    self.pos1.y() - self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x/2,
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                         
             elif self.fromPort.port_cardinal == 'East':
                 if self.endConnectState == True:
                     if self.toPort.port_cardinal == 'North':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + delta_x, 
                                                    self.pos1.y())
-                        self.pos_int_count = 1
+                        pos_int_count = 1
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + self.port_offset,
                                                    self.pos1.y())
@@ -173,7 +175,7 @@ class SetLink():
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x,
                                                    self.pos1.y() + delta_y
                                                    + self.port_offset)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + delta_x
                                                    + self.port_offset, self.pos1.y())
@@ -194,7 +196,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x,
                                                    self.pos1.y() + delta_y/2)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - self.port_offset,
                                                    self.pos1.y())
@@ -202,7 +204,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y + self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x,
                                                    self.pos1.y() + delta_y + self.port_offset)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - self.port_offset,
                                                    self.pos1.y())
@@ -212,7 +214,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y/2)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() + delta_x + self.port_offset,
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 4
+                        pos_int_count = 4
                     else:                    
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - self.port_offset,
                                                    self.pos1.y())
@@ -232,12 +234,15 @@ class SetLink():
                                                    self.pos1.y() - delta_y - self.port_offset)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() + delta_x,
                                                    self.pos1.y() - delta_y - self.port_offset)
-                        self.pos_int_count = 4
+                        pos_int_count = 4
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + self.port_offset)
                         pos_int_2 = QtCore.QPointF(self.pos1.x() + delta_x, 
-                                                   self.pos1.y() - self.port_offset)
+                                                   self.pos1.y() + self.port_offset) 
+                        # MV 20.01.r1 - Bug fix
+                        # Changed sign in "self.pos1.y() - self.port_offset"
+                        # to "self.pos1.y() + self.port_offset"
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + self.port_offset)
@@ -245,7 +250,7 @@ class SetLink():
                                                    self.pos1.y() + self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x + self.port_offset,
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + self.port_offset)
@@ -253,7 +258,7 @@ class SetLink():
                                                    self.pos1.y() + self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x/2, 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                 
             elif self.fromPort.port_cardinal == 'North':
                 if self.endConnectState == True:
@@ -274,11 +279,11 @@ class SetLink():
                                                    self.pos1.y() - delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x + self.port_offset,
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 1  
+                        pos_int_count = 1  
                         
             elif self.fromPort.port_cardinal == 'East':
                 if self.endConnectState == True:
@@ -289,11 +294,11 @@ class SetLink():
                                                    self.pos1.y() - delta_y - self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x, 
                                                    self.pos1.y() - delta_y - self.port_offset)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + delta_x, 
                                                    self.pos1.y())
-                        self.pos_int_count = 1
+                        pos_int_count = 1
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + delta_x + self.port_offset, 
                                                    self.pos1.y())
@@ -314,7 +319,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y - self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x, 
                                                    self.pos1.y() - delta_y - self.port_offset)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - self.port_offset, 
                                                    self.pos1.y())
@@ -322,7 +327,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() + delta_x, 
                                                    self.pos1.y() - delta_y/2)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - self.port_offset, 
                                                    self.pos1.y())
@@ -332,7 +337,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y/2)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() + delta_x + self.port_offset, 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 4
+                        pos_int_count = 4
                     else:                    
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - self.port_offset, 
                                                    self.pos1.y())
@@ -352,7 +357,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y - self.port_offset)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y() - delta_y - self.port_offset)
-                        self.pos_int_count = 4
+                        pos_int_count = 4
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + self.port_offset)
@@ -365,7 +370,7 @@ class SetLink():
                                                    self.pos1.y() + self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x/2, 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + self.port_offset)
@@ -373,7 +378,7 @@ class SetLink():
                                                    self.pos1.y() + self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x - self.port_offset, 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                 
             elif self.fromPort.port_cardinal == 'North':
                 if self.endConnectState == True:
@@ -390,7 +395,7 @@ class SetLink():
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 1
+                        pos_int_count = 1
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() - delta_y/2)
@@ -398,7 +403,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x - self.port_offset, 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 3 
+                        pos_int_count = 3 
                         
             elif self.fromPort.port_cardinal == 'East':
                 if self.endConnectState == True:
@@ -409,7 +414,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y - self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y() - delta_y - self.port_offset)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + self.port_offset, 
                                                    self.pos1.y())
@@ -417,7 +422,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y() - delta_y/2)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + self.port_offset, 
                                                    self.pos1.y())
@@ -432,7 +437,7 @@ class SetLink():
                                                    self.pos1.y() - delta_y/2)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() - delta_x - 2*self.port_offset, 
                                                    self.pos1.y() - delta_y)
-                        self.pos_int_count = 4         
+                        pos_int_count = 4         
                         
             else:
                 if self.endConnectState == True:
@@ -444,7 +449,7 @@ class SetLink():
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y())
-                        self.pos_int_count = 1
+                        pos_int_count = 1
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - delta_x/2, 
                                                    self.pos1.y())
@@ -473,7 +478,7 @@ class SetLink():
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 1 
+                        pos_int_count = 1 
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() + delta_y/2)
@@ -481,7 +486,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x - self.port_offset, 
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                 
             elif self.fromPort.port_cardinal == 'North':
                 if self.endConnectState == True:
@@ -499,7 +504,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y + self.port_offset)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y() + delta_y + self.port_offset)
-                        self.pos_int_count = 4
+                        pos_int_count = 4
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() - self.port_offset)
@@ -507,7 +512,7 @@ class SetLink():
                                                    self.pos1.y() - self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x/2, 
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     else:
                         pos_int_1 = QtCore.QPointF(self.pos1.x(), 
                                                    self.pos1.y() - self.port_offset)
@@ -515,7 +520,7 @@ class SetLink():
                                                    self.pos1.y() - self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x - self.port_offset, 
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                 
             elif self.fromPort.port_cardinal == 'East':
                 if self.endConnectState == True:
@@ -526,7 +531,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y/2)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y() + delta_y/2)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + self.port_offset, 
                                                    self.pos1.y())
@@ -534,7 +539,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y + self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y() + delta_y + self.port_offset)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() + self.port_offset, 
                                                    self.pos1.y())
@@ -549,14 +554,14 @@ class SetLink():
                                                    self.pos1.y() + delta_y/2)
                         pos_int_4 = QtCore.QPointF(self.pos1.x() - delta_x - 2*self.port_offset, 
                                                    self.pos1.y() + delta_y)
-                        self.pos_int_count = 4    
+                        pos_int_count = 4    
                         
             else:
                 if self.endConnectState == True:
                     if self.toPort.port_cardinal == 'North':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y())
-                        self.pos_int_count = 1
+                        pos_int_count = 1
                     elif self.toPort.port_cardinal == 'South':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - delta_x/2, 
                                                    self.pos1.y())
@@ -564,7 +569,7 @@ class SetLink():
                                                    self.pos1.y() + delta_y + self.port_offset)
                         pos_int_3 = QtCore.QPointF(self.pos1.x() - delta_x, 
                                                    self.pos1.y() + delta_y + self.port_offset)
-                        self.pos_int_count = 3
+                        pos_int_count = 3
                     elif self.toPort.port_cardinal == 'East':
                         pos_int_1 = QtCore.QPointF(self.pos1.x() - delta_x/2, 
                                                    self.pos1.y())
@@ -580,12 +585,12 @@ class SetLink():
         
         #Setup polygon path....
         if self.endConnectState == True:
-            if self.pos_int_count == 1:
+            if pos_int_count == 1:
                 path.addPolygon(QtGui.QPolygonF([pos_start, pos_int_1, pos_end]))
-            elif self.pos_int_count == 2:
+            elif pos_int_count == 2:
                 path.addPolygon(QtGui.QPolygonF([pos_start, pos_int_1, 
                                                  pos_int_2, pos_end]))
-            elif self.pos_int_count == 3:                   
+            elif pos_int_count == 3:                   
                 path.addPolygon(QtGui.QPolygonF([pos_start, pos_int_1, pos_int_2,
                                                  pos_int_3, pos_end]))
             else:
@@ -608,43 +613,107 @@ class LinksDesignPathView(QtWidgets.QGraphicsPathItem):
         super(LinksDesignPathView, self).__init__(parent)
         self.setFlag(self.ItemIsSelectable, False)
         self.setCursor(QtGui.QCursor(QtCore.Qt.SizeAllCursor)) 
-        
+        #---------------------------------------------------------------------------------
+        # MV 20.01.r1 1-Nov-19. Added conditions for hover enter/leave events
+        # to ensure that delete signal link menu (on right click) loses focus after 
+        # leaving the hover region for a connection path
+        # Code changes based on posts from stackoverflow
+        # https://stackoverflow.com/questions/50347595/mouse-hover-over-a-pyside-
+        # qgraphicspathitem (accessed 1-Nov-2019) 
+        # Thanks to users 'chengxudude' and 'eyllanesc' for sharing sample code
+        self.setAcceptHoverEvents(True)
+        self.hover = False
+        #---------------------------------------------------------------------------------
         self.signal = signal   
         self.fromPort_portID = fromPort_portID
         self.fromPort_fb_key = fromPort_fb_key
         self.toPort_portID = toPort_portID
         self.toPort_fb_key = toPort_fb_key
         self.link_key = link_key
-        self.project_scene = project_scene
-        
+        self.project_scene = project_scene       
         self.setZValue(-50)
     
-    def set_line_color(self, signal, link_complete): 
+    def set_line_color(self, signal, link_complete, highlight): # MV 20.01.r1 1-Nov-19
         if link_complete == False:
             pen_style = QtCore.Qt.DashLine
         else:
             pen_style = QtCore.Qt.SolidLine
             
-        if signal == 'Electrical':
-            self.setPen(QtGui.QPen(QtCore.Qt.blue,1, pen_style))
-        elif signal == 'Optical':
-            self.setPen(QtGui.QPen(QtCore.Qt.darkRed, 1, pen_style))
-        elif signal == 'Digital':
-            self.setPen(QtGui.QPen(QtCore.Qt.darkGray, 1, pen_style))
-        elif signal == 'Analog (1)':
-            self.setPen(QtGui.QPen(QtCore.Qt.darkGreen, 1, pen_style))
-        elif signal == 'Analog (2)':
-            self.setPen(QtGui.QPen(QtCore.Qt.magenta, 1, pen_style))  
-        elif signal == 'Analog (3)':
-            self.setPen(QtGui.QPen(QtCore.Qt.cyan, 1, pen_style))
+        # MV 20.01.r1 1-Nov-19: New condition for highlighting connections when hover
+        # event is activated
+        if highlight == True and config_sp.highlight_links_on_hover == True:
+            pen_width = 3
+            alpha = 100
         else:
-            self.setPen(QtGui.QPen(QtCore.Qt.lightGray, 1, pen_style))
+            pen_width = 1
+            alpha = 255
+        
+        # MV 20.01.r1 Colors now linked to global config file
+        if signal == 'Electrical':
+            r = config_sp.c_elec[0]
+            g = config_sp.c_elec[1]
+            b = config_sp.c_elec[2]
+        elif signal == 'Optical':
+            r = config_sp.c_opt[0]
+            g = config_sp.c_opt[1]
+            b = config_sp.c_opt[2]
+        elif signal == 'Digital':
+            r = config_sp.c_digital[0]
+            g = config_sp.c_digital[1]
+            b = config_sp.c_digital[2] 
+        elif signal == 'Analog (1)':
+            r = config_sp.c_analog_1[0]
+            g = config_sp.c_analog_1[1]
+            b = config_sp.c_analog_1[2]                         
+        elif signal == 'Analog (2)':
+            r = config_sp.c_analog_2[0]
+            g = config_sp.c_analog_2[1]
+            b = config_sp.c_analog_2[2] 
+        elif signal == 'Analog (3)':
+            r = config_sp.c_analog_3[0]
+            g = config_sp.c_analog_3[1]
+            b = config_sp.c_analog_3[2] 
+        else:
+            r = config_sp.c_disabled[0]
+            g = config_sp.c_disabled[1]
+            b = config_sp.c_disabled[2]            
+        self.setPen(QtGui.QPen(QtGui.QColor(r, g, b, alpha), pen_width, pen_style))  
             
+    # MV 20.01.r1 1-Nov-19. Added conditions for hover enter/leave events ()--------------
+    def hoverEnterEvent(self, event): #QMouseEvent
+        self.hover = True      
+        self.set_line_color(self.signal, True, True)
+        self.update() 
+    
+    def hoverLeaveEvent(self, event):
+        self.hover = False
+        self.set_line_color(self.signal, True, False)
+        self.update()
+       
+    def boundingRect(self):
+        return self.shape().boundingRect()
+    
+    def shape(self): # Use path stroker to create hover/selection that surrounds path
+                     # with specified width (much easier to select and delete)
+        s = QtGui.QPainterPathStroker()    
+        s.setWidth(10)
+        s.setCapStyle(QtCore.Qt.FlatCap)
+        path = s.createStroke(self.path())
+        return path  
+    #-------------------------------------------------------------------------------------
+    
     def mousePressEvent(self, mouseEvent):
-        if (mouseEvent.button() != QtCore.Qt.LeftButton):            
+        if (mouseEvent.button() != QtCore.Qt.LeftButton) and self.hover == True:
+            # MV 20.01.r1 Added condition for hover event. Ensures that delete
+            # signal link does not appear outside of hover region for a link (removes
+            # focus)
+            self.setFlag(self.ItemIsSelectable, True)
+            self.setSelected(True)
+            #------------------------------------------------------------------------
             menu = QtWidgets.QMenu()
-            delete_link_action = menu.addAction("Delete signal link")
+            delete_link_action = menu.addAction("Delete signal link?")
             action = menu.exec_(mouseEvent.screenPos())
+            #self.update()
             if action == delete_link_action:
                 items = self.project_scene.items(mouseEvent.scenePos())
                 for line_item in items:
@@ -671,14 +740,15 @@ class LinksDesignPathView(QtWidgets.QGraphicsPathItem):
                         #Delete associated signal link class                      
                         del self.project_scene.signal_links_list[link_key]
                         break
+        else:
+            self.setFlag(self.ItemIsSelectable, False)
 
 '''=======================================================================================
 Portions of code design (primarily the class connection, diagramEditor, diagramScene)
 is based on 'DiagramEditorProto.py' (author first name: Windel)
 Copy of original code is shown at end of module (for reference) - many thanks to the author!
 [Source code] - Creating a diagram editor,
-http://www.windel.nl/?section=pyqtdiagrameditor (downloaded 11 Feb 2018) 
-'''
+http://www.windel.nl/?section=pyqtdiagrameditor (downloaded 11 Feb 2018)'''
 
 #!/usr/bin/python
 
@@ -767,7 +837,6 @@ http://www.windel.nl/?section=pyqtdiagrameditor (downloaded 11 Feb 2018)
 #   def itemChange(self, change, value):
 #      if change == self.ItemPositionChange:
 #         x, y = value.x(), value.y()
-#         # TODO: make this a signal?
 #         # This cannot be a signal because this is not a QObject
 #         for cb in self.posChangeCallbacks:
 #            res = cb(x, y)
@@ -976,5 +1045,61 @@ http://www.windel.nl/?section=pyqtdiagrameditor (downloaded 11 Feb 2018)
 #   editor.show()
 #   editor.resize(700, 800)
 #   app.exec_()
+
+''' Copy of code sample from https://stackoverflow.com/questions/50347595/mouse-hover-
+over-a-pyside-qgraphicspathitem (accessed 1-Nov-2019). User: eyllanesc'''
+#class Edge(QtGui.QGraphicsPathItem):
+#    def __init__(self):
+#        QtGui.QGraphicsPathItem.__init__(self)
+#        self.setAcceptsHoverEvents(True)
+#        path = QtGui.QPainterPath()
+#        x1 = -100
+#        x2 = 120
+#        y1 = -100
+#        y2 = 120
+#        dx = abs(x1-x2)/2
+#        dy = abs(y1-y2)/2
+#        a = QtCore.QPointF(x1, y1)
+#        b = a + QtCore.QPointF(dx, 0)
+#        d = QtCore.QPointF(x2, y2)
+#        c = d - QtCore.QPointF(dy, 0)
+#        path.moveTo(a)
+#        path.cubicTo(b,c,d)
+#        self.setPath(path)
+#
+#        self.hover = False
+#
+#    def hoverEnterEvent(self, event):
+#        QtGui.QGraphicsPathItem.hoverEnterEvent(self, event)
+#        self.hover = True
+#        self.update()
+#
+#    def hoverMoveEvent(self, event):
+#        # print(event)
+#        QtGui.QGraphicsPathItem.hoverMoveEvent(self, event)
+#
+#    def hoverLeaveEvent(self, event):
+#        QtGui.QGraphicsPathItem.hoverLeaveEvent(self, event)
+#        self.hover = False
+#        self.update()        
+#
+#    def boundingRect(self):
+#        return self.shape().boundingRect()
+#
+#    def paint(self, painter, option, widget):
+#        c = QtCore.Qt.red if self.hover else QtCore.Qt.black
+#        painter.setPen(QtGui.QPen(c, 10, QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+#        painter.drawPath(self.path())
+#
+#        painter.setPen(QtGui.QPen(QtCore.Qt.blue, 1, QtCore.Qt.SolidLine, QtCore.Qt.RoundCap, QtCore.Qt.RoundJoin))
+#        painter.drawPath(self.shape())
+#
+#    def shape(self):
+#        s = QtGui.QPainterPathStroker()    
+#        s.setWidth(30)
+#        s.setCapStyle(QtCore.Qt.RoundCap)
+#        path = s.createStroke(self.path())
+#        return path
+
 
 

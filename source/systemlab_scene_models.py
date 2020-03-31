@@ -1,24 +1,24 @@
 '''
-    SystemLab-Design Version 19.02
+    SystemLab-Design Version 20.01
     Primary author: Marc Verreault
     E-mail: marc.verreault@systemlabdesign.com
-    Copyright © 2019 SystemLab Inc. All rights reserved.
-    
+    Copyright © 2019-2020 SystemLab Inc. All rights reserved.
+        
     NOTICE================================================================================    
-    This file is part of SystemLab-Design 19.02.
-    
-    SystemLab-Design 19.02 is free software: you can redistribute it 
+    This file is part of SystemLab-Design 20.01.
+        
+    SystemLab-Design 20.01 is free software: you can redistribute it 
     and/or modify it under the terms of the GNU General Public License
     as published by the Free Software Foundation, either version 3 of the License,
     or (at your option) any later version.
-
-    SystemLab-Design 19.02 is distributed in the hope that it will be useful,
+    
+    SystemLab-Design 20.01 is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
+    
     You should have received a copy of the GNU General Public License
-    along with SystemLab-Design 19.02.  If not, see <https://www.gnu.org/licenses/>.   
+    along with SystemLab-Design 20.01.  If not, see <https://www.gnu.org/licenses/>.   
     ======================================================================================
 
     ABOUT THIS MODULE
@@ -45,7 +45,7 @@ class FunctionalBlock():
         self.display_name = display_name
         self.display_port_name = display_port_name
         
-        self.__FunctionalBlock_version = 1 #Version number of FunctionalBlock class
+        #self.__FunctionalBlock_version = 1 #Version number of FunctionalBlock class
         
         # Data attributes linked to FunctionalBlockDesignView
         # (geometry/position/colors)
@@ -92,21 +92,21 @@ class FunctionalBlock():
         self.__version = 1
         
     def __repr__(self): #Return string method for print(object)
-        return ( 'FB key:' + str(self.fb_key) + '; FB name:' + self.fb_name + '; '
-                + str(self.display_name) + '; ' + str(self.display_port_name) + '; ' 
-                + str(self.fb_geometry) + '; ' + str(self.fb_dim) + '; ' 
-                + str(self.fb_position) + '; ' + str(self.fb_script_module) + '; ' 
-                + str(self.fb_icon_display) + '; ' + str(self.fb_icon) + '; ' 
-                + str(self.fb_icon_x) + '; ' + str(self.fb_icon_y) + '; ' 
-                + str(self.fb_parameters_list) + '; ' + str(self.fb_results_list) + '; '
-                + str(self.text_size) + '; ' + str(self.text_length) + '; ' 
-                + str(self.text_color) + '; ' + str(self.text_bold) + '; ' 
-                + str(self.text_italic) + '; ' + str(self.fb_color) + '; ' 
-                + str(self.fb_color_2) + '; ' + str(self.fb_gradient) + '; ' 
-                + str(self.fb_border_color) + '; ' + str(self.fb_border_style) + '; ' 
-                + str(self.text_pos_x) + '; ' + str(self.text_pos_y) + '; ' 
-                + str(self.port_label_size) + '; ' + str(self.port_label_bold) + '; ' 
-                + str(self.port_label_italic) + '; ' + str(self.port_label_color) )
+        return ( 'FB key:' + str(self.fb_key) + '; FB name:' + self.fb_name + '; ' + 
+                str(self.display_name) + '; ' + str(self.display_port_name) + '; ' + 
+                str(self.fb_geometry) + '; ' + str(self.fb_dim) + '; ' + 
+                str(self.fb_position) + '; ' + str(self.fb_script_module) + '; ' + 
+                str(self.fb_icon_display) + '; ' + str(self.fb_icon) + '; ' + 
+                str(self.fb_icon_x) + '; ' + str(self.fb_icon_y) + '; ' + 
+                str(self.fb_parameters_list) + '; ' + str(self.fb_results_list) + '; ' + 
+                str(self.text_size) + '; ' + str(self.text_length) + '; ' + 
+                str(self.text_color) + '; ' + str(self.text_bold) + '; ' + 
+                str(self.text_italic) + '; ' + str(self.fb_color) + '; ' + 
+                str(self.fb_color_2) + '; ' + str(self.fb_gradient) + '; ' + 
+                str(self.fb_border_color) + '; ' + str(self.fb_border_style) + '; ' + 
+                str(self.text_pos_x) + '; ' + str(self.text_pos_y) + '; ' + 
+                str(self.port_label_size) + '; ' + str(self.port_label_bold) + '; ' + 
+                str(self.port_label_italic) + '; ' + str(self.port_label_color) )
             
     #METHODS            
     def check_version(self):
@@ -138,12 +138,12 @@ class SignalLink():
         self.__version = 1
         
     def __repr__(self): #Return string method for print(object)
-        return ( 'Signal key:' + str(self.link_key) + '; Signal name:' 
-                + str(self.link_name) + '; ' + str(self.fb_start_key) + '; ' 
-                + str(self.fb_start) + '; ' + str(self.start_port) + '; ' 
-                + str(self.start_port_ID) + '; ' + str(self.fb_end_key) + '; ' 
-                + str(self.fb_end) + '; ' + str(self.end_port) + '; ' 
-                + str(self.end_port_ID) + '; ' + str(self.line_mode) )
+        return ( 'Signal key:' + str(self.link_key) + '; Signal name:' + 
+                str(self.link_name) + '; ' + str(self.fb_start_key) + '; ' + 
+                str(self.fb_start) + '; ' + str(self.start_port) + '; ' + 
+                str(self.start_port_ID) + '; ' + str(self.fb_end_key) + '; ' + 
+                str(self.fb_end) + '; ' + str(self.end_port) + '; ' + 
+                str(self.end_port_ID) + '; ' + str(self.line_mode) )
         
     def check_version(self):
         #No check needed for version 1
@@ -188,16 +188,16 @@ class DescriptionBox():
         self.__version = 1
 
     def __repr__(self): #Return string method for print(object)
-        return ( 'DescBox key:' + str(self.desc_key) + '; ' + str(self.desc_text) + '; ' 
-                + str(self.box_position) + '; ' + str(self.box_dim) + '; ' 
-                + str(self.box_geometry) + '; ' + str(self.text_width) + '; ' 
-                + str(self.fill_color) + '; ' + str(self.fill_color_2) + '; ' 
-                + str(self.opacity) + str(self.gradient) + '; ' + str(self.border_color) + '; ' 
-                + str(self.text_width) + '; ' + str(self.text_size) + '; ' 
-                + str(self.text_color) + '; ' + str(self.text_bold) + '; ' 
-                + str(self.text_italic) + '; ' + str(self.border_style) + '; ' 
-                + str(self.border_width) + '; ' + str(self.text_pos_x) + '; ' 
-                + str(self.text_pos_y) )
+        return ( 'DescBox key:' + str(self.desc_key) + '; ' + str(self.desc_text) + 
+                '; ' + str(self.box_position) + '; ' + str(self.box_dim) + '; ' + 
+                str(self.box_geometry) + '; ' + str(self.text_width) + '; ' + 
+                str(self.fill_color) + '; ' + str(self.fill_color_2) + '; ' + 
+                str(self.opacity) + str(self.gradient) + '; ' + str(self.border_color) + 
+                '; ' + str(self.text_width) + '; ' + str(self.text_size) + '; ' + 
+                str(self.text_color) + '; ' + str(self.text_bold) + '; ' + 
+                str(self.text_italic) + '; ' + str(self.border_style) + '; ' + 
+                str(self.border_width) + '; ' + str(self.text_pos_x) + '; ' + 
+                str(self.text_pos_y) )
         
     def check_version(self):
         #No check needed for version 1
@@ -256,23 +256,24 @@ class DataBox():
         self.__version = 1
         
     def __repr__(self): #Return string method for print(object)
-        return ( 'DataBox key:' + str(self.data_key) + '; '+ str(self.title_text) 
-                + '; ' + str(self.title_geometry) + '; ' + str(self.title_position) 
-                + '; ' + str(self.title_width) + '; '+ str(self.title_height)
-                + '; ' + str(self.title_box_color) + '; '+ str(self.title_box_opacity) 
-                + '; ' + str(self.title_border_color) + '; '+ str(self.title_text_width)
-                + '; ' + str(self.title_text_size) + '; '+ str(self.title_text_color)
-                + '; ' + str(self.title_text_bold) + '; '+ str(self.title_text_italic) 
-                + '; ' + str(self.title_border_style) + '; '+ str(self.title_border_width)
-                + '; ' + str(self.title_text_pos_x) + '; '+ str(self.title_text_pos_y) 
-                + '; ' + str(self.data_box_geometry) + '; '+ str(self.data_box_position)
-                + '; ' + str(self.data_box_width) + '; '+ str(self.data_box_height)
-                + '; ' + str(self.data_box_color) + '; '+ str(self.data_box_opacity)
-                + '; ' + str(self.data_box_gradient) + '; '+ str(self.data_border_color)
-                + '; ' + str(self.data_box_border_style) + '; '+ str(self.data_box_border_width)
-                + '; ' + str(self.data_text_size) + '; '+ str(self.data_width) + str(self.value_width)
-                + '; ' + str(self.data_text_pos_x) + '; '+ str(self.data_text_pos_y) 
-                + '; ' + str(self.data_source_file) )
+        return ( 'DataBox key:' + str(self.data_key) + '; '+ str(self.title_text) + 
+                '; ' + str(self.title_geometry) + '; ' + str(self.title_position) + 
+                '; ' + str(self.title_width) + '; '+ str(self.title_height) + 
+                '; ' + str(self.title_box_color) + '; '+ str(self.title_box_opacity) + 
+                '; ' + str(self.title_border_color) + '; '+ str(self.title_text_width) + 
+                '; ' + str(self.title_text_size) + '; '+ str(self.title_text_color) + 
+                '; ' + str(self.title_text_bold) + '; '+ str(self.title_text_italic) + 
+                '; ' + str(self.title_border_style) + '; '+ str(self.title_border_width) + 
+                '; ' + str(self.title_text_pos_x) + '; '+ str(self.title_text_pos_y) + 
+                '; ' + str(self.data_box_geometry) + '; '+ str(self.data_box_position) + 
+                '; ' + str(self.data_box_width) + '; '+ str(self.data_box_height) + 
+                '; ' + str(self.data_box_color) + '; '+ str(self.data_box_opacity) + 
+                '; ' + str(self.data_box_gradient) + '; '+ str(self.data_border_color) + 
+                '; ' + str(self.data_box_border_style) + 
+                '; ' + str(self.data_box_border_width) + '; ' + str(self.data_text_size) + 
+                '; ' + str(self.data_width) + str(self.value_width) + 
+                '; ' + str(self.data_text_pos_x) + '; '+ str(self.data_text_pos_y) + 
+                '; ' + str(self.data_source_file) )
         
     def check_version(self):
         #No check needed for version 1
@@ -284,7 +285,8 @@ class TextBox():
        Non critical class (not directly linked to the simulation process)
     '''
     def __init__(self, text_key, text, text_position, text_geometry, text_width,
-                 text_color, text_size, text_bold, text_italic):
+                 text_color, text_size, text_bold, text_italic, enable_background, 
+                 background_color):
         
         self.text_key = text_key
         self.text = text
@@ -295,20 +297,47 @@ class TextBox():
         self.text_size = text_size
         self.text_bold = text_bold
         self.text_italic = text_italic
+        self.enable_background = enable_background
+        self.background_color = background_color # Version 2
         
         #Version tracking
-        self.__version = 1
+        self.__version = 1 
+        self.__version = 2 # MV 20.01.r2 Added background color feature
         
     def __repr__(self): #Return string method for print(object)
-        return ( 'TextBox key:' + str(self.text_key) + '; ' + str(self.text) + '; ' 
-                + str(self.text_width) + '; ' + str(self.text_position) + '; ' 
-                + str(self.text_geometry) + '; ' + str(self.text_color) + '; ' 
-                + str(self.text_size) + '; ' + str(self.text_bold) + '; ' 
-                + str(self.text_italic) + '; ' + str(self.text_italic) )
+        return ( 'TextBox key:' + str(self.text_key) + '; ' + str(self.text) + '; ' + 
+                str(self.text_width) + '; ' + str(self.text_position) + '; ' + 
+                str(self.text_geometry) + '; ' + str(self.text_color) + '; ' + 
+                str(self.text_size) + '; ' + str(self.text_bold) + '; ' + 
+                str(self.text_italic) + '; ' + str(self.text_italic) )
         
     def check_version(self):
         #No check needed for version 1
         pass 
+    
+    
+#class RichTextBox(): # MV 20.01.r1
+#    '''Data class for the companion pyqt class RichTextBoxDesignView. Can be used 
+#       to add text regions anywhere withion the design scene. 
+#       Non critical class (not directly linked to the simulation process)
+#    '''
+#    def __init__(self, text_key, html, text_position, text_geometry):
+#        
+#        self.text_key = text_key
+#        self.html = html
+#        self.text_position = text_position
+#        self.text_geometry = text_geometry
+#
+#        #Version tracking
+#        self.__version = 1
+#        
+#    def __repr__(self): #Return string method for print(object)
+#        return ( 'TextBox key:' + str(self.text_key) + '; ' + str(self.html) + '; ' 
+#                + str(self.text_position) + '; ' + str(self.text_geometry) )
+#        
+#    def check_version(self):
+#        #No check needed for version 1
+#        pass 
         
 class LineArrow():
     '''Visual tool which includes a line with arrow. Can be used to highlight
@@ -331,10 +360,10 @@ class LineArrow():
         self.__version = 1
         
     def __repr__(self): #Return string method for print(object)
-        return ( 'LineArrow key:' + str(self.key) + '; ' + str(self.position) + '; '
-                + str(self.geometry) + '; ' + str(self.color) + '; ' 
-                + str(self.line_width) + '; ' + str(self.line_style) 
-                + '; ' + str(self.arrow) )
+        return ( 'LineArrow key:' + str(self.key) + '; ' + str(self.position) + '; ' + 
+                str(self.geometry) + '; ' + str(self.color) + '; ' + 
+                str(self.line_width) + '; ' + str(self.line_style) + 
+                '; ' + str(self.arrow) )
         
     def check_version(self):
         #No check needed for version 1
