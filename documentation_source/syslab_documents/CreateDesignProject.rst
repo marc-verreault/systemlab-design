@@ -69,7 +69,7 @@ generator that is connected to an amplifier) and assemble these into a design pr
 
   .. figure:: Create_Design_Project_4.png
     :figclass: align-center  
-    :width: 500px 
+    :width: 400px 
     
     Fig 5: Functional block properties settings for Amplifier
 
@@ -110,14 +110,10 @@ generator that is connected to an amplifier) and assemble these into a design pr
 
 16. Go to the **Project settings** for our design and enter into the **Project name** field 
     the name *'Gaussian Pulse Gen'*.
-17. Within the **File path (project)** field enter the following file path: *'.\\gaussian_pulse_generator\\'*
-    and select **OK** to save and close the **Project settings** dialog. 
-18. Click on the **Save** icon to save the project file to the new location.
+17. Within the **File path (project)** field enter the following file path: *.\\gaussian_pulse_generator\\*
+18. Select **OK** to save and close the **Project settings** dialog. 	
+19. Click on the **Save** icon to save the project file to the new location.
 
-  .. note::
-    Check the status bar (bottom of the application window) to confirm that the file was
-    correctly saved. It will read as **File saved to: .\\gaussian_pulse_generator\\**
-    
   .. important:: 
     Make sure to end the **File path (project)** field with a back slash.
     If there is no back slash, the design file will be saved to the root directory where
@@ -125,7 +121,11 @@ generator that is connected to an amplifier) and assemble these into a design pr
     represents the project file path for the software application folder. 
     The actual path is displayed in the **Project file path** panel (located also on the 
     bottom **Status bar**)
-    
+	
+  .. note::
+    Check the status bar (bottom of the application window) to confirm that the file was
+    correctly saved. It will read as **File saved to: .\\gaussian_pulse_generator\\**
+        
   .. figure:: Create_Design_Project_6.png
     :figclass: align-center   
     :width: 600
@@ -134,15 +134,14 @@ generator that is connected to an amplifier) and assemble these into a design pr
     
 **Part 3: Create functional block scripts**
     
-19. Open a session of SciTE by selecting **Edit/Open code/script editor** from the **Menu bar**.
-20. From the SciTE dialog, select **File/Open**.
-21. Go to the folder *systemlab_design/syslab_fb_scripts* and open the Python module called 
-    *Script template V1 5-Mar-19.py*.  
+20. Open a session of SciTE by selecting **Edit/Open Python code/script editor** from the **Menu bar**.
+21. From the SciTE dialog, select **File/Open**.
+22. Go to the folder *systemlab_design/syslab_fb_scripts* and open the Python module called 
+    *Script template V2 20-Dec-19.py*.  
     
   .. image:: Create_Design_Project_6A.png
     :align: center   
        
-22. Save the script module as *'Pulse_Gaussian'* within our project folder *gaussian_pulse_generator*. 
 23. Below "import config", add the following line: *[This action imports the SciPy 
     application package for signal processing]* ::
        
@@ -151,7 +150,7 @@ generator that is connected to an amplifier) and assemble these into a design pr
 24. Under the CALCULATIONS section, enter the following five lines of code: ::
     
        carrier = 0
-       sig_type_out = 'Electrical'
+       sig_type = 'Electrical'
        time_array = np.linspace(0, time, n)
        sig_array = signal.gausspulse(time_array, fc=10)
        noise_array = np.zeros(n)
@@ -177,13 +176,11 @@ generator that is connected to an amplifier) and assemble these into a design pr
     Fig 8: Portion of functional block script for Pulse_Gaussian (SciTE editor)
     
 25. Under the "RETURN (Output Signals, Parameters, Results)" section, 
-    uncomment the line of code immediately below the "ELECTRICAL" header (delete the 
-    hash tag symbol on the line to uncomment) and update as follows: ::
-    
-       electrical_out = [1, sig_type_out, carrier, fs, time_array, sig_array, noise_array]
-       
-26. Uncomment the very last line of the script (starts with "return") and update as follows: ::
-    
+    uncomment the lines of code immediately below the "ELECTRICAL" header (delete the 
+    hash tag symbol on the two lines to uncomment) as follows: ::
+
+       #ELECTRCAL
+       electrical_out = [1, sig_type, carrier, fs, time_array, sig_array, noise_array]   
        return ([electrical_out], script_parameters, script_results)
     
   .. important::
@@ -204,11 +201,11 @@ generator that is connected to an amplifier) and assemble these into a design pr
     
     Fig 9: Portion of functional block script for Pulse_Gaussian (SciTE editor)   
         
-27. Save all the changes made to the script *Pulse_Gaussian.py*.
-28. Open the **Settings** dialog (from the **Tool bar**).
-29. Under the **Simulation settings** tab, set the **Sample rate** to 200 and the **Simulation time**
+26. Save the script module as *'Pulse_Gaussian.py'* within our project folder *gaussian_pulse_generator*. 
+27. Open the **Settings** dialog (from the **Tool bar**).
+28. Under the **Simulation settings** tab, set the **Sample rate** to 200 and the **Simulation time**
     to 1 sec. 
-30. Click on the **Apply** button. 
+29. Click on the **Apply** button. 
     
     *The Sample period, Total samples, and Samples/sym fields will be re-calculated 
     to match the new simulation settings. Also, the Sample rate and Simulation time 
@@ -218,8 +215,8 @@ generator that is connected to an amplifier) and assemble these into a design pr
     :align: center
     :width: 400
     
-31. Select the **OK** button to close the Settings dialog.     
-32. Click on the **Start** button in the **Menu bar**.
+30. Select the **OK** button to close the Settings dialog.     
+31. Click on the **Start** button in the **Menu bar**.
 
     *The simulation status dialog will indicate that there was an error processing the
     Amplifier block (this is expected as we have not yet defined the script for the
@@ -230,7 +227,7 @@ generator that is connected to an amplifier) and assemble these into a design pr
     :align: center 
     :width: 400   
     
-33. To verify that we have a Gaussian pulse signal, hover over the output port of the
+32. To verify that we have a Gaussian pulse signal, hover over the output port of the
     *Pulse Gen (Gaussian)* functional block and double left-click your mouse to open the
     **Electrical signal data analyzer** dialog.
     
@@ -242,7 +239,7 @@ generator that is connected to an amplifier) and assemble these into a design pr
     :align: center   
     :width: 500px   
            
-34. To verify the frequency domain signal, select the **Frequency data** tab.
+33. To verify the frequency domain signal, select the **Frequency data** tab.
 
     *As designed, the center frequency of the spectral profile of the Gaussian pulse is 
     confirmed to be 10 Hz!*
@@ -251,9 +248,9 @@ generator that is connected to an amplifier) and assemble these into a design pr
     :align: center  
     :width: 500px     
 
-35. Return to the SciTE editor dialog for the script module *Pulse_Gaussian*, select **File/Save As**, 
+34. Return to the SciTE editor dialog for the script module *Pulse_Gaussian*, select **File/Save As**, 
     and save the script under the new name *'Electrical_Amplifier_Pulse_Gen'*.
-36. Update the new script as follows:
+35. Update the new script as follows:
     
     Under the "INPUT PARAMETERS" section, add the line: ::
     
@@ -264,7 +261,7 @@ generator that is connected to an amplifier) and assemble these into a design pr
        time_in = input_signal_data[0][4]
        sig_in = input_signal_data[0][5]
        
-    Under the "CALCULATIONS" section, update the existing lines to the following: ::
+    Under the "CALCULATIONS" section, replace the existing lines of code with the following: ::
       
        carrier = 0
        sig_type_out = 'Electrical'
@@ -275,9 +272,9 @@ generator that is connected to an amplifier) and assemble these into a design pr
     :align: center 
     :width: 400 
     
-37. Save all changes made to the script *Electrical_Amplifier_Pulse_Gen.py* and open the
+36. Save all changes made to the script *Electrical_Amplifier_Pulse_Gen.py* and open the
     **Functional block settings** dialog for the *Amplifier* functional block.
-38. Add to the first row of the **Input parameters** table the following settings:
+37. Add to the first row of the **Input parameters** table the following settings:
     
     a. Parameter name: **Gain**, Value: **3**, and Units: **dB**.
     
@@ -285,8 +282,8 @@ generator that is connected to an amplifier) and assemble these into a design pr
     :align: center 
     :width: 400px 
     
-39. Select **OK** to save and close the **Functional block settings** dialog.
-40. Click on the **Start** button in the **Tool bar** to re-run the simulation.
+38. Select **OK** to save and close the **Functional block settings** dialog.
+39. Click on the **Start** button in the **Tool bar** to re-run the simulation.
     
     *The simulation status dialog will indicate that there was an error processing
     the Amplifier block. An alarm was raised indicating that we have tried to allocate
@@ -296,27 +293,27 @@ generator that is connected to an amplifier) and assemble these into a design pr
     :align: center 
     :width: 400px     
     
-41. To fix this issue, return to the SciTE editor window for the script *Electrical_Amplifer_Pulse_Gen.py*
+40. To fix this issue, return to the SciTE editor window for the script *Electrical_Amplifer_Pulse_Gen.py*
     and, under the "RETURN (Output Signals, Parameters, Results)" section, change the
     port ID field from **1** to **2**: ::
     
-        electrical_out = [2, sig_type_out, carrier, fs, time_array, sig_array, noise_array]
+        electrical_out = [2, sig_type, carrier, fs, time_array, sig_array, noise_array]
         
 **Part 4: Run the final simulation**
         
-42. Click on the **Start** button in the **Tool bar** to re-run the simulation. *[The simulation should 
+41. Click on the **Start** button in the **Tool bar** to re-run the simulation. *[The simulation should 
     now have completed with no issues!]* 
-43. To verify that we have applied a gain to the input signal, hover over the output port 
+42. To verify that we have applied a gain to the input signal, hover over the output port 
     (filled blue box) of the *Amplifier* functional block and double left-click your mouse 
     to open the **Electrical signal data analyzer** dialog.
-44. Within the **Signal type** group  (located in the left panel of the **Time data** tab), 
+43. Within the **Signal type** group  (located in the left panel of the **Time data** tab), 
     change the y-axis unit from **Mag** to **Watts**. *[The peak signal level should read 2 Watts]*.
     
   .. image:: Create_Design_Project_16.png
     :align: center  
     :width: 500
          
-45. Verify the input signal by hovering over the input port of the *Amplifier* functional
+44. Verify the input signal by hovering over the input port of the *Amplifier* functional
     block, double left-clicking and within the **Signal type** group, changing the y-axis unit
     from **Mag** to **Watts**.
     

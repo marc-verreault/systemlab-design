@@ -73,7 +73,18 @@ MathWorks |reg| web site: `Calling MATLAB from Python
     c. Script module name: **Matlab_Run**
     
 9.  Open a session of **SciTE** (or equivalent) by selecting **Edit/Open code/script editor**.
-10. Within the editing panel (under "1 Untitled") enter the following lines of code: ::
+10. Within the editing panel (under "1 Untitled") copy and paste the code as shown in the box 
+    below. 
+	
+	Note: In the code below we initiate a new MATLAB process by calling **eng = matlab.engine.start_matlab()**. 
+	We then build an array of ones within the MATLAB workspace and access this array using the 
+	command **sig_array = matlab.double(eng.ones(1,n))**. 
+	
+	To ensure that the array matches the **Numpy** array format we use the command 
+	**sig_array = np.asarray(sig_array[0])** to convert the Python list to a **Numpy** array. 
+	The data from this array is then returned to the simulation algorithm and allocated to 
+	the output port of the functional block.
+	::
     
 		import numpy as np
 		import config
@@ -98,10 +109,13 @@ MathWorks |reg| web site: `Calling MATLAB from Python
 			if config.sim_status_win_enabled == True:
 				config.sim_status_win.textEdit.append('Starting MATLAB Engine... ')
 				config.app.processEvents()
+			# Initiate a new MATLAB process
 			eng = matlab.engine.start_matlab()
+			# Build array (within MATLAB workspace) and access locally
 			sig_array = matlab.double(eng.ones(1,n))
+			# Change array from python list format to numpy array format
 			sig_array = np.asarray(sig_array[0])
-			#eng.desktop(nargout=0)
+			# eng.desktop(nargout=0)
 
 			if config.sim_status_win_enabled == True:
 				config.sim_status_win.textEdit.append('Quiting MATLAB Engine... ')
@@ -115,12 +129,7 @@ MathWorks |reg| web site: `Calling MATLAB from Python
 			electrical_signal = [1, sig_type, carrier, fs, time_array, sig_array, noise_array]
 			return ([electrical_signal], parameters_input, matlab_results)
 
-  In the code above we initiate a new MATLAB process by calling **eng = matlab.engine.start_matlab()**. 
-  We then build an array of ones within the MATLAB workspace and access this array using the 
-  command **sig_array = matlab.double(eng.ones(1,n))**. To ensure that the array matches 
-  the **Numpy** array format we use the command **sig_array = np.asarray(sig_array[0])** 
-  to convert the Python list to a **Numpy** array. The data from this array is then returned 
-  to the simulation algorithm and allocated to the output port of the functional block.
+
 
 11. Save the file as *Matlab_Run.py* within the folder *systemlab_design* (make sure to include the suffix 
     .py in the **File Name** field when saving) and close the session of SciTE.

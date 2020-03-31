@@ -6,10 +6,10 @@ SystemLab|Design is delivered as a ready-to-use, bundled program that includes p
 libraries for:
 
 * Python 3.7.3
-* PyQt 5.12.2(GPLv3)/Qt 5.12.3(LGPLv3) (GUI interface)
-* NumPy (1.16.3) (mathematical operations and signal array manipulation)
-* Matplotlib (3.0.3) (data viewers and customized graphs)
-* SciPy (1.2.1) (specialized numerical procedures)
+* PyQt 5.13.1(GPLv3) (GUI interface)
+* NumPy (1.17.2) (mathematical operations and signal array manipulation)
+* Matplotlib (3.1.1) (data viewers and customized graphs)
+* SciPy (1.3.1) (specialized numerical procedures)
 * Scintilla/SciTE (4.1.4) (integrated Python script editor)
 
   .. note::
@@ -18,7 +18,7 @@ libraries for:
 To install and run SystemLab|Design, complete the following steps:
 
 1. Download the latest version of SystemLab|Design from the following link:
-   `SystemLab|Design 19.02 <https://systemlabdesign.com/systemlab_design/systemlab_design_1902.zip>`_
+   `SystemLab|Design 20.01 <https://systemlabdesign.com/systemlab_design/systemlab_design_2001.zip>`_
 
   .. note::   
     If prompted by your web browser, select the "Save file" option.

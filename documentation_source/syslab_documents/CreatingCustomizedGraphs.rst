@@ -13,7 +13,7 @@ model.
 **Part 1: Build the design project "Optical amplification"**
 
 1.  Launch a new application of SystemLab|Design by double left-clicking on the 
-    *SystemLab-Design-1902.exe* executable file.
+    *SystemLab-Design.exe* executable file.
 2.  Drag and drop onto the project design space (*"Project_1"*) a **CW Laser** and an 
     **Optical Amplifier** and connect the **CW Laser** output port to the
     **Optical Amplifier** input port as follows:
@@ -32,7 +32,7 @@ model.
 
 **Part 2: Create a project file for the "Optical amplification" design**
 
-7.  Open a session of SciTE by selecting **Edit/Open code/script editor** from the **Menu bar**.
+7.  Open a session of SciTE by selecting **Open Python code/script editor** from the **Menu bar**.
 8.  Insert the following lines of code at the top of the blank document *"1 Untitled"* : ::
     
         #Project file for optical amplification
@@ -42,80 +42,85 @@ model.
         amp_input_power_dbm = None
         gain_db = None
 
-9.  Select **File/save as** from the **Menu bar** , navigate to the folder 
+9.  Select **File/save as** from the **Menu bar**, navigate to the folder 
     *"systemlab_design\\optical_amplification\\"*, and save the project file as: 
-    *"project_amplifier.py"* (Make sure to add the suffix ".py" to the file name)
+    *"project_amplifier.py"* (Make sure to add the suffix ".py" to the file name!)
 10. Close the file *"project_amplifier.py"*
     
 **Part 3: Create a new QDialog graphing class within "systemlab_viewers"** 
 
-11. Select **File/Open** from the SciTE **Menu bar**, navigate to the folder 
-    *"systemlab_design\\syslab_config_files\\"*, and open the file: *"systemlab_viewers.py"*. 
-12. After line 179, insert the following lines of code (make sure that there are no spaces 
-    before the line **class IterationsAnalyzer_QPSK(QtWidgets.QDialog, Ui_Iterations_Analysis)**): ::
+11. From the **Menu bar** select **Edit/Custom viewers/graph utilities file/Edit**. 
+12. Below the class definition for **IterationsAnalyzer_NewtonCooling** insert the 
+    following lines of code *[Note: If the class definition for 
+    IterationsAnalyzer_Optical_Amp is already present in the code, skip steps 12-15]*
+    ::
 
         class IterationsAnalyzer_Opt_Amp(QtWidgets.QDialog, Ui_Iterations_Analysis):
             '''
             Tab objects (QWidget) are named "tab_xy", "tab_xy_2", etc.
             Graph frame objects (QFrame) are named "graphFrame". "graphFrame_2", etc.
             '''
-        def __init__(self, data_x_1, data_y_1):
-            QtWidgets.QDialog.__init__(self)
-            Ui_Iterations_Analysis.__init__(self)
-            self.setupUi(self)
-            syslab_icon = set_icon_window()
-            self.setWindowIcon(syslab_icon)
-            self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)  
-            self.iteration = 1  
-            self.data_x_1 = data_x_1
-            self.data_y_1 = data_y_1 
+			def __init__(self, data_x_1, data_y_1):
+				QtWidgets.QDialog.__init__(self)
+				Ui_Iterations_Analysis.__init__(self)
+				self.setupUi(self)
+				syslab_icon = set_icon_window()
+				self.setWindowIcon(syslab_icon)
+				self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)  
+				self.iteration = 1  
+				self.data_x_1 = data_x_1
+				self.data_y_1 = data_y_1 
             
-            #Setup background colors for frames
-            p = self.graphFrame.palette() 
-            p.setColor(self.graphFrame.backgroundRole(), QtGui.QColor(252,252,252))
-            self.graphFrame.setPalette(p)       
-            p2 = self.graphFrame_2.palette()
-            p2.setColor(self.graphFrame_2.backgroundRole(), QtGui.QColor(252,252,252))
-            self.graphFrame_2.setPalette(p2)
+				#Setup background colors for frames
+				p = self.graphFrame.palette() 
+				p.setColor(self.graphFrame.backgroundRole(), QtGui.QColor(252,252,252))
+				self.graphFrame.setPalette(p)       
+				p2 = self.graphFrame_2.palette()
+				p2.setColor(self.graphFrame_2.backgroundRole(), QtGui.QColor(252,252,252))
+				self.graphFrame_2.setPalette(p2)
             
-            #Setup matplotlib figures and toolbars
-            self.graphLayout = QtWidgets.QVBoxLayout()
-            self.figure = plt.figure()
-            self.canvas = FigureCanvas(self.figure)     
-            self.toolbar = NavigationToolbar(self.canvas, self.tab_xy)
-            self.graphLayout.addWidget(self.canvas)
-            self.graphLayout.addWidget(self.toolbar)
-            self.graphFrame.setLayout(self.graphLayout)        
+				#Setup matplotlib figures and toolbars
+				self.graphLayout = QtWidgets.QVBoxLayout()
+				self.figure = plt.figure()
+				self.canvas = FigureCanvas(self.figure)     
+				self.toolbar = NavigationToolbar(self.canvas, self.tab_xy)
+				self.graphLayout.addWidget(self.canvas)
+				self.graphLayout.addWidget(self.toolbar)
+				self.graphFrame.setLayout(self.graphLayout)        
+			
+				self.tabData.setCurrentWidget(self.tab_xy)
+				self.tabData.setTabText(0, 'Optical amplifier characteristics')
+				
+				self.figure.tight_layout(pad=0.5, h_pad = 0.8)
+				self.figure.set_tight_layout(True)
+				self.plot_xy()
+				self.canvas.draw()
         
-            self.tabData.setCurrentWidget(self.tab_xy)
-            self.tabData.setTabText(0, 'Optical amplifier characteristics')
-            
-            self.figure.tight_layout(pad=0.5, h_pad = 0.8)
-            self.figure.set_tight_layout(True)
-            self.plot_xy()
-            self.canvas.draw()
+			def plot_xy(self):
+				ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
+				ax.clear()
+				ax.plot(self.data_x_1, self.data_y_1, color = 'blue', linestyle = '--',
+							linewidth= 0.8, marker = 'o', markersize = 3)
+					
+				ax.set_title('Amplifier Gain (small signal)')
+				ax.set_xlabel('Input signal power (dBm)')
+				ax.set_ylabel('Gain (dB)')
+				ax.set_aspect('auto')
+				ax.grid(True)  
+				ax.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
+				ax.minorticks_on()
+				ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
         
-        def plot_xy(self):
-            ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
-            ax.clear()
-            ax.plot(self.data_x_1, self.data_y_1, color = 'blue', linestyle = '--',
-                        linewidth= 0.8, marker = 'o', markersize = 3)
-                
-            ax.set_title('Amplifier Gain (small signal)')
-            ax.set_xlabel('Input signal power (dBm)')
-            ax.set_ylabel('Gain (dB)')
-            ax.set_aspect('auto')
-            ax.grid(True)  
-            ax.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
-            ax.minorticks_on()
-            ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
-        
-        '''Close event====================================================================='''
-        def closeEvent(self, event):
-            plt.close(self.figure)
+        	'''Close event====================================================================='''
+			def closeEvent(self, event):
+				plt.close(self.figure)
 
 13. Save the changes and close the file *"systemlab_viewers.py"*.
 14. Close the session of the SciTE editor.
+15. From the **Menu bar** select **Edit/Custom viewers/graph utilities file/Reload**.
+    *[This will ensure that the Custom viewers/graph utilities file is re-imported into
+    the SystemLab-Design application. If a loading error is raised a warning message will
+    appear outlining the reason for the loading error]*
 
 **Part 4: Update the "CW Laser" and "Optical Amplifier" scripts** 
 

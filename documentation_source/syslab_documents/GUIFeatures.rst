@@ -25,7 +25,8 @@ main application interface (Fig 1) and includes the following main components.
 
   The **Menu bar** which includes **File** management functions, **Edit** features for copying
   and deleting project items, **Project** menu which can be used to add new items to a 
-  design space, **Simulation** menu for starting, pausing or stopping simulations, and 
+  design space, **Simulation** menu for starting, pausing or stopping simulations, **Tools** menu
+  for accessing a freq-wavelength converter, **View** menu for providing zoom functions, and a
   **Help** menu which includes access to the on-line documentation portal.
 
   The **Status bar** which provides additional information on your projects, including
