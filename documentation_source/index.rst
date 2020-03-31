@@ -16,6 +16,7 @@ Welcome to SystemLab|Design's documentation!
    syslab_documents/GUIFeatures
    syslab_documents/QuickStart
    syslab_documents/QuickStart2
+   syslab_documents/QuickStart3
 
 .. toctree::   
    :caption: Design Basics
