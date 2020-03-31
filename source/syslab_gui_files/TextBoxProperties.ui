@@ -87,7 +87,7 @@
     <property name="geometry">
      <rect>
       <x>3</x>
-      <y>94</y>
+      <y>78</y>
       <width>55</width>
       <height>21</height>
      </rect>
@@ -103,35 +103,9 @@
     <property name="geometry">
      <rect>
       <x>65</x>
-      <y>42</y>
-      <width>596</width>
-      <height>127</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_3">
-    <property name="geometry">
-     <rect>
-      <x>5</x>
-      <y>18</y>
-      <width>145</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Text field (wrapping width):</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="textWidth">
-    <property name="geometry">
-     <rect>
-      <x>157</x>
       <y>19</y>
-      <width>46</width>
-      <height>20</height>
+      <width>596</width>
+      <height>150</height>
      </rect>
     </property>
    </widget>
@@ -141,8 +115,8 @@
     <rect>
      <x>6</x>
      <y>184</y>
-     <width>443</width>
-     <height>59</height>
+     <width>475</width>
+     <height>84</height>
     </rect>
    </property>
    <property name="title">
@@ -203,8 +177,8 @@
    <widget class="QLabel" name="label_18">
     <property name="geometry">
      <rect>
-      <x>238</x>
-      <y>28</y>
+      <x>6</x>
+      <y>54</y>
       <width>65</width>
       <height>21</height>
      </rect>
@@ -225,8 +199,8 @@
    <widget class="QLineEdit" name="fontColor">
     <property name="geometry">
      <rect>
-      <x>306</x>
-      <y>28</y>
+      <x>75</x>
+      <y>56</y>
       <width>64</width>
       <height>20</height>
      </rect>
@@ -241,14 +215,91 @@
    <widget class="QPushButton" name="colorFontButton">
     <property name="geometry">
      <rect>
-      <x>374</x>
-      <y>28</y>
+      <x>144</x>
+      <y>56</y>
       <width>61</width>
       <height>21</height>
      </rect>
     </property>
     <property name="text">
      <string>Update</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="colorBackgroundButton">
+    <property name="geometry">
+     <rect>
+      <x>406</x>
+      <y>56</y>
+      <width>55</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Update</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_19">
+    <property name="geometry">
+     <rect>
+      <x>234</x>
+      <y>56</y>
+      <width>103</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Backgound color:</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="backgroundColor">
+    <property name="geometry">
+     <rect>
+      <x>343</x>
+      <y>56</y>
+      <width>58</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBoxBackground">
+    <property name="geometry">
+     <rect>
+      <x>246</x>
+      <y>28</y>
+      <width>161</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enable background color</string>
+    </property>
+   </widget>
+   <widget class="Line" name="line">
+    <property name="geometry">
+     <rect>
+      <x>228</x>
+      <y>24</y>
+      <width>4</width>
+      <height>56</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Vertical</enum>
     </property>
    </widget>
   </widget>

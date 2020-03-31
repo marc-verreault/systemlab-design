@@ -98,10 +98,10 @@
      <widget class="QLabel" name="label_40">
       <property name="geometry">
        <rect>
-        <x>6</x>
+        <x>4</x>
         <y>26</y>
-        <width>87</width>
-        <height>21</height>
+        <width>89</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
@@ -143,7 +143,7 @@
         <x>6</x>
         <y>48</y>
         <width>87</width>
-        <height>21</height>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
@@ -534,11 +534,14 @@
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>4</x>
-        <y>24</y>
+        <x>5</x>
+        <y>26</y>
         <width>86</width>
-        <height>21</height>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
        <string>Dimensions (w):</string>
@@ -557,10 +560,13 @@
       <property name="geometry">
        <rect>
         <x>8</x>
-        <y>48</y>
+        <y>50</y>
         <width>83</width>
-        <height>21</height>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
        <string>Dimensions (h):</string>
@@ -1025,9 +1031,9 @@
   <widget class="QLineEdit" name="data_source_file">
    <property name="geometry">
     <rect>
-     <x>130</x>
+     <x>154</x>
      <y>6</y>
-     <width>94</width>
+     <width>186</width>
      <height>20</height>
     </rect>
    </property>
@@ -1040,7 +1046,7 @@
     <rect>
      <x>10</x>
      <y>5</y>
-     <width>114</width>
+     <width>140</width>
      <height>21</height>
     </rect>
    </property>
@@ -1060,7 +1066,7 @@
   <widget class="QCheckBox" name="dataCheckBoxGradient">
    <property name="geometry">
     <rect>
-     <x>244</x>
+     <x>346</x>
      <y>6</y>
      <width>127</width>
      <height>21</height>

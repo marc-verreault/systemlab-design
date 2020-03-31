@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>560</width>
-    <height>360</height>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -25,7 +25,7 @@
   <property name="maximumSize">
    <size>
     <width>560</width>
-    <height>360</height>
+    <height>400</height>
    </size>
   </property>
   <property name="font">
@@ -46,8 +46,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>300</x>
-     <y>326</y>
+     <x>297</x>
+     <y>363</y>
      <width>256</width>
      <height>32</height>
     </rect>
@@ -59,65 +59,13 @@
     <set>QDialogButtonBox::Apply|QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QLineEdit" name="projectName">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>8</y>
-     <width>236</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label">
-   <property name="geometry">
-    <rect>
-     <x>56</x>
-     <y>8</y>
-     <width>71</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Project name:</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLabel" name="label_8">
-   <property name="geometry">
-    <rect>
-     <x>34</x>
-     <y>32</y>
-     <width>93</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>File path (project):</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="projectFilePath">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>33</y>
-     <width>323</width>
-     <height>20</height>
-    </rect>
-   </property>
-  </widget>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
      <x>3</x>
-     <y>86</y>
+     <y>98</y>
      <width>555</width>
-     <height>240</height>
+     <height>260</height>
     </rect>
    </property>
    <property name="minimumSize">
@@ -137,9 +85,9 @@
      <property name="geometry">
       <rect>
        <x>6</x>
-       <y>140</y>
+       <y>152</y>
        <width>537</width>
-       <height>55</height>
+       <height>59</height>
       </rect>
      </property>
      <property name="title">
@@ -148,11 +96,14 @@
      <widget class="QCheckBox" name="checkBoxFeedback">
       <property name="geometry">
        <rect>
-        <x>16</x>
-        <y>26</y>
-        <width>155</width>
+        <x>13</x>
+        <y>30</y>
+        <width>124</width>
         <height>23</height>
        </rect>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
       </property>
       <property name="text">
        <string>Enable feedback</string>
@@ -161,8 +112,8 @@
      <widget class="QLineEdit" name="projectSegments">
       <property name="geometry">
        <rect>
-        <x>278</x>
-        <y>26</y>
+        <x>276</x>
+        <y>30</y>
         <width>86</width>
         <height>20</height>
        </rect>
@@ -177,9 +128,9 @@
      <widget class="QLabel" name="label_21">
       <property name="geometry">
        <rect>
-        <x>164</x>
-        <y>26</y>
-        <width>110</width>
+        <x>150</x>
+        <y>30</y>
+        <width>122</width>
         <height>20</height>
        </rect>
       </property>
@@ -193,9 +144,9 @@
      <widget class="QLabel" name="label_22">
       <property name="geometry">
        <rect>
-        <x>374</x>
-        <y>26</y>
-        <width>76</width>
+        <x>369</x>
+        <y>30</y>
+        <width>81</width>
         <height>20</height>
        </rect>
       </property>
@@ -210,7 +161,7 @@
       <property name="geometry">
        <rect>
         <x>454</x>
-        <y>26</y>
+        <y>30</y>
         <width>71</width>
         <height>20</height>
        </rect>
@@ -227,225 +178,193 @@
      <property name="geometry">
       <rect>
        <x>6</x>
-       <y>6</y>
-       <width>434</width>
-       <height>128</height>
+       <y>16</y>
+       <width>536</width>
+       <height>131</height>
       </rect>
      </property>
      <property name="title">
       <string>Main settings</string>
      </property>
-     <widget class="QLineEdit" name="projectSampleRate">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>52</y>
-        <width>101</width>
-        <height>20</height>
+        <x>294</x>
+        <y>50</y>
+        <width>211</width>
+        <height>74</height>
        </rect>
       </property>
+      <layout class="QFormLayout" name="formLayout">
+       <property name="labelAlignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="formAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_4">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Sample period (s):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="projectSamplePeriod">
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Total samples:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="projectNumberSamples">
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Samples/sym:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="projectSamplesSym">
+         <property name="autoFillBackground">
+          <bool>true</bool>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <widget class="QLineEdit" name="projectSimulationTime">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>130</x>
-        <y>76</y>
-        <width>101</width>
-        <height>20</height>
+        <x>23</x>
+        <y>24</y>
+        <width>252</width>
+        <height>100</height>
        </rect>
       </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>29</x>
-        <y>74</y>
-        <width>101</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Simulation time (s): </string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_9">
-      <property name="geometry">
-       <rect>
-        <x>30</x>
-        <y>98</y>
-        <width>96</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Symbol rate (Hz):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="projectSymbolRate">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>100</y>
-        <width>101</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>31</x>
-        <y>52</y>
-        <width>95</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Sample rate (Hz):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>242</x>
-        <y>52</y>
-        <width>91</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Sample period (s):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="projectSamplePeriod">
-      <property name="geometry">
-       <rect>
-        <x>336</x>
-        <y>52</y>
-        <width>86</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>260</x>
-        <y>74</y>
-        <width>73</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Total samples:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="projectNumberSamples">
-      <property name="geometry">
-       <rect>
-        <x>336</x>
-        <y>76</y>
-        <width>86</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_11">
-      <property name="geometry">
-       <rect>
-        <x>258</x>
-        <y>98</y>
-        <width>75</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Samples/sym:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="projectSamplesSym">
-      <property name="geometry">
-       <rect>
-        <x>336</x>
-        <y>100</y>
-        <width>86</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>true</bool>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_6">
-      <property name="geometry">
-       <rect>
-        <x>16</x>
-        <y>26</y>
-        <width>110</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(170, 0, 0);</string>
-      </property>
-      <property name="text">
-       <string>Number of iterations:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="iterationSetting">
-      <property name="geometry">
-       <rect>
-        <x>130</x>
-        <y>26</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">border-color: rgb(170, 0, 0);</string>
-      </property>
+      <layout class="QFormLayout" name="formLayout_2">
+       <property name="labelAlignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="formAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_6">
+         <property name="styleSheet">
+          <string notr="true">color: rgb(170, 0, 0);</string>
+         </property>
+         <property name="text">
+          <string>Number of iterations:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="iterationSetting">
+         <property name="styleSheet">
+          <string notr="true">border-color: rgb(170, 0, 0);</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Sample rate (Hz):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="projectSampleRate"/>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_3">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Simulation time (s):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="projectSimulationTime"/>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_9">
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Symbol rate (Hz):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="projectSymbolRate">
+         <property name="autoFillBackground">
+          <bool>false</bool>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
@@ -453,81 +372,69 @@
     <attribute name="title">
      <string>Project layout settings</string>
     </attribute>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_5">
      <property name="geometry">
       <rect>
-       <x>6</x>
-       <y>6</y>
-       <width>536</width>
-       <height>87</height>
+       <x>2</x>
+       <y>12</y>
+       <width>540</width>
+       <height>104</height>
       </rect>
      </property>
-     <property name="styleSheet">
-      <string notr="true">font: 75 8pt &quot;MS Shell Dlg 2&quot;;</string>
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
      </property>
      <property name="title">
-      <string>Project layout (border and size) settings</string>
+      <string>Project layout (border and size)</string>
      </property>
-     <widget class="QLineEdit" name="projectWidth">
+     <widget class="QPushButton" name="pushButtonColorBorder">
       <property name="geometry">
        <rect>
-        <x>88</x>
+        <x>448</x>
         <y>26</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>4</x>
-        <y>52</y>
-        <width>81</width>
+        <width>56</width>
         <height>20</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Height (pixels):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="projectHeight">
-      <property name="geometry">
-       <rect>
-        <x>88</x>
-        <y>52</y>
-        <width>51</width>
-        <height>21</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_10">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>26</y>
-        <width>76</width>
-        <height>20</height>
-       </rect>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
-       <string>Width (pixels):</string>
+       <string>Update</string>
       </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </widget>
+     <widget class="Line" name="line">
+      <property name="geometry">
+       <rect>
+        <x>158</x>
+        <y>30</y>
+        <width>4</width>
+        <height>64</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkShowBorder">
       <property name="geometry">
        <rect>
-        <x>162</x>
-        <y>26</y>
-        <width>86</width>
+        <x>172</x>
+        <y>52</y>
+        <width>100</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
@@ -536,198 +443,268 @@
        <string>Show border</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_15">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>262</x>
-        <y>26</y>
-        <width>69</width>
-        <height>20</height>
+        <x>10</x>
+        <y>38</y>
+        <width>143</width>
+        <height>48</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Border color:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
+      <layout class="QFormLayout" name="formLayout_6">
+       <property name="labelAlignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="formAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="horizontalSpacing">
+        <number>4</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>4</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Width (pixels):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="projectWidth">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_7">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Height (pixels):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="projectHeight">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <widget class="QLineEdit" name="borderLineColor">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>334</x>
-        <y>26</y>
-        <width>71</width>
-        <height>21</height>
+        <x>279</x>
+        <y>24</y>
+        <width>162</width>
+        <height>74</height>
        </rect>
       </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="pushButtonColorBorder">
-      <property name="geometry">
-       <rect>
-        <x>412</x>
-        <y>26</y>
-        <width>56</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Update</string>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_16">
-      <property name="geometry">
-       <rect>
-        <x>374</x>
-        <y>54</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Line opactiy:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="borderLineOpacity">
-      <property name="geometry">
-       <rect>
-        <x>446</x>
-        <y>54</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="borderLineWidth">
-      <property name="geometry">
-       <rect>
-        <x>334</x>
-        <y>54</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_19">
-      <property name="geometry">
-       <rect>
-        <x>246</x>
-        <y>54</y>
-        <width>86</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Border line width:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="Line" name="line">
-      <property name="geometry">
-       <rect>
-        <x>151</x>
-        <y>22</y>
-        <width>3</width>
-        <height>61</height>
-       </rect>
-      </property>
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
+      <layout class="QFormLayout" name="formLayout_7">
+       <property name="labelAlignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="formAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_15">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Border color:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="borderLineColor">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_19">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>300</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Border line width:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="borderLineWidth">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_16">
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Line opactiy:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="borderLineOpacity">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="geometry">
       <rect>
-       <x>6</x>
-       <y>98</y>
-       <width>538</width>
+       <x>3</x>
+       <y>120</y>
+       <width>539</width>
        <height>109</height>
       </rect>
      </property>
      <property name="title">
       <string>Project layout (grid) settings</string>
      </property>
-     <widget class="QLabel" name="label_12">
-      <property name="geometry">
-       <rect>
-        <x>245</x>
-        <y>26</y>
-        <width>82</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Grid line color:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="gridLineColor">
-      <property name="geometry">
-       <rect>
-        <x>332</x>
-        <y>26</y>
-        <width>71</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="gridLineOpacity">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>78</y>
-        <width>30</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_14">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>78</y>
-        <width>86</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Grid line opacity:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
      <widget class="QCheckBox" name="checkBoxGrid">
       <property name="geometry">
        <rect>
-        <x>7</x>
-        <y>26</y>
-        <width>81</width>
+        <x>9</x>
+        <y>52</y>
+        <width>89</width>
         <height>21</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
       </property>
       <property name="layoutDirection">
        <enum>Qt::LeftToRight</enum>
@@ -739,7 +716,7 @@
      <widget class="QPushButton" name="pushButtonColor">
       <property name="geometry">
        <rect>
-        <x>408</x>
+        <x>452</x>
         <y>26</y>
         <width>56</width>
         <height>21</height>
@@ -749,104 +726,168 @@
        <string>Update</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_13">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>95</x>
+        <x>105</x>
         <y>26</y>
-        <width>91</width>
-        <height>20</height>
+        <width>155</width>
+        <height>74</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Grid size (pixels):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
+      <layout class="QFormLayout" name="formLayout_4">
+       <property name="labelAlignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+       <property name="formAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="horizontalSpacing">
+        <number>4</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>4</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_13">
+         <property name="text">
+          <string>Grid size (pixels):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="gridSize">
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_18">
+         <property name="text">
+          <string>Grid line width:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="gridLineWidth">
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_14">
+         <property name="text">
+          <string>Grid line opacity:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="gridLineOpacity">
+         <property name="maximumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="readOnly">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <widget class="QLineEdit" name="gridSize">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>190</x>
+        <x>274</x>
         <y>26</y>
-        <width>41</width>
-        <height>21</height>
+        <width>172</width>
+        <height>48</height>
        </rect>
       </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_17">
-      <property name="geometry">
-       <rect>
-        <x>248</x>
-        <y>52</y>
-        <width>79</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Grid line style:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QComboBox" name="titleComboBoxGrid">
-      <property name="geometry">
-       <rect>
-        <x>332</x>
-        <y>52</y>
-        <width>86</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <item>
-       <property name="text">
-        <string>SolidLine</string>
+      <layout class="QFormLayout" name="formLayout_5">
+       <property name="labelAlignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
        </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>DashLine</string>
+       <property name="formAlignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
        </property>
-      </item>
-      <item>
-       <property name="text">
-        <string>DotLine</string>
+       <property name="horizontalSpacing">
+        <number>4</number>
        </property>
-      </item>
-     </widget>
-     <widget class="QLabel" name="label_18">
-      <property name="geometry">
-       <rect>
-        <x>100</x>
-        <y>52</y>
-        <width>86</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Grid line width:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="gridLineWidth">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>52</y>
-        <width>31</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>false</bool>
-      </property>
+       <property name="verticalSpacing">
+        <number>4</number>
+       </property>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_12">
+         <property name="text">
+          <string>Grid line color:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="gridLineColor">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_17">
+         <property name="text">
+          <string>Grid line style:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QComboBox" name="titleComboBoxGrid">
+         <item>
+          <property name="text">
+           <string>SolidLine</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>DashLine</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>DotLine</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
@@ -857,9 +898,9 @@
     <widget class="QLabel" name="label_23">
      <property name="geometry">
       <rect>
-       <x>42</x>
+       <x>15</x>
        <y>14</y>
-       <width>201</width>
+       <width>228</width>
        <height>20</height>
       </rect>
      </property>
@@ -873,7 +914,7 @@
     <widget class="QLineEdit" name="maxCalculationAttempts">
      <property name="geometry">
       <rect>
-       <x>248</x>
+       <x>246</x>
        <y>14</y>
        <width>51</width>
        <height>21</height>
@@ -883,9 +924,9 @@
     <widget class="QLabel" name="label_24">
      <property name="geometry">
       <rect>
-       <x>44</x>
-       <y>40</y>
-       <width>198</width>
+       <x>10</x>
+       <y>104</y>
+       <width>232</width>
        <height>20</height>
       </rect>
      </property>
@@ -899,8 +940,8 @@
     <widget class="QLineEdit" name="editScriptPath">
      <property name="geometry">
       <rect>
-       <x>248</x>
-       <y>40</y>
+       <x>246</x>
+       <y>104</y>
        <width>252</width>
        <height>21</height>
       </rect>
@@ -909,8 +950,8 @@
     <widget class="QPushButton" name="pushButtonHelpScriptEditor">
      <property name="geometry">
       <rect>
-       <x>503</x>
-       <y>40</y>
+       <x>502</x>
+       <y>104</y>
        <width>40</width>
        <height>21</height>
       </rect>
@@ -919,41 +960,67 @@
       <string>Help</string>
      </property>
     </widget>
+    <widget class="QLabel" name="label_25">
+     <property name="geometry">
+      <rect>
+       <x>59</x>
+       <y>43</y>
+       <width>183</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Project parameters file name:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="projectParametersFileName">
+     <property name="geometry">
+      <rect>
+       <x>246</x>
+       <y>44</y>
+       <width>135</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_26">
+     <property name="geometry">
+      <rect>
+       <x>64</x>
+       <y>74</y>
+       <width>178</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Project config file name:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="projectConfigFileName">
+     <property name="geometry">
+      <rect>
+       <x>246</x>
+       <y>74</y>
+       <width>135</width>
+       <height>21</height>
+      </rect>
+     </property>
+    </widget>
    </widget>
-  </widget>
-  <widget class="QLabel" name="label_20">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>56</y>
-     <width>117</width>
-     <height>20</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>File path (additional):</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-   </property>
-  </widget>
-  <widget class="QLineEdit" name="projectFilePath2">
-   <property name="geometry">
-    <rect>
-     <x>130</x>
-     <y>58</y>
-     <width>324</width>
-     <height>20</height>
-    </rect>
-   </property>
   </widget>
   <widget class="QPushButton" name="pushButtonHelpFilePath">
    <property name="geometry">
     <rect>
-     <x>459</x>
-     <y>32</y>
+     <x>476</x>
+     <y>40</y>
      <width>40</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
@@ -963,15 +1030,72 @@
   <widget class="QPushButton" name="pushButtonHelpAdditionalPath">
    <property name="geometry">
     <rect>
-     <x>460</x>
-     <y>58</y>
+     <x>476</x>
+     <y>66</y>
      <width>40</width>
-     <height>21</height>
+     <height>20</height>
     </rect>
    </property>
    <property name="text">
     <string>Help</string>
    </property>
+  </widget>
+  <widget class="QWidget" name="layoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>14</x>
+     <y>12</y>
+     <width>456</width>
+     <height>74</height>
+    </rect>
+   </property>
+   <layout class="QFormLayout" name="formLayout_3">
+    <property name="labelAlignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="formAlignment">
+     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+    </property>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label">
+      <property name="text">
+       <string>Project name:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QLineEdit" name="projectName"/>
+    </item>
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_8">
+      <property name="text">
+       <string>File path (project):</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QLineEdit" name="projectFilePath"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_20">
+      <property name="text">
+       <string>File path (additional):</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QLineEdit" name="projectFilePath2"/>
+    </item>
+   </layout>
   </widget>
  </widget>
  <resources/>

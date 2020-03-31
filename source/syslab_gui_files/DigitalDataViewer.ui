@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>855</width>
-    <height>513</height>
+    <width>868</width>
+    <height>541</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -58,7 +58,7 @@
       </font>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <property name="movable">
       <bool>true</bool>
@@ -122,7 +122,7 @@
          <property name="minimumSize">
           <size>
            <width>150</width>
-           <height>320</height>
+           <height>350</height>
           </size>
          </property>
          <property name="focusPolicy">
@@ -316,7 +316,7 @@
           <property name="geometry">
            <rect>
             <x>3</x>
-            <y>254</y>
+            <y>318</y>
             <width>141</width>
             <height>68</height>
            </rect>
@@ -540,7 +540,7 @@
           <property name="geometry">
            <rect>
             <x>4</x>
-            <y>326</y>
+            <y>388</y>
             <width>141</width>
             <height>99</height>
            </rect>
@@ -611,6 +611,51 @@
            </property>
            <property name="text">
             <string>Apply</string>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_6">
+          <property name="geometry">
+           <rect>
+            <x>4</x>
+            <y>250</y>
+            <width>139</width>
+            <height>65</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Grid lines</string>
+          </property>
+          <widget class="QCheckBox" name="checkBoxMajorGrid">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>24</y>
+             <width>124</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Display major grid</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="checkBoxMinorGrid">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>42</y>
+             <width>124</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Display minor grid</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </widget>
@@ -854,8 +899,8 @@
           <property name="geometry">
            <rect>
             <x>4</x>
-            <y>154</y>
-            <width>149</width>
+            <y>222</y>
+            <width>151</width>
             <height>128</height>
            </rect>
           </property>
@@ -954,6 +999,51 @@
            </property>
            <property name="checked">
             <bool>false</bool>
+           </property>
+          </widget>
+         </widget>
+         <widget class="QGroupBox" name="groupBox_5">
+          <property name="geometry">
+           <rect>
+            <x>4</x>
+            <y>152</y>
+            <width>151</width>
+            <height>65</height>
+           </rect>
+          </property>
+          <property name="title">
+           <string>Grid lines</string>
+          </property>
+          <widget class="QCheckBox" name="checkBoxMajorGridFreq">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>24</y>
+             <width>124</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Display major grid</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
+           </property>
+          </widget>
+          <widget class="QCheckBox" name="checkBoxMinorGridFreq">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>42</y>
+             <width>124</width>
+             <height>17</height>
+            </rect>
+           </property>
+           <property name="text">
+            <string>Display minor grid</string>
+           </property>
+           <property name="checked">
+            <bool>true</bool>
            </property>
           </widget>
          </widget>

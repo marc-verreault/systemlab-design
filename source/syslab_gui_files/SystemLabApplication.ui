@@ -29,7 +29,7 @@
    <bool>false</bool>
   </property>
   <property name="windowTitle">
-   <string>SystemLab-Design (19.02)</string>
+   <string>SystemLab-Design (20.01)</string>
   </property>
   <property name="windowOpacity">
    <double>1.000000000000000</double>
@@ -94,6 +94,9 @@
       <property name="elideMode">
        <enum>Qt::ElideNone</enum>
       </property>
+      <property name="usesScrollButtons">
+       <bool>true</bool>
+      </property>
       <property name="tabsClosable">
        <bool>true</bool>
       </property>
@@ -154,6 +157,35 @@
     <property name="title">
      <string>&amp;Edit</string>
     </property>
+    <widget class="QMenu" name="menu_config">
+     <property name="title">
+      <string>Special config file</string>
+     </property>
+     <addaction name="action_EditConfigSpecial"/>
+     <addaction name="action_ReloadConfigSpecial"/>
+    </widget>
+    <widget class="QMenu" name="menu_port_viewers_config">
+     <property name="title">
+      <string>Port viewers config file</string>
+     </property>
+     <addaction name="action_EditPortViewers"/>
+     <addaction name="action_ReloadPortViewers"/>
+    </widget>
+    <widget class="QMenu" name="menu_graph_utilities_config">
+     <property name="title">
+      <string>Custom viewers/graph utilities file</string>
+     </property>
+     <addaction name="action_EditCustomViewers"/>
+     <addaction name="action_ReloadCustomViewers"/>
+    </widget>
+    <widget class="QMenu" name="menu_fb_library_config">
+     <property name="title">
+      <string>Functional block library config file</string>
+     </property>
+     <addaction name="action_EditFunctionalBlockLibrary"/>
+     <addaction name="action_ReloadFunctionalBlockLibrary"/>
+    </widget>
+    <addaction name="action_UndoCommand"/>
     <addaction name="separator"/>
     <addaction name="action_CopyPaste"/>
     <addaction name="action_CopyPasteToAnotherProj"/>
@@ -161,6 +193,11 @@
     <addaction name="action_Delete"/>
     <addaction name="separator"/>
     <addaction name="action_OpenScriptEditor"/>
+    <addaction name="separator"/>
+    <addaction name="menu_config"/>
+    <addaction name="menu_fb_library_config"/>
+    <addaction name="menu_port_viewers_config"/>
+    <addaction name="menu_graph_utilities_config"/>
    </widget>
    <widget class="QMenu" name="menuDesign">
     <property name="title">
@@ -194,10 +231,29 @@
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
+   <widget class="QMenu" name="menuTools">
+    <property name="title">
+     <string>Tools</string>
+    </property>
+    <addaction name="action_WaveFreq"/>
+    <addaction name="separator"/>
+    <addaction name="action_PrintSceneObjects"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+    <addaction name="action_ZoomIn"/>
+    <addaction name="action_ZoomOut"/>
+    <addaction name="action_OriginalSize"/>
+    <addaction name="action_FitItemsIntoView"/>
+   </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
    <addaction name="menuDesign"/>
    <addaction name="menuSimulation"/>
+   <addaction name="menuTools"/>
+   <addaction name="menuView"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -553,7 +609,144 @@
   </action>
   <action name="action_OpenScriptEditor">
    <property name="text">
-    <string>Open code/script editor</string>
+    <string>Open Python code/script editor</string>
+   </property>
+  </action>
+  <action name="action_EditDataPanelFile">
+   <property name="text">
+    <string>Edit - Data panel config file</string>
+   </property>
+  </action>
+  <action name="action_EditFunctionalBlockLibConfig">
+   <property name="text">
+    <string>Edit - Functional block library config file</string>
+   </property>
+  </action>
+  <action name="action_WaveFreq">
+   <property name="text">
+    <string>Wave-Freq Converter</string>
+   </property>
+  </action>
+  <action name="action_PrintSceneObjects">
+   <property name="text">
+    <string>Debug - View scene object data</string>
+   </property>
+   <property name="font">
+    <font>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="visible">
+    <bool>false</bool>
+   </property>
+  </action>
+  <action name="action_ReloadFBLibConfigFile">
+   <property name="text">
+    <string>Reload - Functional block config file</string>
+   </property>
+  </action>
+  <action name="action_ReloadPortViewersConfigFile">
+   <property name="text">
+    <string>Reload - Port viewers config file</string>
+   </property>
+  </action>
+  <action name="action_ReloadCustomViewersModule">
+   <property name="text">
+    <string>Reload - Custom viewers/graphs utilities file</string>
+   </property>
+  </action>
+  <action name="action_ReloadConfigSpecial">
+   <property name="text">
+    <string>Reload</string>
+   </property>
+  </action>
+  <action name="action_EditConfigSpecial">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="actionFunctional_block_config">
+   <property name="text">
+    <string>Functional block library config</string>
+   </property>
+  </action>
+  <action name="action_EditFunctionalBlockLibConfig_2">
+   <property name="text">
+    <string>Edit file</string>
+   </property>
+  </action>
+  <action name="action_ReloadFBLibConfigFile_2">
+   <property name="text">
+    <string>Reload file</string>
+   </property>
+  </action>
+  <action name="action_EditPortViewers">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="action_ReloadPortViewers">
+   <property name="text">
+    <string>Reload</string>
+   </property>
+  </action>
+  <action name="action_EditCustomViewers">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="action_ReloadCustomViewers">
+   <property name="text">
+    <string>Reload</string>
+   </property>
+  </action>
+  <action name="action_EditFunctionalBlockLibrary">
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="action_ReloadFunctionalBlockLibrary">
+   <property name="text">
+    <string>Reload</string>
+   </property>
+  </action>
+  <action name="action_UndoCommand">
+   <property name="text">
+    <string>Undo</string>
+   </property>
+  </action>
+  <action name="action_RedoCommand">
+   <property name="text">
+    <string>Redo</string>
+   </property>
+  </action>
+  <action name="action_ZoomIn">
+   <property name="text">
+    <string>Zoom In</string>
+   </property>
+   <property name="shortcut">
+    <string extracomment="zqaqsws">Ctrl+=</string>
+   </property>
+  </action>
+  <action name="action_ZoomOut">
+   <property name="text">
+    <string>Zoom Out</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="action_OriginalSize">
+   <property name="text">
+    <string>Actual Size</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+0</string>
+   </property>
+  </action>
+  <action name="action_FitItemsIntoView">
+   <property name="text">
+    <string>Adjust to view all items in layout</string>
    </property>
   </action>
  </widget>

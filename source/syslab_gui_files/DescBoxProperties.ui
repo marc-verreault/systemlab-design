@@ -9,8 +9,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>516</width>
-    <height>329</height>
+    <width>497</width>
+    <height>388</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -37,8 +37,8 @@
   <widget class="QDialogButtonBox" name="buttonBox">
    <property name="geometry">
     <rect>
-     <x>338</x>
-     <y>296</y>
+     <x>332</x>
+     <y>354</y>
      <width>161</width>
      <height>32</height>
     </rect>
@@ -64,7 +64,7 @@
     <rect>
      <x>5</x>
      <y>5</y>
-     <width>499</width>
+     <width>486</width>
      <height>113</height>
     </rect>
    </property>
@@ -74,8 +74,8 @@
    <widget class="QLineEdit" name="textWidth">
     <property name="geometry">
      <rect>
-      <x>394</x>
-      <y>28</y>
+      <x>400</x>
+      <y>32</y>
       <width>46</width>
       <height>20</height>
      </rect>
@@ -85,7 +85,7 @@
     <property name="geometry">
      <rect>
       <x>-5</x>
-      <y>26</y>
+      <y>30</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -101,7 +101,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>56</y>
+      <y>60</y>
       <width>106</width>
       <height>21</height>
      </rect>
@@ -116,8 +116,8 @@
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>444</x>
-      <y>26</y>
+      <x>448</x>
+      <y>30</y>
       <width>36</width>
       <height>21</height>
      </rect>
@@ -139,7 +139,7 @@
     <property name="geometry">
      <rect>
       <x>109</x>
-      <y>58</y>
+      <y>62</y>
       <width>31</width>
       <height>20</height>
      </rect>
@@ -148,9 +148,9 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>308</x>
-      <y>26</y>
-      <width>81</width>
+      <x>310</x>
+      <y>30</y>
+      <width>87</width>
       <height>21</height>
      </rect>
     </property>
@@ -165,7 +165,7 @@
     <property name="geometry">
      <rect>
       <x>60</x>
-      <y>28</y>
+      <y>32</y>
       <width>236</width>
       <height>20</height>
      </rect>
@@ -175,7 +175,7 @@
     <property name="geometry">
      <rect>
       <x>158</x>
-      <y>58</y>
+      <y>62</y>
       <width>46</width>
       <height>21</height>
      </rect>
@@ -188,7 +188,7 @@
     <property name="geometry">
      <rect>
       <x>209</x>
-      <y>58</y>
+      <y>62</y>
       <width>55</width>
       <height>21</height>
      </rect>
@@ -201,7 +201,7 @@
     <property name="geometry">
      <rect>
       <x>14</x>
-      <y>80</y>
+      <y>84</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -217,7 +217,7 @@
     <property name="geometry">
      <rect>
       <x>109</x>
-      <y>82</y>
+      <y>86</y>
       <width>30</width>
       <height>20</height>
      </rect>
@@ -227,7 +227,7 @@
     <property name="geometry">
      <rect>
       <x>244</x>
-      <y>80</y>
+      <y>86</y>
       <width>31</width>
       <height>20</height>
      </rect>
@@ -237,7 +237,7 @@
     <property name="geometry">
      <rect>
       <x>148</x>
-      <y>80</y>
+      <y>84</y>
       <width>91</width>
       <height>21</height>
      </rect>
@@ -253,7 +253,7 @@
     <property name="geometry">
      <rect>
       <x>279</x>
-      <y>56</y>
+      <y>60</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -275,7 +275,7 @@
     <property name="geometry">
      <rect>
       <x>343</x>
-      <y>58</y>
+      <y>62</y>
       <width>96</width>
       <height>20</height>
      </rect>
@@ -291,7 +291,7 @@
     <property name="geometry">
      <rect>
       <x>342</x>
-      <y>82</y>
+      <y>86</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -304,84 +304,20 @@
   <widget class="QGroupBox" name="groupBox_2">
    <property name="geometry">
     <rect>
-     <x>5</x>
-     <y>126</y>
-     <width>501</width>
-     <height>77</height>
+     <x>6</x>
+     <y>176</y>
+     <width>486</width>
+     <height>84</height>
     </rect>
    </property>
    <property name="title">
-    <string>Description box dimensions and color</string>
+    <string>Description box color(s)</string>
    </property>
-   <widget class="QLineEdit" name="box_width">
-    <property name="geometry">
-     <rect>
-      <x>94</x>
-      <y>26</y>
-      <width>36</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLineEdit" name="box_height">
-    <property name="geometry">
-     <rect>
-      <x>94</x>
-      <y>50</y>
-      <width>36</width>
-      <height>20</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_13">
-    <property name="geometry">
-     <rect>
-      <x>4</x>
-      <y>50</y>
-      <width>86</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Dimensions (h):</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-    <property name="indent">
-     <number>0</number>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_14">
-    <property name="geometry">
-     <rect>
-      <x>4</x>
-      <y>26</y>
-      <width>86</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Dimensions (w):</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-    <property name="indent">
-     <number>0</number>
-    </property>
-   </widget>
    <widget class="QPushButton" name="colorFillButton">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>24</y>
+      <x>395</x>
+      <y>30</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -393,9 +329,9 @@
    <widget class="QLabel" name="label_16">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>26</y>
-      <width>98</width>
+      <x>207</x>
+      <y>30</y>
+      <width>104</width>
       <height>21</height>
      </rect>
     </property>
@@ -415,9 +351,9 @@
    <widget class="QLineEdit" name="fillColor">
     <property name="geometry">
      <rect>
-      <x>332</x>
-      <y>26</y>
-      <width>91</width>
+      <x>316</x>
+      <y>30</y>
+      <width>74</width>
       <height>20</height>
      </rect>
     </property>
@@ -428,33 +364,11 @@
      <bool>true</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="label_17">
-    <property name="geometry">
-     <rect>
-      <x>160</x>
-      <y>70</y>
-      <width>36</width>
-      <height>21</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>pixels</string>
-    </property>
-    <property name="alignment">
-     <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
-    </property>
-    <property name="wordWrap">
-     <bool>true</bool>
-    </property>
-    <property name="indent">
-     <number>0</number>
-    </property>
-   </widget>
    <widget class="QCheckBox" name="checkBoxGradient">
     <property name="geometry">
      <rect>
-      <x>146</x>
-      <y>48</y>
+      <x>128</x>
+      <y>56</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -466,9 +380,9 @@
    <widget class="QLineEdit" name="fillColor2">
     <property name="geometry">
      <rect>
-      <x>332</x>
-      <y>50</y>
-      <width>91</width>
+      <x>316</x>
+      <y>57</y>
+      <width>73</width>
       <height>20</height>
      </rect>
     </property>
@@ -482,8 +396,8 @@
    <widget class="QPushButton" name="colorFillButton2">
     <property name="geometry">
      <rect>
-      <x>430</x>
-      <y>50</y>
+      <x>395</x>
+      <y>57</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -495,8 +409,8 @@
    <widget class="QLabel" name="label_20">
     <property name="geometry">
      <rect>
-      <x>210</x>
-      <y>48</y>
+      <x>194</x>
+      <y>56</y>
       <width>118</width>
       <height>21</height>
      </rect>
@@ -514,24 +428,11 @@
      <number>0</number>
     </property>
    </widget>
-   <widget class="Line" name="line">
-    <property name="geometry">
-     <rect>
-      <x>135</x>
-      <y>26</y>
-      <width>10</width>
-      <height>45</height>
-     </rect>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="opacity">
     <property name="geometry">
      <rect>
-      <x>194</x>
-      <y>26</y>
+      <x>58</x>
+      <y>36</y>
       <width>25</width>
       <height>20</height>
      </rect>
@@ -540,9 +441,9 @@
    <widget class="QLabel" name="label_21">
     <property name="geometry">
      <rect>
-      <x>148</x>
-      <y>24</y>
-      <width>43</width>
+      <x>-1</x>
+      <y>36</y>
+      <width>53</width>
       <height>21</height>
      </rect>
     </property>
@@ -563,20 +464,20 @@
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>5</x>
-     <y>208</y>
-     <width>499</width>
+     <x>4</x>
+     <y>264</y>
+     <width>488</width>
      <height>87</height>
     </rect>
    </property>
    <property name="title">
-    <string>Description box border style and color</string>
+    <string>Description box border style/color</string>
    </property>
    <widget class="QLabel" name="label_22">
     <property name="geometry">
      <rect>
       <x>15</x>
-      <y>28</y>
+      <y>30</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -598,7 +499,7 @@
     <property name="geometry">
      <rect>
       <x>190</x>
-      <y>28</y>
+      <y>30</y>
       <width>111</width>
       <height>21</height>
      </rect>
@@ -623,7 +524,7 @@
     <property name="geometry">
      <rect>
       <x>305</x>
-      <y>30</y>
+      <y>32</y>
       <width>96</width>
       <height>20</height>
      </rect>
@@ -636,7 +537,7 @@
     <property name="geometry">
      <rect>
       <x>405</x>
-      <y>30</y>
+      <y>32</y>
       <width>61</width>
       <height>21</height>
      </rect>
@@ -649,7 +550,7 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>28</y>
+      <y>30</y>
       <width>86</width>
       <height>22</height>
      </rect>
@@ -679,7 +580,7 @@
     <property name="geometry">
      <rect>
       <x>15</x>
-      <y>58</y>
+      <y>60</y>
       <width>71</width>
       <height>21</height>
      </rect>
@@ -701,7 +602,7 @@
     <property name="geometry">
      <rect>
       <x>90</x>
-      <y>58</y>
+      <y>60</y>
       <width>36</width>
       <height>20</height>
      </rect>
@@ -727,6 +628,83 @@
     </property>
     <property name="indent">
      <number>0</number>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_4">
+   <property name="geometry">
+    <rect>
+     <x>6</x>
+     <y>121</y>
+     <width>322</width>
+     <height>53</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Description box (dimensions)</string>
+   </property>
+   <widget class="QLabel" name="label_14">
+    <property name="geometry">
+     <rect>
+      <x>29</x>
+      <y>24</y>
+      <width>90</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dimensions (w):</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_13">
+    <property name="geometry">
+     <rect>
+      <x>176</x>
+      <y>24</y>
+      <width>91</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Dimensions (h):</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+    </property>
+    <property name="wordWrap">
+     <bool>true</bool>
+    </property>
+    <property name="indent">
+     <number>0</number>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="box_width">
+    <property name="geometry">
+     <rect>
+      <x>124</x>
+      <y>24</y>
+      <width>36</width>
+      <height>20</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="box_height">
+    <property name="geometry">
+     <rect>
+      <x>272</x>
+      <y>24</y>
+      <width>36</width>
+      <height>20</height>
+     </rect>
     </property>
    </widget>
   </widget>

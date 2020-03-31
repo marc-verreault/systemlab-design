@@ -9,26 +9,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>683</width>
-    <height>600</height>
+    <width>689</width>
+    <height>620</height>
    </rect>
   </property>
   <property name="sizePolicy">
-   <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
     <horstretch>0</horstretch>
     <verstretch>0</verstretch>
    </sizepolicy>
   </property>
   <property name="minimumSize">
    <size>
-    <width>683</width>
-    <height>600</height>
+    <width>687</width>
+    <height>620</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
-    <width>683</width>
-    <height>600</height>
+    <width>689</width>
+    <height>620</height>
    </size>
   </property>
   <property name="font">
@@ -46,9 +46,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>164</y>
-     <width>670</width>
-     <height>395</height>
+     <y>176</y>
+     <width>676</width>
+     <height>404</height>
     </rect>
    </property>
    <property name="font">
@@ -71,8 +71,8 @@
       <rect>
        <x>5</x>
        <y>5</y>
-       <width>544</width>
-       <height>359</height>
+       <width>513</width>
+       <height>367</height>
       </rect>
      </property>
      <property name="font">
@@ -134,14 +134,14 @@
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
      </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>34</number>
+     </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>105</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>34</number>
      </attribute>
      <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
       <bool>false</bool>
@@ -149,14 +149,14 @@
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>24</number>
+     </attribute>
      <attribute name="verticalHeaderDefaultSectionSize">
       <number>24</number>
      </attribute>
      <attribute name="verticalHeaderHighlightSections">
       <bool>true</bool>
-     </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
-      <number>24</number>
      </attribute>
      <attribute name="verticalHeaderStretchLastSection">
       <bool>false</bool>
@@ -256,10 +256,10 @@
     <widget class="QGroupBox" name="groupBox_8">
      <property name="geometry">
       <rect>
-       <x>553</x>
+       <x>530</x>
        <y>4</y>
-       <width>107</width>
-       <height>205</height>
+       <width>132</width>
+       <height>210</height>
       </rect>
      </property>
      <property name="title">
@@ -268,55 +268,82 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>7</x>
-        <y>28</y>
-        <width>94</width>
-        <height>170</height>
+        <x>6</x>
+        <y>26</y>
+        <width>119</width>
+        <height>183</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <item>
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="insertRowButton">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Inserts a row above the selected row. To select a row, left-click mouse on any cell within the desired row.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Insert row</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="deleteRowButton">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Deletes all fields linked to the selected row. To select a row, left-click mouse on any cell within the desired row.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Delete row</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="copyRowButton">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Copies the contents of the selected row. To select a row, left-click mouse on any cell within the desired row.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Copy row</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="pasteRowButton">
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pastes a copied row's contents within the selected row (all existing field settings will be overwritten). To select a row, left-click mouse on any cell within the desired row.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="text">
           <string>Paste row</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="moveRowUpButton">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moves the selected row up by one row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shifts the selected row up by one row. To select a row, left-click mouse on any cell within the desired row.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Move row up</string>
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="moveRowDownButton">
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moves the selected row up by one row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Shifts the selected row down by one row. To select a row, left-click mouse on any cell within the desired row.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="text">
           <string>Move row down</string>
@@ -329,10 +356,10 @@
     <widget class="QGroupBox" name="groupBox_9">
      <property name="geometry">
       <rect>
-       <x>553</x>
-       <y>216</y>
-       <width>107</width>
-       <height>146</height>
+       <x>530</x>
+       <y>218</y>
+       <width>132</width>
+       <height>150</height>
       </rect>
      </property>
      <property name="title">
@@ -341,15 +368,38 @@
      <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>8</x>
+        <x>5</x>
         <y>26</y>
-        <width>92</width>
-        <height>112</height>
+        <width>119</width>
+        <height>124</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
-       <item>
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="insertHeaderButton">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Inserts a header field above the selected row. To select a row, left-click mouse on any cell within the desired row.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
          <property name="autoFillBackground">
           <bool>true</bool>
          </property>
@@ -358,10 +408,15 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="insertListBoxButton">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adds a combo box (list) to the parameter &lt;span style=&quot; font-weight:600;&quot;&gt;Value&lt;/span&gt; field. The&lt;span style=&quot; font-weight:600;&quot;&gt; Notes&lt;/span&gt; field is used to build the list (Format: Item 1, Item 2, Item 3).&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adds a combo box (list) to the parameter &lt;span style=&quot; font-weight:600;&quot;&gt;Value&lt;/span&gt; field. The&lt;span style=&quot; font-weight:600;&quot;&gt; Notes&lt;/span&gt; field is used to build the list (Format: Item 1, Item 2, Item 3).&lt;/p&gt;&lt;p&gt;Note 1: The &lt;span style=&quot; font-weight:600;&quot;&gt;Value&lt;/span&gt; field (row cell) to be updated must be selected (left-click mouse)&lt;/p&gt;&lt;p&gt;Note 2: To properly build the list, each list item must be separated by a &lt;span style=&quot; font-weight:600;&quot;&gt;comma&lt;/span&gt; followed by a &lt;span style=&quot; font-weight:600;&quot;&gt;space&lt;/span&gt;!&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="autoFillBackground">
           <bool>true</bool>
@@ -371,10 +426,15 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="insertCheckBoxButton">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adds a check box to the parameter&lt;span style=&quot; font-weight:600;&quot;&gt; Value&lt;/span&gt; field.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adds a check box to the&lt;span style=&quot; font-weight:600;&quot;&gt; Value&lt;/span&gt; field.&lt;/p&gt;&lt;p&gt;Note: The &lt;span style=&quot; font-weight:600;&quot;&gt;Value&lt;/span&gt; field (row cell) to be updated must be selected (left-click mouse)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="autoFillBackground">
           <bool>true</bool>
@@ -384,10 +444,15 @@
          </property>
         </widget>
        </item>
-       <item>
+       <item alignment="Qt::AlignHCenter">
         <widget class="QPushButton" name="updateParametersTableButton">
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
          <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Adds a check box to the parameter&lt;span style=&quot; font-weight:600;&quot;&gt; Value&lt;/span&gt; field.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Updates and saves any changes made to the Input Paramters table&lt;/p&gt;&lt;p&gt;Note: Any changes made will be permanently saved even if the Functional block dialog &lt;span style=&quot; font-weight:600;&quot;&gt;Cancel&lt;/span&gt; button is selected.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
          </property>
          <property name="autoFillBackground">
           <bool>true</bool>
@@ -414,7 +479,7 @@
        <x>5</x>
        <y>5</y>
        <width>431</width>
-       <height>361</height>
+       <height>368</height>
       </rect>
      </property>
      <property name="font">
@@ -473,26 +538,26 @@
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
      </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>40</number>
+     </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>66</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>true</bool>
      </attribute>
-     <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>40</number>
-     </attribute>
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
+     </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>24</number>
      </attribute>
      <attribute name="verticalHeaderDefaultSectionSize">
       <number>24</number>
      </attribute>
      <attribute name="verticalHeaderHighlightSections">
       <bool>true</bool>
-     </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
-      <number>24</number>
      </attribute>
      <attribute name="verticalHeaderStretchLastSection">
       <bool>false</bool>
@@ -597,109 +662,212 @@
       </property>
      </column>
     </widget>
-    <widget class="QPushButton" name="addPortButton">
+    <widget class="QGroupBox" name="groupBox_10">
      <property name="geometry">
       <rect>
-       <x>454</x>
-       <y>32</y>
-       <width>96</width>
-       <height>23</height>
+       <x>445</x>
+       <y>4</y>
+       <width>167</width>
+       <height>361</height>
       </rect>
      </property>
-     <property name="text">
-      <string>Add port(s)</string>
+     <property name="title">
+      <string>Port operations</string>
      </property>
-    </widget>
-    <widget class="QPushButton" name="deletePortButton">
-     <property name="geometry">
-      <rect>
-       <x>454</x>
-       <y>96</y>
-       <width>96</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Delete port(s)</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="editPortButton">
-     <property name="geometry">
-      <rect>
-       <x>454</x>
-       <y>64</y>
-       <width>96</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="focusPolicy">
-      <enum>Qt::StrongFocus</enum>
-     </property>
-     <property name="text">
-      <string>Edit port(s)</string>
-     </property>
-    </widget>
-    <widget class="QCheckBox" name="portDisplayCheckBox">
-     <property name="geometry">
-      <rect>
-       <x>446</x>
-       <y>8</y>
-       <width>114</width>
-       <height>17</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Display port names</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="movePortUpButton">
-     <property name="geometry">
-      <rect>
-       <x>454</x>
-       <y>128</y>
-       <width>96</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moves the selected port up by one row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Move port up</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="movePortDownButton">
-     <property name="geometry">
-      <rect>
-       <x>454</x>
-       <y>160</y>
-       <width>95</width>
-       <height>23</height>
-      </rect>
-     </property>
-     <property name="toolTip">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moves the selected row down by one row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
-     <property name="text">
-      <string>Move port down</string>
-     </property>
-    </widget>
-    <widget class="QTextEdit" name="textEdit">
-     <property name="geometry">
-      <rect>
-       <x>446</x>
-       <y>196</y>
-       <width>111</width>
-       <height>88</height>
-      </rect>
-     </property>
-     <property name="html">
-      <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>16</y>
+        <width>147</width>
+        <height>327</height>
+       </rect>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <property name="leftMargin">
+        <number>5</number>
+       </property>
+       <property name="topMargin">
+        <number>5</number>
+       </property>
+       <property name="rightMargin">
+        <number>5</number>
+       </property>
+       <property name="bottomMargin">
+        <number>5</number>
+       </property>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QCheckBox" name="portDisplayCheckBox">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>22</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+           <italic>false</italic>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="text">
+          <string>Display port names</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="addPortButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Add port(s)</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="editPortButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
+         </property>
+         <property name="text">
+          <string>Edit port(s)</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="deletePortButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Delete port(s)</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="movePortUpButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moves the selected port up by one row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Move port up</string>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QPushButton" name="movePortDownButton">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>150</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Moves the selected row down by one row&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+         <property name="text">
+          <string>Move port down</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="textEdit">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="html">
+          <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
-&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:8.25pt; font-weight:400; font-style:normal;&quot;&gt;
-&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; color:#5d5d5d;&quot;&gt;Before moving a port up or down the list, first select a row in the table by left-clicking on any cell in that row&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-     </property>
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Segoe UI'; font-size:8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; color:#5d5d5d;&quot;&gt;Before moving a&lt;/span&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600; color:#5d5d5d;&quot;&gt; port&lt;/span&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; color:#5d5d5d;&quot;&gt; &lt;/span&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600; color:#5d5d5d;&quot;&gt;up&lt;/span&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; color:#5d5d5d;&quot;&gt; or &lt;/span&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; font-weight:600; color:#5d5d5d;&quot;&gt;down&lt;/span&gt;&lt;span style=&quot; font-family:'MS Shell Dlg 2'; color:#5d5d5d;&quot;&gt; the list, first select a row in the table by left-clicking on any cell in that row&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_3">
@@ -715,7 +883,7 @@ p, li { white-space: pre-wrap; }
        <x>5</x>
        <y>5</y>
        <width>542</width>
-       <height>358</height>
+       <height>369</height>
       </rect>
      </property>
      <property name="font">
@@ -774,14 +942,14 @@ p, li { white-space: pre-wrap; }
      <attribute name="horizontalHeaderCascadingSectionResizes">
       <bool>false</bool>
      </attribute>
+     <attribute name="horizontalHeaderMinimumSectionSize">
+      <number>34</number>
+     </attribute>
      <attribute name="horizontalHeaderDefaultSectionSize">
       <number>105</number>
      </attribute>
      <attribute name="horizontalHeaderHighlightSections">
       <bool>false</bool>
-     </attribute>
-     <attribute name="horizontalHeaderMinimumSectionSize">
-      <number>34</number>
      </attribute>
      <attribute name="horizontalHeaderShowSortIndicator" stdset="0">
       <bool>false</bool>
@@ -789,14 +957,14 @@ p, li { white-space: pre-wrap; }
      <attribute name="verticalHeaderVisible">
       <bool>false</bool>
      </attribute>
+     <attribute name="verticalHeaderMinimumSectionSize">
+      <number>24</number>
+     </attribute>
      <attribute name="verticalHeaderDefaultSectionSize">
       <number>24</number>
      </attribute>
      <attribute name="verticalHeaderHighlightSections">
       <bool>true</bool>
-     </attribute>
-     <attribute name="verticalHeaderMinimumSectionSize">
-      <number>24</number>
      </attribute>
      <attribute name="verticalHeaderStretchLastSection">
       <bool>false</bool>
@@ -889,7 +1057,7 @@ p, li { white-space: pre-wrap; }
    <property name="geometry">
     <rect>
      <x>516</x>
-     <y>562</y>
+     <y>584</y>
      <width>160</width>
      <height>32</height>
     </rect>
@@ -909,13 +1077,14 @@ p, li { white-space: pre-wrap; }
     <rect>
      <x>10</x>
      <y>10</y>
-     <width>591</width>
-     <height>149</height>
+     <width>669</width>
+     <height>162</height>
     </rect>
    </property>
    <property name="font">
     <font>
      <family>Segoe UI</family>
+     <pointsize>8</pointsize>
     </font>
    </property>
    <property name="autoFillBackground">
@@ -929,102 +1098,219 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
     <attribute name="title">
-     <string>Functional block main settings</string>
+     <string>Main settings</string>
     </attribute>
     <widget class="QGroupBox" name="groupBox_4">
      <property name="geometry">
       <rect>
        <x>352</x>
        <y>4</y>
-       <width>228</width>
-       <height>84</height>
+       <width>308</width>
+       <height>87</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Segoe UI</family>
+       <pointsize>8</pointsize>
        <kerning>true</kerning>
       </font>
      </property>
      <property name="title">
       <string>Icon settings</string>
      </property>
-     <widget class="QCheckBox" name="checkBoxIcon">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>12</x>
-        <y>54</y>
-        <width>81</width>
-        <height>21</height>
+        <x>6</x>
+        <y>20</y>
+        <width>296</width>
+        <height>60</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Display icon</string>
-      </property>
-      <property name="checked">
-       <bool>false</bool>
-      </property>
+      <layout class="QGridLayout" name="gridLayout_2">
+       <property name="sizeConstraint">
+        <enum>QLayout::SetDefaultConstraint</enum>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <item row="0" column="0" alignment="Qt::AlignRight|Qt::AlignVCenter">
+        <widget class="QLabel" name="label_9">
+         <property name="minimumSize">
+          <size>
+           <width>60</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>65</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>File name:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0" colspan="2" alignment="Qt::AlignRight|Qt::AlignVCenter">
+        <widget class="QCheckBox" name="checkBoxIcon">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Display icon</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2" alignment="Qt::AlignRight|Qt::AlignVCenter">
+        <widget class="QLabel" name="label_10">
+         <property name="minimumSize">
+          <size>
+           <width>50</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>60</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Pos (x/y):</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3" alignment="Qt::AlignVCenter">
+        <widget class="QLineEdit" name="functionalBlockIconX">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4" alignment="Qt::AlignVCenter">
+        <widget class="QLineEdit" name="functionalBlockIconY">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1" colspan="4">
+        <widget class="QLineEdit" name="functionalBlockIcon">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>250</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
-     <widget class="QLineEdit" name="functionalBlockIcon">
+     <widget class="Line" name="line_3">
       <property name="geometry">
        <rect>
-        <x>82</x>
-        <y>26</y>
-        <width>141</width>
-        <height>20</height>
+        <x>6</x>
+        <y>40</y>
+        <width>296</width>
+        <height>16</height>
        </rect>
       </property>
-     </widget>
-     <widget class="QLabel" name="label_10">
-      <property name="geometry">
-       <rect>
-        <x>104</x>
-        <y>52</y>
-        <width>48</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Pos (x/y):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="functionalBlockIconX">
-      <property name="geometry">
-       <rect>
-        <x>156</x>
-        <y>52</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="functionalBlockIconY">
-      <property name="geometry">
-       <rect>
-        <x>192</x>
-        <y>52</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_9">
-      <property name="geometry">
-       <rect>
-        <x>24</x>
-        <y>26</y>
-        <width>54</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>File name:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
       </property>
      </widget>
     </widget>
@@ -1034,118 +1320,18 @@ p, li { white-space: pre-wrap; }
        <x>6</x>
        <y>4</y>
        <width>340</width>
-       <height>111</height>
+       <height>125</height>
       </rect>
      </property>
      <property name="title">
       <string>Functional block name and script settings</string>
      </property>
-     <widget class="QLineEdit" name="functionalBlockID">
-      <property name="geometry">
-       <rect>
-        <x>308</x>
-        <y>26</y>
-        <width>24</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QCheckBox" name="checkBoxName">
-      <property name="geometry">
-       <rect>
-        <x>221</x>
-        <y>48</y>
-        <width>111</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-       </font>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>Display fb name</string>
-      </property>
-      <property name="checked">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_2">
-      <property name="geometry">
-       <rect>
-        <x>2</x>
-        <y>26</y>
-        <width>140</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-        <pointsize>8</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Functional block name/ID:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="functionalBlockName">
-      <property name="geometry">
-       <rect>
-        <x>146</x>
-        <y>26</y>
-        <width>158</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_7">
-      <property name="geometry">
-       <rect>
-        <x>4</x>
-        <y>82</y>
-        <width>108</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Segoe UI</family>
-       </font>
-      </property>
-      <property name="text">
-       <string>Script module name:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="functionalBlockScript">
-      <property name="geometry">
-       <rect>
-        <x>114</x>
-        <y>82</y>
-        <width>153</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="Line" name="line">
       <property name="geometry">
        <rect>
-        <x>8</x>
-        <y>66</y>
-        <width>325</width>
+        <x>6</x>
+        <y>72</y>
+        <width>331</width>
         <height>16</height>
        </rect>
       </property>
@@ -1153,18 +1339,248 @@ p, li { white-space: pre-wrap; }
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QPushButton" name="editScriptButton">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
-        <x>270</x>
-        <y>81</y>
-        <width>64</width>
-        <height>22</height>
+        <x>4</x>
+        <y>20</y>
+        <width>332</width>
+        <height>57</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Edit Script</string>
+      <layout class="QGridLayout" name="gridLayout">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <property name="spacing">
+        <number>4</number>
+       </property>
+       <item row="0" column="1" alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+        <widget class="QLineEdit" name="functionalBlockName">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>195</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>158</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLineEdit" name="functionalBlockID">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>25</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>25</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::LeftToRight</enum>
+         </property>
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" alignment="Qt::AlignVCenter">
+        <widget class="QLabel" name="label_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>90</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>90</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Functional block name/ID:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1" colspan="2">
+        <widget class="QCheckBox" name="checkBoxName">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="layoutDirection">
+          <enum>Qt::RightToLeft</enum>
+         </property>
+         <property name="text">
+          <string>Display fb name</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="layoutWidget">
+      <property name="geometry">
+       <rect>
+        <x>4</x>
+        <y>86</y>
+        <width>333</width>
+        <height>34</height>
+       </rect>
       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>5</number>
+       </property>
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item alignment="Qt::AlignVCenter">
+        <widget class="QLabel" name="label_7">
+         <property name="minimumSize">
+          <size>
+           <width>90</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>90</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <family>Segoe UI</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Script module name:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+         <property name="wordWrap">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="functionalBlockScript">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>140</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>175</width>
+           <height>20</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="editScriptButton">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>68</width>
+           <height>20</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Edit Script</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </widget>
     </widget>
    </widget>
@@ -1173,7 +1589,7 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
     <attribute name="title">
-     <string>Functional block dimensions and colors</string>
+     <string>Dimensions/Colors</string>
     </attribute>
     <widget class="QGroupBox" name="groupBox">
      <property name="geometry">
@@ -1181,12 +1597,13 @@ p, li { white-space: pre-wrap; }
        <x>4</x>
        <y>5</y>
        <width>103</width>
-       <height>87</height>
+       <height>86</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Segoe UI</family>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="title">
@@ -1198,11 +1615,28 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_14">
       <property name="geometry">
        <rect>
-        <x>8</x>
-        <y>28</y>
-        <width>43</width>
-        <height>20</height>
+        <x>10</x>
+        <y>26</y>
+        <width>45</width>
+        <height>30</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>45</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>45</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Width:</string>
@@ -1217,24 +1651,31 @@ p, li { white-space: pre-wrap; }
        <number>0</number>
       </property>
      </widget>
-     <widget class="QLineEdit" name="functionalBlock_width">
-      <property name="geometry">
-       <rect>
-        <x>56</x>
-        <y>28</y>
-        <width>37</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_13">
       <property name="geometry">
        <rect>
-        <x>6</x>
-        <y>54</y>
+        <x>10</x>
+        <y>50</y>
         <width>45</width>
-        <height>21</height>
+        <height>30</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>45</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>45</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Height:</string>
@@ -1249,14 +1690,60 @@ p, li { white-space: pre-wrap; }
        <number>0</number>
       </property>
      </widget>
+     <widget class="QLineEdit" name="functionalBlock_width">
+      <property name="geometry">
+       <rect>
+        <x>58</x>
+        <y>30</y>
+        <width>40</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+     </widget>
      <widget class="QLineEdit" name="functionalBlock_height">
       <property name="geometry">
        <rect>
-        <x>56</x>
-        <y>54</y>
-        <width>36</width>
+        <x>58</x>
+        <y>56</y>
+        <width>40</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>40</width>
+        <height>20</height>
+       </size>
       </property>
      </widget>
     </widget>
@@ -1265,13 +1752,14 @@ p, li { white-space: pre-wrap; }
       <rect>
        <x>111</x>
        <y>5</y>
-       <width>246</width>
-       <height>87</height>
+       <width>270</width>
+       <height>86</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Segoe UI</family>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="contextMenuPolicy">
@@ -1289,14 +1777,78 @@ p, li { white-space: pre-wrap; }
      <property name="flat">
       <bool>false</bool>
      </property>
+     <widget class="Line" name="line_2">
+      <property name="geometry">
+       <rect>
+        <x>7</x>
+        <y>46</y>
+        <width>256</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="fillColor">
+      <property name="geometry">
+       <rect>
+        <x>152</x>
+        <y>30</y>
+        <width>55</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
      <widget class="QLabel" name="label_16">
       <property name="geometry">
        <rect>
-        <x>4</x>
-        <y>24</y>
-        <width>48</width>
-        <height>21</height>
+        <x>86</x>
+        <y>28</y>
+        <width>60</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Primary:</string>
@@ -1311,30 +1863,38 @@ p, li { white-space: pre-wrap; }
        <number>0</number>
       </property>
      </widget>
-     <widget class="QLineEdit" name="fillColor">
-      <property name="geometry">
-       <rect>
-        <x>56</x>
-        <y>24</y>
-        <width>56</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
      <widget class="QPushButton" name="colorFillButton">
       <property name="geometry">
        <rect>
-        <x>116</x>
-        <y>24</y>
-        <width>46</width>
-        <height>21</height>
+        <x>212</x>
+        <y>30</y>
+        <width>50</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Update</string>
@@ -1343,11 +1903,28 @@ p, li { white-space: pre-wrap; }
      <widget class="QCheckBox" name="checkBoxGradient">
       <property name="geometry">
        <rect>
-        <x>7</x>
-        <y>56</y>
-        <width>67</width>
-        <height>21</height>
+        <x>-2</x>
+        <y>58</y>
+        <width>78</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>78</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>78</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1356,43 +1933,38 @@ p, li { white-space: pre-wrap; }
        <string>Gradient:</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="fillColor2">
-      <property name="geometry">
-       <rect>
-        <x>138</x>
-        <y>56</y>
-        <width>56</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="colorFillButton2">
-      <property name="geometry">
-       <rect>
-        <x>196</x>
-        <y>56</y>
-        <width>46</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Update</string>
-      </property>
-     </widget>
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>72</x>
-        <y>56</y>
-        <width>63</width>
-        <height>21</height>
+        <x>86</x>
+        <y>58</y>
+        <width>60</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>0</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Secondary:</string>
@@ -1407,27 +1979,203 @@ p, li { white-space: pre-wrap; }
        <number>0</number>
       </property>
      </widget>
+     <widget class="QPushButton" name="colorFillButton2">
+      <property name="geometry">
+       <rect>
+        <x>212</x>
+        <y>58</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Update</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="fillColor2">
+      <property name="geometry">
+       <rect>
+        <x>152</x>
+        <y>58</y>
+        <width>55</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_3">
      <property name="geometry">
       <rect>
-       <x>362</x>
+       <x>386</x>
        <y>5</y>
-       <width>185</width>
+       <width>203</width>
        <height>87</height>
       </rect>
      </property>
      <property name="title">
       <string>Border settings</string>
      </property>
+     <widget class="QLineEdit" name="borderColor">
+      <property name="geometry">
+       <rect>
+        <x>74</x>
+        <y>56</y>
+        <width>55</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="readOnly">
+       <bool>true</bool>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_17">
+      <property name="geometry">
+       <rect>
+        <x>-4</x>
+        <y>50</y>
+        <width>70</width>
+        <height>30</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>70</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>70</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="layoutDirection">
+       <enum>Qt::RightToLeft</enum>
+      </property>
+      <property name="text">
+       <string>Line color:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+      <property name="wordWrap">
+       <bool>true</bool>
+      </property>
+      <property name="indent">
+       <number>0</number>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="colorBorderButton">
+      <property name="geometry">
+       <rect>
+        <x>134</x>
+        <y>56</y>
+        <width>45</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>45</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>45</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Update</string>
+      </property>
+     </widget>
      <widget class="QLabel" name="label_21">
       <property name="geometry">
        <rect>
-        <x>2</x>
-        <y>26</y>
-        <width>55</width>
-        <height>21</height>
+        <x>5</x>
+        <y>24</y>
+        <width>61</width>
+        <height>30</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>0</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>16777215</width>
+        <height>30</height>
+       </size>
       </property>
       <property name="layoutDirection">
        <enum>Qt::RightToLeft</enum>
@@ -1448,11 +2196,35 @@ p, li { white-space: pre-wrap; }
      <widget class="QComboBox" name="dataComboBoxBorder">
       <property name="geometry">
        <rect>
-        <x>62</x>
-        <y>26</y>
-        <width>86</width>
+        <x>75</x>
+        <y>29</y>
+        <width>103</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>90</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>110</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <item>
        <property name="text">
@@ -1475,57 +2247,6 @@ p, li { white-space: pre-wrap; }
        </property>
       </item>
      </widget>
-     <widget class="QLabel" name="label_17">
-      <property name="geometry">
-       <rect>
-        <x>5</x>
-        <y>54</y>
-        <width>53</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="layoutDirection">
-       <enum>Qt::RightToLeft</enum>
-      </property>
-      <property name="text">
-       <string>Line color:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-      <property name="wordWrap">
-       <bool>true</bool>
-      </property>
-      <property name="indent">
-       <number>0</number>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="borderColor">
-      <property name="geometry">
-       <rect>
-        <x>62</x>
-        <y>54</y>
-        <width>56</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="readOnly">
-       <bool>true</bool>
-      </property>
-     </widget>
-     <widget class="QPushButton" name="colorBorderButton">
-      <property name="geometry">
-       <rect>
-        <x>120</x>
-        <y>54</y>
-        <width>49</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Update</string>
-      </property>
-     </widget>
     </widget>
    </widget>
    <widget class="QWidget" name="tab_text">
@@ -1533,29 +2254,30 @@ p, li { white-space: pre-wrap; }
      <bool>true</bool>
     </property>
     <attribute name="title">
-     <string>Functional block text settings</string>
+     <string>Title and port label settings</string>
     </attribute>
     <widget class="QGroupBox" name="groupBox_5">
      <property name="geometry">
       <rect>
        <x>5</x>
-       <y>6</y>
+       <y>2</y>
        <width>305</width>
-       <height>102</height>
+       <height>76</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Segoe UI</family>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="title">
-      <string>Functional block title settings</string>
+      <string>Title font settings</string>
      </property>
      <widget class="QLabel" name="label_8">
       <property name="geometry">
        <rect>
-        <x>6</x>
+        <x>10</x>
         <y>24</y>
         <width>57</width>
         <height>21</height>
@@ -1594,7 +2316,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QCheckBox" name="checkBoxItalic">
       <property name="geometry">
        <rect>
-        <x>178</x>
+        <x>176</x>
         <y>24</y>
         <width>46</width>
         <height>21</height>
@@ -1607,7 +2329,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QLabel" name="label_19">
       <property name="geometry">
        <rect>
-        <x>6</x>
+        <x>10</x>
         <y>50</y>
         <width>57</width>
         <height>21</height>
@@ -1631,7 +2353,7 @@ p, li { white-space: pre-wrap; }
        <rect>
         <x>72</x>
         <y>50</y>
-        <width>81</width>
+        <width>55</width>
         <height>20</height>
        </rect>
       </property>
@@ -1645,7 +2367,7 @@ p, li { white-space: pre-wrap; }
      <widget class="QPushButton" name="colorFontButton">
       <property name="geometry">
        <rect>
-        <x>162</x>
+        <x>138</x>
         <y>50</y>
         <width>61</width>
         <height>21</height>
@@ -1655,97 +2377,20 @@ p, li { white-space: pre-wrap; }
        <string>Update</string>
       </property>
      </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>16</x>
-        <y>76</y>
-        <width>47</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Pos (x):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="namePosX">
-      <property name="geometry">
-       <rect>
-        <x>72</x>
-        <y>76</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_4">
-      <property name="geometry">
-       <rect>
-        <x>110</x>
-        <y>76</y>
-        <width>41</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Pos (y):</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="namePosY">
-      <property name="geometry">
-       <rect>
-        <x>158</x>
-        <y>76</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_5">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>76</y>
-        <width>66</width>
-        <height>21</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Text length:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-      </property>
-     </widget>
-     <widget class="QLineEdit" name="nameLength">
-      <property name="geometry">
-       <rect>
-        <x>262</x>
-        <y>76</y>
-        <width>31</width>
-        <height>20</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
     <widget class="QGroupBox" name="groupBox_6">
      <property name="geometry">
       <rect>
-       <x>318</x>
-       <y>6</y>
-       <width>239</width>
-       <height>80</height>
+       <x>316</x>
+       <y>2</y>
+       <width>250</width>
+       <height>77</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Segoe UI</family>
+       <pointsize>8</pointsize>
       </font>
      </property>
      <property name="title">
@@ -1755,10 +2400,22 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>8</x>
-        <y>26</y>
-        <width>57</width>
-        <height>21</height>
+        <y>20</y>
+        <width>60</width>
+        <height>30</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>30</height>
+       </size>
       </property>
       <property name="text">
        <string>Font size:</string>
@@ -1768,23 +2425,68 @@ p, li { white-space: pre-wrap; }
       </property>
      </widget>
      <widget class="QLineEdit" name="portLabelFontSize">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="geometry">
        <rect>
         <x>72</x>
         <y>26</y>
-        <width>31</width>
+        <width>30</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>30</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>30</width>
+        <height>20</height>
+       </size>
       </property>
      </widget>
      <widget class="QCheckBox" name="checkBoxBoldPortLabel">
       <property name="geometry">
        <rect>
-        <x>120</x>
+        <x>116</x>
         <y>26</y>
-        <width>46</width>
-        <height>21</height>
+        <width>50</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Bold</string>
@@ -1793,11 +2495,29 @@ p, li { white-space: pre-wrap; }
      <widget class="QCheckBox" name="checkBoxItalicPortLabel">
       <property name="geometry">
        <rect>
-        <x>174</x>
+        <x>166</x>
         <y>26</y>
-        <width>46</width>
-        <height>21</height>
+        <width>50</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
       </property>
       <property name="text">
        <string>Italic</string>
@@ -1807,10 +2527,22 @@ p, li { white-space: pre-wrap; }
       <property name="geometry">
        <rect>
         <x>8</x>
-        <y>52</y>
-        <width>57</width>
-        <height>21</height>
+        <y>46</y>
+        <width>60</width>
+        <height>30</height>
        </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>60</width>
+        <height>30</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>60</width>
+        <height>30</height>
+       </size>
       </property>
       <property name="text">
        <string>Font color:</string>
@@ -1825,14 +2557,57 @@ p, li { white-space: pre-wrap; }
        <number>0</number>
       </property>
      </widget>
+     <widget class="QPushButton" name="colorFontButtonPortLabel">
+      <property name="geometry">
+       <rect>
+        <x>138</x>
+        <y>52</y>
+        <width>50</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>50</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="text">
+       <string>Update</string>
+      </property>
+     </widget>
      <widget class="QLineEdit" name="fontColorPortLabel">
       <property name="geometry">
        <rect>
         <x>72</x>
         <y>52</y>
-        <width>81</width>
+        <width>55</width>
         <height>20</height>
        </rect>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="minimumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>55</width>
+        <height>20</height>
+       </size>
       </property>
       <property name="autoFillBackground">
        <bool>false</bool>
@@ -1841,17 +2616,101 @@ p, li { white-space: pre-wrap; }
        <bool>true</bool>
       </property>
      </widget>
-     <widget class="QPushButton" name="colorFontButtonPortLabel">
+    </widget>
+    <widget class="QGroupBox" name="groupBox_11">
+     <property name="geometry">
+      <rect>
+       <x>4</x>
+       <y>80</y>
+       <width>307</width>
+       <height>49</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Title position settings</string>
+     </property>
+     <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>162</x>
-        <y>52</y>
-        <width>61</width>
-        <height>21</height>
+        <x>4</x>
+        <y>23</y>
+        <width>47</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Segoe UI</family>
+        <pointsize>8</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Pos (x):</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="namePosX">
+      <property name="geometry">
+       <rect>
+        <x>54</x>
+        <y>24</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_4">
+      <property name="geometry">
+       <rect>
+        <x>88</x>
+        <y>24</y>
+        <width>41</width>
+        <height>20</height>
        </rect>
       </property>
       <property name="text">
-       <string>Update</string>
+       <string>Pos (y):</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="namePosY">
+      <property name="geometry">
+       <rect>
+        <x>132</x>
+        <y>24</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>168</x>
+        <y>24</y>
+        <width>101</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Text length (wrap):</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="nameLength">
+      <property name="geometry">
+       <rect>
+        <x>272</x>
+        <y>24</y>
+        <width>31</width>
+        <height>20</height>
+       </rect>
       </property>
      </widget>
     </widget>

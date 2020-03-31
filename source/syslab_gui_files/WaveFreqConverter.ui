@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>300</width>
+    <height>230</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>300</width>
+    <height>230</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>300</width>
+    <height>230</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>0</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>Wave-Freq Converter</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>Icon_SystemLabDesigner.bmp</normaloff>Icon_SystemLabDesigner.bmp</iconset>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
+  </property>
+  <widget class="QComboBox" name="waveUnitsEnter">
+   <property name="geometry">
+    <rect>
+     <x>223</x>
+     <y>12</y>
+     <width>52</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="editable">
+    <bool>false</bool>
+   </property>
+   <property name="currentText">
+    <string>m</string>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="maxVisibleItems">
+    <number>4</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>m</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>um</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>nm</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLineEdit" name="waveEnter">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>11</y>
+     <width>135</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_4">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>73</y>
+     <width>68</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="text">
+    <string>Frequency:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_6">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>11</y>
+     <width>69</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="text">
+    <string>Wavelength:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="freqResult">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>73</y>
+     <width>134</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="freqUnitsResult">
+   <property name="geometry">
+    <rect>
+     <x>223</x>
+     <y>74</y>
+     <width>52</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="editable">
+    <bool>false</bool>
+   </property>
+   <property name="currentText">
+    <string>Hz</string>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="maxVisibleItems">
+    <number>4</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>Hz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>kHz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>MHz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>GHz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>THz</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="button_CalculateFreq">
+   <property name="geometry">
+    <rect>
+     <x>85</x>
+     <y>40</y>
+     <width>121</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Calculate frequency</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="button_CalculateWave">
+   <property name="geometry">
+    <rect>
+     <x>88</x>
+     <y>156</y>
+     <width>121</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Calculate wavelength</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_5">
+   <property name="geometry">
+    <rect>
+     <x>8</x>
+     <y>127</y>
+     <width>68</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="text">
+    <string>Frequency:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_7">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>190</y>
+     <width>69</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="layoutDirection">
+    <enum>Qt::RightToLeft</enum>
+   </property>
+   <property name="text">
+    <string>Wavelength:</string>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+   </property>
+  </widget>
+  <widget class="Line" name="line">
+   <property name="geometry">
+    <rect>
+     <x>18</x>
+     <y>105</y>
+     <width>273</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="freqEnter">
+   <property name="geometry">
+    <rect>
+     <x>80</x>
+     <y>126</y>
+     <width>135</width>
+     <height>22</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="freqUnitsEnter">
+   <property name="geometry">
+    <rect>
+     <x>223</x>
+     <y>126</y>
+     <width>52</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="editable">
+    <bool>false</bool>
+   </property>
+   <property name="currentText">
+    <string>Hz</string>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="maxVisibleItems">
+    <number>4</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>Hz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>kHz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>MHz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>GHz</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>THz</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QLineEdit" name="waveResult">
+   <property name="geometry">
+    <rect>
+     <x>82</x>
+     <y>191</y>
+     <width>134</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="readOnly">
+    <bool>true</bool>
+   </property>
+  </widget>
+  <widget class="QComboBox" name="waveUnitsResult">
+   <property name="geometry">
+    <rect>
+     <x>223</x>
+     <y>192</y>
+     <width>52</width>
+     <height>22</height>
+    </rect>
+   </property>
+   <property name="editable">
+    <bool>false</bool>
+   </property>
+   <property name="currentText">
+    <string>m</string>
+   </property>
+   <property name="currentIndex">
+    <number>0</number>
+   </property>
+   <property name="maxVisibleItems">
+    <number>4</number>
+   </property>
+   <item>
+    <property name="text">
+     <string>m</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>um</string>
+    </property>
+   </item>
+   <item>
+    <property name="text">
+     <string>nm</string>
+    </property>
+   </item>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
