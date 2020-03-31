@@ -19,9 +19,6 @@ import importlib
 custom_viewers_path = str('syslab_config_files.systemlab_viewers')
 view = importlib.import_module(custom_viewers_path)
 
-data_panels_path = str('syslab_config_files.config_data_panels')
-config_data_panel = importlib.import_module(data_panels_path)
-
 def run(input_signal_data, parameters_input, settings):
     
     '''==PROJECT SETTINGS==================================================='''
@@ -75,13 +72,13 @@ def run(input_signal_data, parameters_input, settings):
     
     '''==INPUT SIGNAL======================================================='''
     time_array = input_signal_data[0][3]
-    optical_in = input_signal_data[0][4]  
+    psd_array = input_signal_data[0][4]
+    optical_in = input_signal_data[0][5]
     wave_key = optical_in[0][0]
     wave_freq = optical_in[0][1]
     jones_vector = optical_in[0][2]
     e_field_input = optical_in[0][3]
     noise_field = optical_in[0][4]
-    psd_array = optical_in[0][5]
 
     '''==CALCULATIONS======================================================='''
     q = constants.e # Electron charge
@@ -364,7 +361,7 @@ def run(input_signal_data, parameters_input, settings):
                    snr_db_result, sensitivity_result, sensitivity_dbm_result]
 
     '''==DATA PANEL UPDATE========================================='''
-    config_data_panel.data_table_opt_im_2 = []
+    config.data_tables['opt_im_2'] = []
     data_1 = ['Iteration #', iteration, '.0f', ' ']
     data_2 = ['Received power (dBm)', rcv_pwr_dbm, '0.2f', ' ']
     data_3A = ['Q (target)', Q_target, '0.1f', ' ']
@@ -372,7 +369,7 @@ def run(input_signal_data, parameters_input, settings):
     data_3C = ['Q (measured)', Q_measured, '0.2f', ' ']
     data_4 = ['Optical receiver sensitivity (dBm)', pwr_sensitivity_dbm, '0.2f', ' ']
     data_list = [data_1, data_2, data_3A, data_3B, data_3C, data_4]
-    config_data_panel.data_table_opt_im_2.extend(data_list)
+    config.data_tables['opt_im_2'].extend(data_list)
     
     '''==RETURN (Output Signals, Parameters, Results)==================================''' 
     return ([[2, signal_type, 0, fs, time_array, i_signal, i_noise]],
