@@ -52,7 +52,7 @@ def run(input_signal_data, parameters_input, settings):
         wave_freq_1 = np.empty(channels_1)
         jones_vector_1 = np.full([channels_1, 2], 0 + 1j*0, dtype=complex) 
         if opt_channels_1[0][3].ndim == 2:
-            opt_field_rcv_1 = np.full([channels_p1, 2, n], 0 + 1j*0, dtype=complex) 
+            opt_field_rcv_1 = np.full([channels_1, 2, n], 0 + 1j*0, dtype=complex) 
         else: # Polarization format: Exy
             opt_field_rcv_1 = np.full([channels_1, n], 0 + 1j*0, dtype=complex) 
         noise_field_rcv_1 = np.full([channels_1, n], 0 + 1j*0, dtype=complex) 
@@ -75,7 +75,7 @@ def run(input_signal_data, parameters_input, settings):
         wave_freq_4 = np.empty(channels_4)
         jones_vector_4 = np.full([channels_4, 2], 0 + 1j*0, dtype=complex) 
         if opt_channels_4[0][3].ndim == 2:
-            opt_field_rcv_4 = np.full([channels_p1, 2, n], 0 + 1j*0, dtype=complex) 
+            opt_field_rcv_4 = np.full([channels_1, 2, n], 0 + 1j*0, dtype=complex) 
         else: # Polarization format: Exy
             opt_field_rcv_4 = np.full([channels_1, n], 0 + 1j*0, dtype=complex)
         noise_field_rcv_4 = np.full([channels_4, n], 0 + 1j*0, dtype=complex)  
@@ -98,7 +98,7 @@ def run(input_signal_data, parameters_input, settings):
         wave_freq_5 = np.empty(channels_5)
         jones_vector_5 = np.full([channels_5, 2], 0 + 1j*0, dtype=complex) 
         if opt_channels_5[0][3].ndim == 2:
-            opt_field_rcv_5 = np.full([channels_p1, 2, n], 0 + 1j*0, dtype=complex) 
+            opt_field_rcv_5 = np.full([channels_1, 2, n], 0 + 1j*0, dtype=complex) 
         else: # Polarization format: Exy
             opt_field_rcv_5 = np.full([channels_1, n], 0 + 1j*0, dtype=complex)
         noise_field_rcv_4 = np.full([channels_4, n], 0 + 1j*0, dtype=complex)  

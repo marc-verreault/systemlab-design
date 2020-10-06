@@ -1,17 +1,20 @@
 """
-SystemLab-Design Version 20.01.r1
+SystemLab-Design Version 20.01.r3 8-Jun-20
 Functional block script: Optical Amplifier
 Version 2.0 (26 Sep 2019)
-
-NOTE: Currently the same gain is applied to all optical channels
+Version 3 (8 Jun 2020)
+- Updated calculation for input power to include all channels (max gain is calculated against
+this value)
 
 Refs:
 1) Cvijetic, M., and Djordjevic, Ivan B.; Advanced Optical Communication Systems and Networks, 
 (Artech House, 2013, Norwood, MA, USA). Kindle Edition.
 2) http://www2.engr.arizona.edu/~ece487/opamp1.pdf (accessed 17 Apr 2019)
 """
+version = 3 #New versioning system for functional block scripts (8-Jun-20)
 import numpy as np
 import config
+from scipy import optimize
 
 from scipy import constants # https://docs.scipy.org/doc/scipy/reference/constants.html
 
@@ -81,34 +84,43 @@ def run(input_signal_data, parameters_input, settings):
         opt_field_out = np.full([channels, n], 0 + 1j*0, dtype=complex)
     noise_field_out = np.full([channels, n], 0 + 1j*0, dtype=complex)
     
+    # Calculate total power in (all channels) MV 20.01.r3 8-Jun-20
+    pwr_in = 0
     for ch in range(0, channels):
-        # Gain calculation
-        g_o = np.power(10, g_o_db/10)
         pwr_in = np.mean(np.square(np.abs(opt_field_rcv[ch])))
-        p_out = pwr_in * g_o
-        pwr_sat = 1e-3*np.power(10, pwr_sat_dbm/10)
+        pwr_in += pwr_in
+        
+    # Calculate amplifer gain
+    g_o = np.power(10, g_o_db/10)  # Linear gain
+    p_out = pwr_in * g_o
+    pwr_sat = 1e-3*np.power(10, pwr_sat_dbm/10)
 
-        # Solve large signal gain implicit equation (G = Go*exp(-((G-1)*Pout)/G*(Psat))
-        # where Psat is the output saturation power (output power where gain (G) drops by 3 dB)
-        # Ref 1, Eq. 2.92 & Ref 2
-        g = g_o
-        counter = 0
-        resolution = 0.005 #Convergence criterium
-        while True:
-            if counter > 30: #Stop after 30 iterations
-                break
-            p_out_target = pwr_in * g
-            g_target = g_o*np.exp(-((g-1)/g) * (p_out_target/pwr_sat))
-            if g_target/g < 1 - resolution: #g is too high
-                g = 0.5 * (g - g_target)
-                counter += 1
-            elif g_target/g > 1 + resolution: #g is too low
-                g = 0.5 * (g_target + g)
-                counter += 1
-            else:
-                break
+    # Solve large signal gain implicit equation (G = Go*exp(-((G-1)*Pout)/G*(Psat))
+    # where Psat is the output saturation power (output power where gain (G) drops by 3 dB)
+    # Ref 1, Eq. 2.92 & Ref 2
+    g = g_o
+    counter = 0
+    resolution = 0.005 #Convergence criterium
+    while True:
+        if counter > 30: #Stop after 30 iterations
+            break
+        p_out_target = pwr_in * g
+        g_target = g_o*np.exp(-((g-1)/g) * (p_out_target/pwr_sat))
+        if g_target/g < 1 - resolution: #g is too high
+            g = 0.5 * (g - g_target)
+            counter += 1
+        elif g_target/g > 1 + resolution: #g is too low
+            g = 0.5 * (g_target + g)
+            counter += 1
+        else:
+            break
     
-        # Apply calculated gain to input signal/noise fields
+    res = optimize.fixed_point(large_signal_gain, [g_o] , args=(g_o, pwr_in, pwr_sat))
+    print(res)
+    print(g)
+    
+    # Apply calculated (available gain) to optical channels
+    for ch in range(0, channels):
         p_out = pwr_in * g
         if mode == 'None':
             pass
@@ -177,3 +189,6 @@ def run(input_signal_data, parameters_input, settings):
     return ([[2, signal_type, fs, time_array, psd_out, optical_channels]], 
                  opt_amp_parameters, opt_amp_results)
 
+
+def large_signal_gain(g, g_o, pwr_in, pwr_sat):
+    return g_o*np.exp(-((g-1)/g) * ((pwr_in*g)/pwr_sat))

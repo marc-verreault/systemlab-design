@@ -59,7 +59,7 @@ def run(input_signal_data, parameters_input, settings):
         noise_field_rcv[ch] = opt_channels[ch][4]
         
     '''==CALCULATIONS=======================================================''' 
-    # Convert phase phase parameter from deg to radians
+    # Convert phase parameter from deg to radians
     ph_shift_rad = (ph_shift/180)*np.pi
     # Initialize output field arrays
     if opt_channels[0][3].ndim == 2: # Polarization format: Ex-Ey

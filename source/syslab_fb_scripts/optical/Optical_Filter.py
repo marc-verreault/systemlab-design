@@ -133,12 +133,12 @@ def run(input_signal_data, parameters_input, settings):
         
         # Apply FFT (freq -> time domain)
         if opt_channels[0][3].ndim == 2: # Polarization format: Ex-Ey
-            Y_x = np.fft.fftshift(Y_x)
+            Y_x = np.fft.ifftshift(Y_x) # MV 20.01.r3 4-Jul-20
             opt_field_out[ch, 0] = np.fft.ifft(Y_x)
-            Y_y = np.fft.fftshift(Y_y)
+            Y_y = np.fft.ifftshift(Y_y) # MV 20.01.r3 4-Jul-20
             opt_field_out[ch, 1] = np.fft.ifft(Y_y)
         else:
-            Y = np.fft.fftshift(Y)
+            Y = np.fft.ifftshift(Y) # MV 20.01.r3 4-Jul-20
             opt_field_out[ch] = np.fft.ifft(Y)
 
     '''==OUTPUT PARAMETERS LIST======================================='''

@@ -30,6 +30,9 @@ def run(input_signal_data, parameters_input, settings):
     #Load parameters from FB parameters table
     #Format: Parameter name(0), Value(1), Units(2), Notes(3)
     att = float(parameters_input[0][1]) #Attenuation (dB)
+    link_iter = int(parameters_input[1][1])
+    factor = float(parameters_input[2][1])
+    data_panel_id = str(parameters_input[3][1])
     
     '''==INPUT SIGNALS======================================================'''
     # Load optical group data from input port
@@ -55,8 +58,12 @@ def run(input_signal_data, parameters_input, settings):
         opt_field_rcv[ch, :] = opt_channels[ch][3]
         noise_field_rcv[ch, :] = opt_channels[ch][4]
     
-    '''==CALCULATIONS======================================================='''       
+    '''==CALCULATIONS=======================================================''' 
+    if link_iter == 2:
+        att = att + float(iteration - 1)*factor
     att_linear = np.power(10, -att/10)
+    config.display_data('i' , iteration, 0, 0)
+    config.display_data('Att ', att_linear, 0, 0)
     if opt_channels[0][3].ndim == 2: # Polarization format: Ex-Ey
         opt_field_out = np.full([channels, 2, n], 0 + 1j*0, dtype=complex)
     else: # Polarization format: Exy
@@ -74,10 +81,19 @@ def run(input_signal_data, parameters_input, settings):
     
     '''==OUTPUT PARAMETERS LIST============================================='''
     att_parameters = []
-    att_parameters = parameters_input*np.sqrt(att_linear)
+    att_parameters = parameters_input
     
     '''==RESULTS============================================================'''
-    att_results = []
+    results = []
+    results.append(['Power attenuation (linear)', att_linear, ' ', ' ', False])
+    results.append(['Power attenuation (dB)', att, 'dB', ' ', False, '0.3f'])
+    
+    #Send update to data panel
+    config.data_tables[data_panel_id] = []
+    c_analytical = 'blue'
+    data_list = []
+    data_list.append(['Att', att, '.1f', 'dB', ' ', c_analytical])
+    config.data_tables[data_panel_id].extend(data_list)
     
     '''==RETURN (Output Signals, Parameters, Results)=========================='''      
     optical_channels = []
@@ -85,6 +101,6 @@ def run(input_signal_data, parameters_input, settings):
         opt_ch = [int(wave_key[ch]), wave_freq[ch], jones_vector[ch], opt_field_out[ch], noise_field_out[ch]]
         optical_channels.append(opt_ch)
     
-    return ([[2, signal_type, fs, time_array, psd_array, optical_channels]], 
-                 att_parameters, att_results)
+    return ([[2, signal_type, fs, time_array, psd_out, optical_channels]], 
+                 att_parameters, results)
 

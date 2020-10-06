@@ -382,7 +382,7 @@ def run(input_signal_data, parameters_input, settings):
     # Performance results (Gaussian analysis)
     header_perf_results = ['Performance data (Gaussian analysis)', '', '', '', True]
     # Received power (optical) - average
-    rcv_pwr = 1
+    #rcv_pwr = 1 # MV 20.01.r3 4-Jun20 (Commented out)
     rcv_pwr_dbm = 10*np.log10(rcv_pwr*1e3)
     rcv_pwr_result =  ['Received optical pwr (avg)', rcv_pwr_dbm, 'dBm', ' ', False]
     # Noise current (total)
@@ -406,7 +406,7 @@ def run(input_signal_data, parameters_input, settings):
     sensitivity_result = ['Optical receiver sensitivity - th/shot', pwr_sensitivity, 'W', ' ', False]
     sensitivity_dbm_result = ['Optical receiver sensitivity - th/shot (dBm)', pwr_sensitivity_dbm, 'dBm', ' ', False]
 
-    pin_results = [header_main_results, avg_photocurrent_result, rcv_pwr_result, opt_noise_psd_in_result, 
+    pin_results = [header_main_results, rcv_pwr_result, avg_photocurrent_result, opt_noise_psd_in_result, 
                    avg_num_photons_per_sym, responsivity_result, excess_noise_factor, header_thermal_results,
                    th_psd_measured_result, th_psd_measured_dbm_result, th_sigma_measured_result, 
                    header_shot_results, shot_psd_result, shot_psd_dbm_result, shot_sigma_result, 
