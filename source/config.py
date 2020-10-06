@@ -5,9 +5,14 @@ Version: 1.0 (27-Feb-2019)
 Version: 2.0 (25_Oct-2019)
 """
 import os
-test = os.getcwd()
-root_path = os.path.dirname(__file__)
+import sys # MV 20.01.r2.custom 27-May-20
+
+from PyQt5 import QtGui # MV 20.01.r2.custom 27-May-20
+
+#test = os.getcwd()
+#root_path = os.path.dirname(__file__)
 root_path = os.getcwd()
+sys.path.insert(0, root_path) # MV 20.01.r2.custom 27-May-20
 
 app = None #Used for app.processEvents (called with main application & fb scripts)
 status = None #Info/Status box (called with main application & fb scripts)
@@ -51,12 +56,18 @@ Initialization of graphing objects that have been integrated into fb library
 '''
 import importlib
 custom_viewers_path = str('syslab_config_files.systemlab_viewers')
-view = importlib.import_module(custom_viewers_path)
-
+# 20.01.r2.custom 27-May-20 
+# Added try/except to import module procedure----------------------------------
+try:
+    view = importlib.import_module(custom_viewers_path)
+except:
+    view = None
+#------------------------------------------------------------------------------
 fbg_graph = None # Graph object for FBG functional block
 analog_filter_graph = None # Graph object for Analog filter functional block
 mzm_graph = None # Graph object for Mach-Zhender modulator functional block
-
+dist_graph = {} # Graph object for mapping receiver signal distibution
+demux_filter_graph = None
 
 # New feature 20.01.r2 17-Feb-20 (quick view of arbitrary x-y data points)   
 xy_graph_dict = {}
@@ -68,9 +79,10 @@ def set_new_key(object_list):
     return i
 
 def display_xy_data(title, x_data, x_units, y_data, y_units):
-    i = set_new_key(xy_graph_dict) 
-    xy_graph_dict[i] = view.X_Y_Analyzer(title, x_data, x_units, y_data, y_units)
-    xy_graph_dict[i].show()
+    if view is not None: #MV 20.01.r2.custom 27-May-20
+        i = set_new_key(xy_graph_dict) 
+        xy_graph_dict[i] = view.X_Y_Analyzer(title, x_data, x_units, y_data, y_units)
+        xy_graph_dict[i].show()
 
 '''def display_xy_data(title, x_data, y_data):
     xy_graph_dict = view.X_Y_Analyzer(title, x_data, y_data)
@@ -78,19 +90,26 @@ def display_xy_data(title, x_data, x_units, y_data, y_units):
     
 '''Functions==============================================================================
 '''
-def display_data(text, data, new_line):
-    if sim_data_activate == True:
-        if new_line == True:
+def display_data(text, data, new_line, header):
+    if sim_data_activate:
+        # MV 20.01.r2.custom Added check for header
+        font = QtGui.QFont()
+        if header:
+            font.setBold(True)
+            sim_data_view.dataEdit.setCurrentFont(font)
+        else:
+            font.setBold(False)
+            sim_data_view.dataEdit.setCurrentFont(font)
+        if new_line:
             sim_data_view.dataEdit.append(text)
             sim_data_view.dataEdit.append(str(data))
         else:
             sim_data_view.dataEdit.append(text + str(data))
         
+        
 def status_message(text):      
-    if sim_status_win_enabled == True:
+    if sim_status_win_enabled:
         sim_status_win.textEdit.append(text)
     status.setText(text)
     app.processEvents()
-
-
 
