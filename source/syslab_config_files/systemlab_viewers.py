@@ -28,9 +28,13 @@ import os
 import config
 gui_ui_path = config.root_path
 import numpy as np
+import matplotlib
+
+from scipy.stats import norm
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 from matplotlib import pyplot as plt
+from matplotlib.patches import Rectangle 
 from scipy.ndimage.filters import gaussian_filter #Used for smoothing 
 # Method for embedding Matplotlib canvases into Qt-designed QDialog interfaces
 # Ref: https://matplotlib.org/gallery/user_interfaces/embedding_in_qt_sgskip.html
@@ -60,8 +64,8 @@ Ui_FunctionalBlockStatus, QtBaseClass = uic.loadUiType(qtFunctionalBlockStatusFi
 
 app_font_default = 'font-size: 8pt; font-family: Segoe UI;'
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 80
+#import matplotlib as mpl
+matplotlib.rcParams['figure.dpi'] = 80
 
 
 class SignalSpaceAnalyzer(QtWidgets.QDialog, Ui_Signal_Space_Electrical):
@@ -389,10 +393,10 @@ class IterationsAnalyzer_BER_SER(QtWidgets.QDialog, Ui_Iterations_Analysis):
         self.figure.clf() # MV 19.12.r1 29_Oct-19
         ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
         ax.clear()
-        ax.plot(self.data_x_1, self.data_y_1, color = 'blue', linestyle = '--',
-                    linewidth= 0.8, marker = 'o', markersize = 3, label = self.plot_1_label)
-        ax.plot(self.data_x_2, self.data_y_2, color = 'black', linestyle = '-',
-                    linewidth= 0.8, marker = 'o', markersize = 3, label = self.plot_2_label)
+        ax.plot(self.data_x_1, self.data_y_1, color = 'blue', linestyle = 'none',
+                    linewidth= 0.8, marker = 'o', markersize = 3, fillstyle='none', label = self.plot_1_label)
+        ax.plot(self.data_x_2, self.data_y_2, color = 'black', linestyle = '--',
+                    linewidth= 0.5, marker = 'o', markersize = 2, label = self.plot_2_label)
             
         ax.set_title(self.title)
         ax.set_xlabel(self.x_axis_name)
@@ -405,6 +409,225 @@ class IterationsAnalyzer_BER_SER(QtWidgets.QDialog, Ui_Iterations_Analysis):
         ax.minorticks_on()
         ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
         ax.legend(loc = 'upper right')
+        
+    '''Close event====================================================================='''
+    def closeEvent(self, event):
+        plt.close(self.figure)
+        
+class IterationsAnalyzer_BER(QtWidgets.QDialog, Ui_Iterations_Analysis):
+    '''
+    Tab objects (QWidget) are named "tab_xy", "tab_xy_2", etc.
+    Graph frame objects (QFrame) are named "graphFrame". "graphFrame_2", etc.
+    '''
+    def __init__(self, data_x_1, data_y_1, error_1, data_x_2, data_y_2, title,
+                         y_axis_name, x_axis_name, y_axis_scale, x_axis_scale, 
+                         plot_1_label, plot_2_label):
+        QtWidgets.QDialog.__init__(self)
+        Ui_Iterations_Analysis.__init__(self)
+        self.setupUi(self)
+        syslab_icon = set_icon_window()
+        self.setWindowIcon(syslab_icon)
+        self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)
+        #self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowStaysOnTopHint)
+        self.iteration = 1  
+        self.data_x_1 = data_x_1
+        self.data_y_1 = data_y_1
+        self.error_1 = error_1
+        self.data_x_2 = data_x_2
+        self.data_y_2 = data_y_2 
+        self.title = title
+        self.y_axis_name = y_axis_name
+        self.x_axis_name = x_axis_name
+        self.x_axis_scale = x_axis_scale
+        self.y_axis_scale = y_axis_scale
+        self.plot_1_label = plot_1_label
+        self.plot_2_label = plot_2_label
+        
+        #Setup background colors for frames
+        p = self.graphFrame.palette() 
+        p.setColor(self.graphFrame.backgroundRole(), QtGui.QColor(252,252,252))
+        self.graphFrame.setPalette(p)       
+        p2 = self.graphFrame_2.palette()
+        p2.setColor(self.graphFrame_2.backgroundRole(), QtGui.QColor(252,252,252))
+        self.graphFrame_2.setPalette(p2)
+        
+        #Setup matplotlib figures and toolbars
+        self.graphLayout = QtWidgets.QVBoxLayout()
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)     
+        self.toolbar = NavigationToolbar(self.canvas, self.tab_xy)
+        self.graphLayout.addWidget(self.canvas)
+        self.graphLayout.addWidget(self.toolbar)
+        self.graphFrame.setLayout(self.graphLayout)        
+        
+        self.tabData.setCurrentWidget(self.tab_xy)
+        self.tabData.setTabText(0, self.title)
+        
+        self.figure.tight_layout(pad=0.5, h_pad = 0.8)
+        self.figure.set_tight_layout(True)
+        self.plot_xy()
+        self.canvas.draw()
+        
+    def plot_xy(self):
+        self.figure.clf() # MV 19.12.r1 29_Oct-19
+        ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
+        ax.clear()
+        ax.plot(self.data_x_1, self.data_y_1, color = 'blue', linestyle = '--',
+                    linewidth= 0.75, marker = 'o', markersize = 3, fillstyle='full', label = self.plot_1_label)
+        #ax.errorbar(self.data_x_1, self.data_y_1, yerr=self.error_1, marker='.', markersize=10, linestyle='none')
+        ax.plot(self.data_x_2, self.data_y_2, color = 'black', linestyle = '--',
+                    linewidth= 0.75, marker = 'o', markersize = 4,  fillstyle='none', label=self.plot_2_label)
+            
+        ax.set_title(self.title)
+        ax.set_xlabel(self.x_axis_name)
+        ax.set_ylabel(self.y_axis_name)
+        ax.set_xscale(self.x_axis_scale)
+        ax.set_yscale(self.y_axis_scale, nonposy='clip')
+        ax.set_aspect('auto')
+        #ax.set_ylim(bottom=0.1)
+        ax.grid(True)  
+        ax.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
+        ax.minorticks_on()
+        ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
+        ax.legend(loc = 'upper right')
+        
+    '''Close event====================================================================='''
+    def closeEvent(self, event):
+        plt.close(self.figure)
+        
+class IterationsAnalyzer_BER_Multiple(QtWidgets.QDialog, Ui_Iterations_Analysis):
+    '''
+    Tab objects (QWidget) are named "tab_xy", "tab_xy_2", etc.
+    Graph frame objects (QFrame) are named "graphFrame". "graphFrame_2", etc.
+    '''
+    def __init__(self, data_x_1, data_y_1, data_y_2, data_x_2, data_y_3, 
+                         data_y_4, data_x_3, data_y_5, data_y_6, h_line, v_line, title,
+                         y_axis_name, x_axis_name, y_axis_scale, x_axis_scale, 
+                         plot_1_label, plot_2_label, plot_3_label, plot_4_label,
+                         plot_5_label, plot_6_label, plot_7_label, plot_8_label,
+                         text_1, text_2):
+        QtWidgets.QDialog.__init__(self)
+        Ui_Iterations_Analysis.__init__(self)
+        self.setupUi(self)
+        syslab_icon = set_icon_window()
+        self.setWindowIcon(syslab_icon)
+        self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)
+        #self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowStaysOnTopHint)
+        self.iteration = 1  
+        self.data_x_1 = data_x_1
+        self.data_x_2 = data_x_2
+        self.data_x_3 = data_x_3
+        self.data_y_1 = data_y_1
+        self.data_y_2 = data_y_2
+        self.data_y_3 = data_y_3
+        self.data_y_4 = data_y_4
+        self.data_y_5 = data_y_5
+        self.data_y_6 = data_y_6
+        self.h_line = h_line
+        self.v_line = v_line
+        self.title = title
+        self.y_axis_name = y_axis_name
+        self.x_axis_name = x_axis_name
+        self.x_axis_scale = x_axis_scale
+        self.y_axis_scale = y_axis_scale
+        self.plot_1_label = plot_1_label
+        self.plot_2_label = plot_2_label
+        self.plot_3_label = plot_3_label
+        self.plot_4_label = plot_4_label
+        self.plot_5_label = plot_5_label
+        self.plot_6_label = plot_6_label
+        self.plot_7_label = plot_7_label
+        self.plot_8_label = plot_8_label
+        self.text_1 = text_1
+        self.text_2 = text_2
+        #Setup background colors for frames
+        p = self.graphFrame.palette() 
+        p.setColor(self.graphFrame.backgroundRole(), QtGui.QColor(252,252,252))
+        self.graphFrame.setPalette(p)       
+        p2 = self.graphFrame_2.palette()
+        p2.setColor(self.graphFrame_2.backgroundRole(), QtGui.QColor(252,252,252))
+        self.graphFrame_2.setPalette(p2)
+        
+        #Setup matplotlib figures and toolbars
+        self.graphLayout = QtWidgets.QVBoxLayout()
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)     
+        self.toolbar = NavigationToolbar(self.canvas, self.tab_xy)
+        self.graphLayout.addWidget(self.canvas)
+        self.graphLayout.addWidget(self.toolbar)
+        self.graphFrame.setLayout(self.graphLayout)        
+        
+        self.tabData.setCurrentWidget(self.tab_xy)
+        self.tabData.setTabText(0, self.title)
+        
+        self.figure.tight_layout(pad=0.5, h_pad = 0.8)
+        self.figure.set_tight_layout(True)
+        self.plot_xy()
+        self.canvas.draw()
+        
+    def plot_xy(self):
+        self.figure.clf() # MV 19.12.r1 29_Oct-19
+        ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
+        ax.clear()
+        if np.size(self.data_y_1) > 0 and np.size(self.data_x_1) > 0:
+            ax.plot(self.data_x_1, self.data_y_1, color = 'blue', linestyle = 'None',
+                        linewidth= 0.75, marker = 'o', markersize = 4, fillstyle='none',
+                        markerfacecolor='white',  markeredgecolor='blue',                    
+                        zorder=20, label = self.plot_1_label)
+        if np.size(self.data_y_2) > 0 and np.size(self.data_x_1) > 0:
+            ax.plot(self.data_x_1, self.data_y_2, color = 'blue', linestyle = '--',
+                        linewidth= 0.75, marker = '.', markersize = 2,  fillstyle='full', 
+                        label=self.plot_2_label)
+        if np.size(self.data_y_3) > 0 and np.size(self.data_x_2) > 0:
+            ax.plot(self.data_x_2, self.data_y_3, color = 'red', linestyle = 'None',
+                        linewidth= 0.75, marker = 'o', markersize = 4, fillstyle='none', 
+                        markerfacecolor='white',  markeredgecolor='red',   
+                        zorder=20, label = self.plot_3_label)
+        if np.size(self.data_y_4) > 0 and np.size(self.data_x_2) > 0:
+            if np.size(self.data_y_4) < np.size(self.data_x_2):
+                del self.data_x_2[:np.size(self.data_x_2) - np.size(self.data_y_4)]
+            ax.plot(self.data_x_2, self.data_y_4, color = 'red', linestyle = '--',
+                        linewidth= 0.75, marker = '.', markersize = 2,  fillstyle='full', 
+                        label=self.plot_4_label)
+        if np.size(self.data_y_5) > 0 and np.size(self.data_x_3) > 0:
+            ax.plot(self.data_x_3, self.data_y_5, color = 'red', linestyle = 'none',
+                        linewidth= 0.75, marker = 'o', markersize = 4, fillstyle='full', 
+                        markerfacecolor='red',  markeredgecolor='red',   
+                        zorder=20, label = self.plot_5_label)
+        '''ax.plot(self.data_x_1, self.data_y_6, color = 'purple', linestyle = '--',
+                    linewidth= 0.75, marker = 'o', markersize = 4,  fillstyle='none', label=self.plot_6_label)'''
+                    
+        if self.h_line is not None:
+            ax.axhline(self.h_line, linestyle='--', color='black', linewidth=1.25, alpha=0.8,
+                            label=self.plot_7_label)
+        if self.v_line is not None:
+            ax.axvline(self.v_line, linestyle='-', color='darkgray', linewidth=1.5, alpha=1,
+                            label=self.plot_8_label)
+                            
+        if self.text_1 is not None:
+            ax.text(0.4, 0.075, self.text_1,
+                    verticalalignment='center', horizontalalignment='left',
+                    transform=ax.transAxes, color='black', fontsize=10,
+                    bbox={'facecolor': 'paleturquoise', 'alpha': 0.3, 'pad': 3})
+                    
+        if self.text_2 is not None:
+            ax.text(0.1, 0.5, self.text_2,
+                    verticalalignment='center', horizontalalignment='center',
+                    transform=ax.transAxes, color='black', fontsize=10,
+                    bbox={'facecolor': 'gray', 'alpha': 0.3, 'pad': 3})
+                        
+        #ax.axvline(-19.15, linestyle='--', linecolor='blue', label='Sensitivity for BER = 1E-3')
+        ax.set_title(self.title)
+        ax.set_xlabel(self.x_axis_name)
+        ax.set_ylabel(self.y_axis_name)
+        ax.set_xscale(self.x_axis_scale)
+        ax.set_yscale(self.y_axis_scale, nonposy='clip')
+        ax.set_aspect('auto')
+        ax.grid(True)  
+        ax.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
+        ax.minorticks_on()
+        ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
+        ax.legend(loc = 'lower left')
         
     '''Close event====================================================================='''
     def closeEvent(self, event):
@@ -605,7 +828,7 @@ class FilterAnalyzer(QtWidgets.QDialog, Ui_Iterations_Analysis):
     Tab objects (QWidget) are named "tab_xy", "tab_xy_2", etc.
     Graph frame objects (QFrame) are named "graphFrame". "graphFrame_2", etc.   
     '''
-    def __init__(self, freq, mag, phase, n, f_cut, filt_type):
+    def __init__(self, freq, mag, phase, delay, n, f_cut, filt_type):
         QtWidgets.QDialog.__init__(self)
         Ui_Iterations_Analysis.__init__(self)
         self.setupUi(self)
@@ -617,6 +840,7 @@ class FilterAnalyzer(QtWidgets.QDialog, Ui_Iterations_Analysis):
         self.freq = freq
         self.mag = mag
         self.phase = phase
+        self.delay = delay # MV 20.01.r3 8-Jul-20
         self.n = n
         self.f_cut = f_cut
         self.filt_type = filt_type
@@ -628,6 +852,10 @@ class FilterAnalyzer(QtWidgets.QDialog, Ui_Iterations_Analysis):
         p2 = self.graphFrame_2.palette()
         p2.setColor(self.graphFrame_2.backgroundRole(), QtGui.QColor(252,252,252))
         self.graphFrame_2.setPalette(p2)
+        # MV 20.01.r3 8-Jul-20
+        p3 = self.graphFrame_3.palette()
+        p3.setColor(self.graphFrame_3.backgroundRole(), QtGui.QColor(252,252,252))
+        self.graphFrame_3.setPalette(p3)
         
         # Setup Matplotlib figures and toolbars
         # Layout/figure instances for Freq resp (mag)
@@ -638,7 +866,7 @@ class FilterAnalyzer(QtWidgets.QDialog, Ui_Iterations_Analysis):
         self.graphLayout.addWidget(self.canvas)
         self.graphLayout.addWidget(self.toolbar)
         
-        # Layout/figure instances for Freq resp (mag)
+        # Layout/figure instances for Freq resp (phase)
         self.graphLayoutPhase = QtWidgets.QVBoxLayout()
         self.figure_phase = plt.figure()
         self.canvas_phase = FigureCanvas(self.figure_phase)     
@@ -646,24 +874,43 @@ class FilterAnalyzer(QtWidgets.QDialog, Ui_Iterations_Analysis):
         self.graphLayoutPhase.addWidget(self.canvas_phase)
         self.graphLayoutPhase.addWidget(self.toolbar_phase)
         
+        # MV 20.01.r3 8-Jul-20
+        # Layout/figure instances for Freq resp (group delay)
+        self.graphLayoutDelay = QtWidgets.QVBoxLayout()
+        self.figure_delay = plt.figure()
+        self.canvas_delay = FigureCanvas(self.figure_delay)     
+        self.toolbar_delay = NavigationToolbar(self.canvas_delay, self.tab_xy_3)
+        self.graphLayoutDelay.addWidget(self.canvas_delay)
+        self.graphLayoutDelay.addWidget(self.toolbar_delay)
+        
         self.graphFrame.setLayout(self.graphLayout)  
         self.graphFrame_2.setLayout(self.graphLayoutPhase)
+        # MV 20.01.r3 8-Jul-20
+        self.graphFrame_3.setLayout(self.graphLayoutDelay)
         
         # Setup tab titles
         self.tabData.setTabText(0, 'Frequency response (magnitude)')
         self.tabData.setTabText(1, 'Frequency response (phase)')
+        # MV 20.01.r3 8-Jul-20
+        self.tabData.setTabText(2, 'Frequency response (group delay)')
         
         # Plot figures
-        # Mag response
-        self.figure_phase.tight_layout(pad=0.5, h_pad = 0.8)
-        self.figure_phase.set_tight_layout(True)
-        self.plot_phase_resp()
-        self.canvas_phase.draw()
         # Phase response
         self.figure.tight_layout(pad=0.5, h_pad = 0.8)
         self.figure.set_tight_layout(True)
         self.plot_mag_resp()
         self.canvas.draw()
+        # Delay response
+        # MV 20.01.r3 8-Jul-20
+        self.figure_delay.tight_layout(pad=0.5, h_pad = 0.8)
+        self.figure_delay.set_tight_layout(True)
+        self.plot_delay_resp()
+        self.canvas_delay.draw()
+        # Mag response
+        self.figure_phase.tight_layout(pad=0.5, h_pad = 0.8)
+        self.figure_phase.set_tight_layout(True)
+        self.plot_phase_resp()
+        self.canvas_phase.draw()
         
     def plot_mag_resp(self):
         ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
@@ -723,10 +970,154 @@ class FilterAnalyzer(QtWidgets.QDialog, Ui_Iterations_Analysis):
         ap.minorticks_on()
         ap.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
         
+    def plot_delay_resp(self):
+        ap = self.figure_delay.add_subplot(111, facecolor = '#f9f9f9')
+        ap.clear()
+        ap.plot(self.freq, self.delay, color = 'blue', linestyle = '--', linewidth= 0.8,
+                                marker = 'o', markersize =1)
+        
+        # Add freq cut-off line
+        ymin, ymax = ap.get_ylim()
+        xmin, xmax = ap.get_xlim()
+        y = [ymin, ymax]
+        x = [self.f_cut, self.f_cut]    
+        ap.plot(x, y, color = 'red', linestyle = '--', linewidth= 0.8)  
+        ap.text(x[1], y[1], 'fc', withdash=True, ha='center',
+                                 va='center', style='italic', zorder = 25, bbox=dict(facecolor='white', 
+                                 edgecolor='red', alpha=1))
+            
+        ap.set_title('Freq response (delay) - ' + str(self.filt_type))
+        ap.set_xlabel('Freq (Hz)')
+        ap.set_xscale('log')
+        ap.set_ylabel('Group delay (s)')
+        ap.grid(True)  
+        ap.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
+        ap.minorticks_on()
+        ap.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')        
+          
     '''Close event====================================================================='''
     def closeEvent(self, event):
         plt.close(self.figure)
         plt.close(self.figure_phase)
+        plt.close(self.figure_delay)
+
+class Demux_Analyzer(QtWidgets.QDialog, Ui_XY_Analysis):
+    '''
+    Used for quick graph feature
+    Tab objects (QWidget) are named "tab_xy", "tab_xy_2", etc.
+    Graph frame objects (QFrame) are named "graphFrame". "graphFrame_2", etc.
+    '''
+    def __init__(self, title, data_x_1, x_units, data_y_1, y_units, ch_data, ch_keys,
+                         f_min, f_max, ctr_freqs, f_delta, y_scale, ref_key):
+        QtWidgets.QDialog.__init__(self)
+        Ui_XY_Analysis.__init__(self)
+        self.setupUi(self)
+        syslab_icon = set_icon_window()
+        self.setWindowIcon(syslab_icon)
+        self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)
+        self.iteration = 1 
+        self.title = title
+        self.setWindowTitle('X-Y Quick View')
+        self.data_x_1 = data_x_1
+        self.data_y_1 = data_y_1
+        self.x_units = x_units
+        self.y_units = y_units
+        self.ch_data = ch_data
+        self.ch_keys = ch_keys
+        self.f_min = f_min
+        self.f_max = f_max
+        self.ctr_freqs = ctr_freqs
+        self.f_delta = f_delta
+        self.y_scale = y_scale
+        self.ref_key = ref_key
+        
+        #Setup background colors for frames
+        p = self.graphFrame.palette() 
+        p.setColor(self.graphFrame.backgroundRole(), QtGui.QColor(252,252,252))
+        self.graphFrame.setPalette(p)
+        
+        #Setup matplotlib figures and toolbars
+        self.graphLayout = QtWidgets.QVBoxLayout()
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)     
+        self.toolbar = NavigationToolbar(self.canvas, self.tab_xy)
+        self.graphLayout.addWidget(self.canvas)
+        self.graphLayout.addWidget(self.toolbar)
+        self.graphFrame.setLayout(self.graphLayout)        
+        
+        self.tabData.setTabText(0, str(self.title))
+        self.tabData.setCurrentWidget(self.tab_xy)
+        self.figure.tight_layout(pad=0.5, h_pad = 0.8)
+        self.figure.set_tight_layout(True)
+        self.plot_xy()
+        self.canvas.draw()
+        
+    def plot_xy(self):
+        self.figure.clf()
+        ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
+        ax.clear()
+        if self.y_scale == 'dB':
+            self.data_y_1 = 10*np.log10(self.data_y_1)
+        ax.plot(self.data_x_1, self.data_y_1[0], color = 'blue', linestyle = '--',
+                    linewidth= 0.8, marker = 'None', markersize = 1,
+                    label = 'Port 1 (' + str(self.ctr_freqs[0]*1e-12) + ' THz)')
+        ax.axvspan(xmin=self.ctr_freqs[0]-self.f_delta, xmax=self.ctr_freqs[0]+self.f_delta, 
+                              ymin = 0, ymax = 1, facecolor='black', alpha=0.1)
+        if len(self.data_y_1) > 1:
+            ax.plot(self.data_x_1, self.data_y_1[1], color = 'green', linestyle = '--',
+                        linewidth= 0.8, marker = 'None', markersize = 1,
+                        label = 'Port 2 (' + str(self.ctr_freqs[1]*1e-12) + ' THz)')
+            ax.axvspan(xmin=self.ctr_freqs[1]-self.f_delta, xmax=self.ctr_freqs[1]+self.f_delta, 
+                              ymin = 0, ymax = 1, facecolor='black', alpha=0.1)
+            ax.plot(self.data_x_1, self.data_y_1[2], color = 'orange', linestyle = '--',
+                        linewidth= 0.8, marker = 'None', markersize = 1,
+                        label = 'Port 3 (' + str(self.ctr_freqs[2]*1e-12) + ' THz)')
+            ax.axvspan(xmin=self.ctr_freqs[2]-self.f_delta, xmax=self.ctr_freqs[2]+self.f_delta, 
+                              ymin = 0, ymax = 1, facecolor='black', alpha=0.1)
+            ax.plot(self.data_x_1, self.data_y_1[3], color = 'black', linestyle = '--',
+                        linewidth= 0.8, marker = 'None', markersize = 1,
+                        label = 'Port 4 (' + str(self.ctr_freqs[3]*1e-12) + ' THz)')
+            ax.axvspan(xmin=self.ctr_freqs[3]-self.f_delta, xmax=self.ctr_freqs[3]+self.f_delta, 
+                              ymin = 0, ymax = 1, facecolor='black', alpha=0.1)
+        xmin, xmax, ymin, ymax = ax.axis()
+        indices = np.where(self.ch_keys == self.ref_key)
+        if np.size(indices[0]) > 0:
+            ch_index_blue = indices[0][0]
+        for i in range(0, len(self.ch_data)):
+            if self.ch_data[i] > self.f_min and self.ch_data[i] < self.f_max:
+                x_data = [self.ch_data[i], self.ch_data[i]]
+                y_data = [0, 0.75]
+                if self.y_scale == 'dB':
+                    y_data = [ymin, 0]
+                if i == ch_index_blue :
+                    ax.plot(x_data, y_data, color = 'blue', linestyle = '-',
+                    linewidth= 1, marker = 'None', markersize = 2, 
+                    label = 'Base channel (' + str(self.ch_data[i]*1e-12) + ' THz)')
+                    ax.arrow(x_data[1], y_data[1], 0, 0, head_width=(xmax - xmin)/250, 
+                                  head_length=(ymax - ymin)/150, color = 'blue')
+                else:
+                    ax.plot(x_data, y_data, color = 'red', linestyle = '-',
+                    linewidth= 1, marker = 'None', markersize = 2)
+                    #https://www.programcreek.com/python/example/102342/matplotlib.pyplot.arrow
+                    ax.arrow(x_data[1], y_data[1], 0, 0, head_width=(xmax - xmin)/250, 
+                                  head_length=(ymax - ymin)/150, color = 'red')
+
+        ax.set_title(str(self.title))
+        ax.set_xlabel(str(self.x_units))
+        if self.y_scale == 'dB':
+            ax.set_ylabel(str(self.y_units) + ' (dB)')
+        else:
+            ax.set_ylabel(str(self.y_units) + ' (linear)')
+        ax.set_aspect('auto')
+        ax.grid(True)  
+        ax.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
+        ax.minorticks_on()
+        ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
+        ax.legend()
+        
+    '''Close event====================================================================='''
+    def closeEvent(self, event):
+        plt.close(self.figure)
         
 class FBGAnalyzer(QtWidgets.QDialog, Ui_Iterations_Analysis):
     '''
@@ -985,8 +1376,165 @@ class X_Y_Analyzer(QtWidgets.QDialog, Ui_XY_Analysis):
     '''Close event====================================================================='''
     def closeEvent(self, event):
         plt.close(self.figure)        
-        
 
+       
+class Distribution_Analysis(QtWidgets.QDialog, Ui_XY_Analysis):
+    '''
+    Used for quick graph feature
+    Tab objects (QWidget) are named "tab_xy", "tab_xy_2", etc.
+    Graph frame objects (QFrame) are named "graphFrame". "graphFrame_2", etc.
+    '''
+    def __init__(self, title, data, units, n_bins, th, v1_avg, v0_avg, v1_sig, v0_sig):
+        QtWidgets.QDialog.__init__(self)
+        Ui_XY_Analysis.__init__(self)
+        self.setupUi(self)
+        syslab_icon = set_icon_window()
+        self.setWindowIcon(syslab_icon)
+        self.setWindowFlags(self.windowFlags()|QtCore.Qt.WindowMinimizeButtonHint)
+        self.iteration = 1 
+        self.title = title
+        self.setWindowTitle('Signal distribution (histogram) analysis')
+        self.data = data
+        self.units = units
+        self.bins = n_bins
+        self.th = th
+        self.v1_avg = v1_avg
+        self.v0_avg = v0_avg
+        self.v1_sig = v1_sig
+        self.v0_sig = v0_sig
+        
+        #Setup background colors for frames
+        p = self.graphFrame.palette() 
+        p.setColor(self.graphFrame.backgroundRole(), QtGui.QColor(252,252,252))
+        self.graphFrame.setPalette(p)
+        
+        #Setup matplotlib figures and toolbars
+        self.graphLayout = QtWidgets.QVBoxLayout()
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)     
+        self.toolbar = NavigationToolbar(self.canvas, self.tab_xy)
+        self.graphLayout.addWidget(self.canvas)
+        self.graphLayout.addWidget(self.toolbar)
+        self.graphFrame.setLayout(self.graphLayout)        
+        
+        self.tabData.setTabText(0, str(self.title))
+        self.tabData.setCurrentWidget(self.tab_xy)
+        self.figure.tight_layout(pad=0.5, h_pad = 0.8)
+        self.figure.set_tight_layout(True)
+        self.plot_hist()
+        self.canvas.draw()
+        
+    def plot_hist(self):
+        self.figure.clf()
+        ax = self.figure.add_subplot(111, facecolor = '#f9f9f9')
+        ax.clear()
+        ax.hist(self.data, bins=self.bins, color='slategrey', density=True, alpha=0.7)
+        # Source: https://stackoverflow.com/questions/30242898/
+        # vertical-line-in-histogram-with-pyplot/38242084 (accessed 16-Jul-20)
+        # Thanks to posters!
+        # Source info for math symbols: 
+        # https://matplotlib.org/3.1.1/tutorials/text/mathtext.html
+        if self.th is not None: # Add vertical line to represent threshold
+            ax.axvline(x=self.th, color='r', 
+                       label='Decision threshold: ' + 
+                       str(format(self.th, '0.3E')), 
+                       linestyle='dashed', linewidth=1)
+        if self.v1_avg is not None:
+            ax.axvline(x=self.v1_avg, label=r'v1 $\mu$: ' + 
+                       str(format(self.v1_avg, '0.3E')), 
+                       color='blue', linestyle='dashed', linewidth=1)
+        if self.v0_avg is not None:   
+            ax.axvline(x=self.v0_avg, label=r'v0 $\mu$: ' + 
+                       str(format(self.v0_avg, '0.3E')), 
+                       color='darkGreen', linestyle='dashed', linewidth=1)
+        # Source info for rect patches: 
+        # https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.patches.
+        # Rectangle.html#matplotlib.patches.Rectangle
+        if self.v1_sig is not None:  
+            x0 = self.v1_avg - self.v1_sig
+            x1 = 2*self.v1_sig
+            xmin, xmax, ymin, ymax = ax.axis()
+            y0 = (ymax - ymin)/2
+            y1 = y0/100
+            '''ax.add_patch(Rectangle((x0, y0), x1, y1, 
+                         alpha=0.6, color='blue', zorder=20,
+                         label=r'v1 $\pm$$\sigma$: ' + 
+                         str(format(self.v1_sig, '0.3E'))))'''
+                         
+            x = np.linspace(self.th, xmax, 500)
+            n_curve = norm.pdf(x, self.v1_avg, self.v1_sig)
+            n_curve = n_curve/np.sqrt(2*np.pi)
+            ax.plot(x, n_curve, linewidth=0.75, linestyle='--', color='blue')
+            
+            left_sigma_x = self.v1_avg - self.v1_sig
+            left_sigma_y = np.interp(left_sigma_x, x, n_curve)
+            right_sigma_x = self.v1_avg + self.v1_sig
+            right_sigma_y = np.interp(right_sigma_x, x, n_curve)
+            #ax.axhspan(0.25, 0.75, facecolor='0.5', alpha=0.5)
+            ax.plot([left_sigma_x, right_sigma_x], [left_sigma_y, right_sigma_y], 
+                         linewidth=2, color='blue', alpha=0.6, label=r'v1 $\pm$$\sigma$: ' + 
+                         str(format(self.v1_sig, '0.3E')))
+            
+            #https://stackoverflow.com/questions/20011122/fitting-a-normal-distribution-to-1d-data/20012350
+            #https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.random.normal.html
+            #https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.norm.html
+            
+            
+            '''mu, sigma = scipy.stats.norm.fit(data)
+            best_fit_line = scipy.stats.norm.pdf(bins, mu, sigma)
+            plt.plot(bins, best_fit_line)
+            n_dist = 1/(self.v1_sig*np.sqrt(2*np.pi))*np.exp(-(self.bins - self.v1_avg)**2/(2*self.v1_sig**2))
+            ax.plot(self.bins, n_dist, linewidth=1, color='blue')'''
+            
+        if self.v0_sig is not None:  
+            x0 = self.v0_avg - self.v0_sig
+            x1 = 2*self.v0_sig
+            xmin, xmax, ymin, ymax = ax.axis()
+            y0 = (ymax - ymin)/2
+            y1 = y0/100
+            '''ax.add_patch(Rectangle((x0, y0), x1, y1, 
+                         alpha=0.6, color='darkGreen', zorder=20, 
+                         label=r'v0 $\pm$$\sigma$: ' + 
+                         str(format(self.v0_sig, '0.3E'))))'''
+                         
+            x = np.linspace(xmin, self.th, 500)
+            n_curve = norm.pdf(x, self.v0_avg, self.v0_sig)
+            n_curve = n_curve/np.sqrt(2*np.pi)
+            ax.plot(x, n_curve, linewidth=0.75, linestyle='--', color='darkGreen')
+            
+            left_sigma_x = self.v0_avg - self.v0_sig
+            left_sigma_y = np.interp(left_sigma_x, x, n_curve)
+            right_sigma_x = self.v0_avg + self.v0_sig
+            right_sigma_y = np.interp(right_sigma_x, x, n_curve)
+            #ax.axhspan(0.25, 0.75, facecolor='0.5', alpha=0.5)
+            ax.plot([left_sigma_x, right_sigma_x], [left_sigma_y, right_sigma_y], 
+                         linewidth=2, color='darkGreen', alpha=0.6, label=r'v1 $\pm$$\sigma$: ' + 
+                         str(format(self.v0_sig, '0.3E')))
+                         
+        #https://matplotlib.org/3.1.0/api/_as_gen/matplotlib.pyplot.text.html#matplotlib.pyplot.text
+        ax.text(0.9, 0.95, 'Decision 1',
+                    verticalalignment='center', horizontalalignment='center',
+                    transform=ax.transAxes, color='black', fontsize=10,
+                    bbox={'facecolor': 'gray', 'alpha': 0.3, 'pad': 3})
+        ax.text(0.1, 0.95, 'Decision 0',
+                    verticalalignment='center', horizontalalignment='center',
+                    transform=ax.transAxes, color='black', fontsize=10,
+                    bbox={'facecolor': 'gray', 'alpha': 0.3, 'pad': 3})
+        ax.set_title(str(self.title))
+        ax.set_xlabel(str(self.units))
+        ax.set_aspect('auto')
+        ax.grid(True)  
+        ax.grid(which='major', linestyle=':', linewidth=0.5, color='gray')
+        ax.minorticks_on()
+        ax.grid(which='minor', linestyle=':', linewidth=0.5, color='lightGray')
+        
+        ax.legend(loc=9)
+        
+    '''Close event====================================================================='''
+    def closeEvent(self, event):
+        plt.close(self.figure)   
+        
+        
 class FunctionalBlockStatusGUI(QtWidgets.QDialog, Ui_FunctionalBlockStatus):
     def __init__(self):
         QtWidgets.QDialog.__init__(self)
