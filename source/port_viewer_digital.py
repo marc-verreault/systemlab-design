@@ -40,6 +40,7 @@ cfg_special_path = str('syslab_config_files.config_special')
 cfg_special = importlib.import_module(cfg_special_path)
 
 import numpy as np
+import matplotlib
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import matplotlib.pyplot as plt
@@ -53,8 +54,13 @@ qtDigitalPortDataViewerFile = os.path.join(gui_ui_path, 'syslab_gui_files', 'Dig
 qtDigitalPortDataViewerFile = os.path.normpath(qtDigitalPortDataViewerFile)
 Ui_PortDataWindow_Digital, QtBaseClass = uic.loadUiType(qtDigitalPortDataViewerFile)
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 80
+#import matplotlib as mpl
+matplotlib.rcParams['figure.dpi'] = 80
+
+# MV 20.01.r3 15-Jun-20
+style_spin_box = """QSpinBox {color: darkBlue; background: white;
+                              selection-color: darkBlue;
+                              selection-background-color: white;}"""
 
      
 class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
@@ -74,10 +80,33 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
         self.setStyleSheet(cfg_special.global_font) # MV 20.01.r1 17-Dec-2019
         self.fb_name = fb_name
         self.port_name = port_name
-        self.direction = direction             
+        self.direction = direction 
+        
+        # MV 20.01.r3 15-Jun-20 Set iteration to reflect main application setting
+        # (iterators spin box)        
+        self.signals = signal_data        
+        current_iter = int(design_settings['current_iteration'])
+        if (current_iter - 1) <= len(self.signals):
+            self.iteration = current_iter
+        else:
+            self.iteration = int(len(self.signals))
+
+        # MV 20.01.r3 13-Jun-20 Added functional block and port data info to
+        # Window title box
+        self.setWindowTitle('Digital signal data analyzer (' + 
+                             str(self.fb_name) + ', Port: ' + 
+                             str(self.port_name) + ', Dir: ' + 
+                             str(self.direction) + ')')
+   
         iterations = len(signal_data)   
         self.spinBoxTime.setMaximum(iterations)
+        self.spinBoxTime.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.spinBoxFreq.setMaximum(iterations)
+        self.spinBoxFreq.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsTime.setText(str(iterations))
         self.totalIterationsFreq.setText(str(iterations))
         self.spinBoxTime.valueChanged.connect(self.valueChangeTime)
@@ -115,8 +144,8 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
         self.actionSetLinewidthSignalData.clicked.connect(self.updateSignalData)
 
         #Setup initial data for iteration 1 (default)
-        self.iteration = 1  
-        self.signals = signal_data
+        #self.iteration = 1  #MV 20.01.r3 13-Jun-20
+        #self.signals = signal_data #MV 20.01.r3 13-Jun-20
         self.total_samples = design_settings['num_samples']
         self.sample_rate = design_settings['sampling_rate']
         self.sampling_period = design_settings['sampling_period']
@@ -162,6 +191,9 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
         #FFT computation
         self.Y = np.fft.fft(self.discrete_time)/self.n
         self.Y_pos = self.Y[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_pos = self.Y_pos*np.sqrt(2)
+        self.Y_pos[0] = self.Y_pos[0]/np.sqrt(2) # DC component is not doubled
         #===============================================================================
         
         #Setup background colors for frames
@@ -360,6 +392,9 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
         
         self.Y = np.fft.fft(self.discrete_time)/self.n # fft computing and normalization
         self.Y_pos = self.Y[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_pos = self.Y_pos*np.sqrt(2)
+        self.Y_pos[0] = self.Y_pos[0]/np.sqrt(2) # DC component is not doubled
         self.tabData.setCurrentWidget(self.tab_freq)       
         self.plot_freq_domain(0)
         self.canvas_freq.draw()
@@ -476,6 +511,8 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
                 self.discrete_time.append(self.discrete[sym])
                 i += 1
                 
+        self.Y = np.fft.fft(self.discrete_time)/self.n # fft computing and normalization
+                
         self.updateSignalData()
         
     def updateSignalData(self):
@@ -495,13 +532,17 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
             
             #Signal data title
             self.signalBrowser.setCurrentFont(self.font_bold)
-            if self.radioButtonUnitSignalData.isChecked() == 1:
+            if (self.radioButtonUnitSignalData.isChecked() == 1
+                and self.radioButtonSigTime.isChecked() == 1):
                 self.signalBrowser.append('Signal data (symbol index, discrete value ):')
-            else:
+            elif (self.radioButtonUnitSignalData.isChecked() == 1
+                and self.radioButtonSigTime.isChecked() == 1):
                 self.signalBrowser.append('Signal data (index, time (s), discrete value ):')
+            else:
+                self.signalBrowser.append('Signal data (index, freq (Hz), Y):') 
             self.signalBrowser.setCurrentFont(self.font_normal)
             
-            #Adjust for new index range (if required)
+            # Adjust for new index range (if required)
             if self.radioButtonUnitSignalData.isChecked() == 1:
                 self.totalSamplesSignalData.setText(str(format(self.seq_length, 'n')))
                 self.minIndexSignalData.setText(str(1))
@@ -517,12 +558,17 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
             array_size = self.end_index - self.start_index
             
             #Prepare structured array for string output to text browser
-            if self.radioButtonUnitSignalData.isChecked() == 1:
+            if (self.radioButtonUnitSignalData.isChecked() == 1
+                and self.radioButtonSigTime.isChecked() == 1):
                 data = np.zeros(array_size, dtype={'names':('index', 'y'),
                                                    'formats':('i4', 'i4')})
-            else:
+            elif (self.radioButtonUnitSignalData.isChecked() == 1
+                and self.radioButtonSigTime.isChecked() == 1):
                 data = np.zeros(array_size, dtype={'names':('index', 'x', 'y'),
                                                    'formats':('i4', 'f8', 'i4')})
+            else:
+                data = np.zeros(array_size, dtype={'names':('index', 'x', 'y'),
+                                                   'formats':('i4', 'f8', 'c16')})
             data['index'] = index_array
             
             if self.radioButtonSigTime.isChecked() == 1:
@@ -532,13 +578,8 @@ class DigitalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Digital):
                     data['x'] = self.time[self.start_index-1:self.end_index-1]
                     data['y'] = self.discrete_time[self.start_index-1:self.end_index-1]
             else:
-                pass
-    #            data['x'] = self.frq[self.start_index-1:self.end_index-1]
-    #            if self.radioButtonComplexSignalData.isChecked() == 1:
-    #                data['y'] = self.Y[self.start_index-1:self.end_index-1]
-    #            else:
-    #                data['y1'] = np.abs(self.Y[self.start_index-1:self.end_index-1])
-    #                data['y2'] = np.angle(self.Y[self.start_index-1:self.end_index-1])
+                data['x'] = self.frq[self.start_index-1:self.end_index-1]
+                data['y'] = self.Y[self.start_index-1:self.end_index-1]
             
             self.linewidth = 60
             if self.linewidthSignalData.text():

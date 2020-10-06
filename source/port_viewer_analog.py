@@ -39,6 +39,7 @@ cfg_special_path = str('syslab_config_files.config_special')
 cfg_special = importlib.import_module(cfg_special_path)
 
 import numpy as np
+import matplotlib
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import matplotlib.pyplot as plt
@@ -52,8 +53,14 @@ qtAnalogPortDataViewerFile = os.path.join(gui_ui_path, 'syslab_gui_files', 'Anal
 qtAnalogPortDataViewerFile = os.path.normpath(qtAnalogPortDataViewerFile)
 Ui_PortDataWindow_Analog, QtBaseClass = uic.loadUiType(qtAnalogPortDataViewerFile)
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 80
+#import matplotlib as mpl
+matplotlib.rcParams['figure.dpi'] = 80
+
+# MV 20.01.r3 15-Jun-20
+style_spin_box = """QSpinBox {color: darkBlue; background: white;
+                              selection-color: darkBlue;
+                              selection-background-color: white;}"""
+
 
 class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
     '''
@@ -72,8 +79,24 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         self.fb_name = fb_name
         self.port_name = port_name
         self.direction = direction
-        self.iteration = 1  
+        
+        # MV 20.01.r3 13-Jun-20 Added functional block and port data info to
+        # Window title box
+        self.setWindowTitle('Analog signal data analyzer (' + 
+                            str(self.fb_name) + ', Port: ' + 
+                            str(self.port_name) + ', Dir: ' + 
+                            str(self.direction) + ')')
+        #self.iteration = 1  
         self.signals = signal_data
+        
+        # MV 20.01.r3 15-Jun-20 Set iteration to reflect main application setting
+        # (iterators spin box)        
+        self.signals = signal_data        
+        current_iter = int(design_settings['current_iteration'])
+        if (current_iter - 1) <= len(self.signals):
+            self.iteration = current_iter
+        else:
+            self.iteration = int(len(self.signals))
         
         '''Time data tab (dataFrame)==================================================='''
         #Top level settings
@@ -86,6 +109,9 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         #Iterations group box (Time data tab)
         iterations = len(signal_data)   
         self.spinBoxTime.setMaximum(iterations)
+        self.spinBoxTime.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsTime.setText(str(iterations))        
         self.spinBoxTime.valueChanged.connect(self.value_change_time)       
 #        #Signal type group box (Time data)
@@ -111,6 +137,9 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         self.samplingRate.setText(str(format(self.fs, '0.3E')))
         #Iterations group box (Main sub-tab)        
         self.spinBoxFreq.setMaximum(iterations)
+        self.spinBoxFreq.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsFreq.setText(str(iterations))
         self.spinBoxFreq.valueChanged.connect(self.value_change_freq) 
         #Signal type group box (Main sub-tab) 
@@ -135,6 +164,9 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         #Iterations group box
         iterations = len(signal_data)   
         self.spinBoxSignalData.setMaximum(iterations)
+        self.spinBoxSignalData.setValue(self.iteration)
+        self.spinBoxSignalData.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsSignalData.setText(str(iterations))
         self.spinBoxSignalData.valueChanged.connect(self.iteration_change_signal_data)
         #Domain setting group box
@@ -157,6 +189,9 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         #Iterations group box
         iterations = len(signal_data)   
         self.spinBoxSignalMetrics.setMaximum(iterations)
+        self.spinBoxSignalMetrics.setValue(self.iteration)
+        self.spinBoxSignalMetrics.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsSignalMetrics.setText(str(iterations))
         self.spinBoxSignalData.valueChanged.connect(self.iteration_change_signal_metrics)
         
@@ -175,6 +210,9 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         #FFT computations (signal, noise, signal+noise)
         self.Y = np.fft.fft(self.signal)
         self.Y_pos = self.Y[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_pos = self.Y_pos*np.sqrt(2)
+        self.Y_pos[0] = self.Y_pos[0]/np.sqrt(2) # DC component is not doubled
 
         '''Setup background colors for frames=========================================='''
         # MV 20.01.r1 29-Oct-19 Added link to port viewers config file (frame bkrd clr)
@@ -340,6 +378,9 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
         signal_updated = self.signals[new_iteration]   
         self.Y = np.fft.fft(signal_updated[4])
         self.Y_pos = self.Y[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_pos = self.Y_pos*np.sqrt(2)
+        self.Y_pos[0] = self.Y_pos[0]/np.sqrt(2) # DC component is not doubled
         self.tabData.setCurrentWidget(self.tab_freq)       
         self.plot_freq_domain(0)
         self.canvas_freq.draw()
@@ -498,7 +539,8 @@ class AnalogPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Analog):
                 data['y'] = self.signal[self.start_index-1:self.end_index-1]
             else:
                 data['x'] = self.frq[self.start_index-1:self.end_index-1]
-                data['y'] = self.Y[self.start_index-1:self.end_index-1]
+                # MV 20.01.r3 18-Sep-20 Added division by n (normalization)
+                data['y'] = self.Y[self.start_index-1:self.end_index-1]/self.n
             
             self.linewidth = 60
             if self.linewidthSignalData.text():

@@ -39,6 +39,7 @@ cfg_special_path = str('syslab_config_files.config_special')
 cfg_special = importlib.import_module(cfg_special_path)
 
 import numpy as np
+import matplotlib
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import matplotlib.pyplot as plt
@@ -53,12 +54,21 @@ qtElectricalPortDataViewerFile = os.path.join(gui_ui_path, 'syslab_gui_files',
 qtElectricalPortDataViewerFile = os.path.normpath(qtElectricalPortDataViewerFile)
 Ui_PortDataWindow_Electrical, QtBaseClass = uic.loadUiType(qtElectricalPortDataViewerFile)
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 80
+#import matplotlib
+matplotlib.rcParams['figure.dpi'] = 80
 
 # https://matplotlib.org/api/ticker_api.html#matplotlib.ticker.Formatter
-mpl.rcParams['axes.formatter.useoffset'] = False # Removes offset from all plots
-mpl.rcParams['axes.formatter.limits'] = [-4, 4] # Limits for exponential notation
+matplotlib.rcParams['axes.formatter.useoffset'] = False # Removes offset from all plots
+matplotlib.rcParams['axes.formatter.limits'] = [-4, 4] # Limits for exponential notation
+
+# MV 20.01.r3 15-Jun-20
+style_spin_box = """QSpinBox {color: darkBlue; background: white;
+                              selection-color: darkBlue;
+                              selection-background-color: white;}"""
+
+style_combo_box = """QComboBox {color: darkBlue; background: white;
+                              selection-color: darkBlue;
+                              selection-background-color: white;}"""
 
 class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical):
     '''
@@ -78,13 +88,32 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         self.fb_name = fb_name
         self.port_name = port_name
         self.direction = direction
-        self.iteration = 1  
+        #self.iteration = 1  
         self.signals = signal_data
+
+        # MV 20.01.r3 15-Jun-20 Set iteration to reflect main application setting
+        # (iterators spin box)
+        current_iter = int(design_settings['current_iteration'])
+        if (current_iter - 1) <= len(self.signals):
+            self.iteration = current_iter
+        else:
+            self.iteration = int(len(self.signals))
+        
+        # MV 20.01.r3 13-Jun-20 Added functional block and port data info to
+        # Window title box
+        self.setWindowTitle('Electrical signal data analyzer (' + 
+                            str(self.fb_name) + ', Port: ' + 
+                            str(self.port_name) + ', Dir: ' + 
+                            str(self.direction) + ')')
+        
+        # MV 20.01.r3 19-Jun-20: Reload config files
+        importlib.reload(cfg_elec)
+        importlib.reload(cfg_special)
         
         '''Time data tab (dataFrame)==================================================='''
         # TOP LEVEL SETTINGS--------------------------------------------------------------
         # MV 20.01.r2 27-Feb-20 IMPORTANT UPDATE
-        # Core settings for port viewer are now derived from recived signal statistics
+        # Core settings for port viewer are now derived from received signal statistics
         # (previously was using design settings). Due to signal processing functions such 
         # as re-sampling, local settings for a functional block may be different from
         # project settings
@@ -112,6 +141,10 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         #Iterations group box (Time data tab)
         iterations = len(self.signals) # MV 20.01.r1 20-Jan-20
         self.spinBoxTime.setMaximum(iterations)
+        self.spinBoxTime.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsTime.setText(str(iterations))        
         self.spinBoxTime.valueChanged.connect(self.value_change_time)       
         #Signal type group box (Time data)
@@ -142,6 +175,10 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         self.samplingRate.setText(str(format(self.fs, '0.3E')))
         #Iterations group box (Main sub-tab)        
         self.spinBoxFreq.setMaximum(iterations)
+        self.spinBoxFreq.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsFreq.setText(str(iterations))
         self.spinBoxFreq.valueChanged.connect(self.value_change_freq) 
         #Signal type group box (Main sub-tab) 
@@ -172,6 +209,10 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         #Iterations group box (Eye diagram)
         iterations = len(self.signals) # MV 20.01.r1 20-Jan-20   
         self.spinBoxEye.setMaximum(iterations)
+        self.spinBoxEye.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxEye.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxEye.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxEye.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsEye.setText(str(iterations))        
         self.spinBoxEye.valueChanged.connect(self.value_change_eye)       
         #Signal type group box (Eye diagram)
@@ -186,11 +227,115 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         #Window settings group box (Eye diagram)
         self.windowEye.setText(str(format(3, 'n')))
         self.actionEyeWindow.clicked.connect(self.check_signal_changed_eye)
+        self.checkBoxHistBoxes.stateChanged.connect(self.check_signal_changed_eye)
+        # Window settings group box (Eye metrics) MV 20.01.r3 18-Jun-20
+        try:
+            if cfg_special.oma_reference: # Value is not None
+                val = cfg_special.oma_reference
+                self.omaRef.setText(str(format(val, '0.3E')))
+            if cfg_special.decision_point_ui:
+                val = cfg_special.decision_point_ui
+                self.decisionPoint.setText(str(format(val, '0.2f')))
+            else:
+                self.decisionPoint.setText(str(format(0.5, '0.2f')))        
+            if cfg_special.histogram_width: # Value is not None
+                val = cfg_special.histogram_width
+                self.histWidth.setText(str(format(val, '0.2f')))
+            else:
+                self.histWidth.setText(str(format(20, '0.2f')))
+            if cfg_special.histogram_coverage: # Value is not None   
+                val = cfg_special.histogram_coverage
+                self.histCoverage.setText(str(format(val, '0.2f')))
+            else:
+                self.histCoverage.setText(str(format(99.9, '0.2f')))
+        except:
+            self.decisionPoint.setText(str(format(0.5, '0.2f')))
+            self.histWidth.setText(str(format(20, '0.2f')))
+            self.histCoverage.setText(str(format(99.9, '0.2f')))
+        self.calculateEyeMetrics.clicked.connect(self.check_signal_changed_eye)
+        
+        # SETUP TOOL TIP FOR EYE DIAGRAM METRICS
+        # Stressed Eye: “Know What You’re Really Testing With”, Primer
+        # Tektronix White Paper, Tektronix (25 May 2010)
+        # Source: https://www.tek.com/document/primer/stressed-eye-
+        # know-what-you-re-really-testing        
+
+        table_start = "<table width='250'><tr><td width='250'>"
+        text_start = "<tr><td width='250'>"
+        #text_end = "</td></tr></table>"
+        text_end = "</td></table>"
+
+        # Decision pt (y)
+        title = "<b>Threshold (y)</b></td></tr>"
+        desc = ("Decision level (y-axis) used for declaring Logic 1 " +
+                "or Logic 0. Used to build upper and lower histograms. " +
+                "When empty, the mean of the signal will be used.")
+        self.label_threshold.setMouseTracking(True)
+        self.label_threshold.setToolTip(table_start + title + text_start
+                                        + desc + text_end)
+        # Decision pt (UI)
+        title = "<b>Decision pt (UI)</b></td></tr>"
+        desc = ("Time point where threshold decision is made. " +
+                "The default setting is 0.5 UI, or mid-point of the time interval of the eye.")
+        self.label_decision.setMouseTracking(True)
+        self.label_decision.setToolTip(table_start + title + text_start
+                                        + desc + text_end)        
+        # Hist width (%UI)
+        title = "<b>Histogram width (%UI)</b></td></tr>"
+        desc = ("Percentage in terms of unit time interval to be used to " +
+                "define the width of the lower (L0) and upper (L1) histograms. " +
+                "The center of the histogram will be placed at the <b>Decision pt</b>.")
+        self.label_hist_width.setMouseTracking(True)
+        self.label_hist_width.setToolTip(table_start + title + text_start
+                                        + desc + text_end)        
+        # Hist coverage
+        title = "<b>Histogram coverage (%)</b></td></tr>"
+        desc = ("Percentage of histogram data samples to be used to calculate " +
+                "the OMA, eye height and VECP. For 99.9% coverage, " +
+                "the samples comprising 0.05% of the top and bottom sections of " +
+                " each histogram will be removed (clipped).")
+        self.label_hist_coverage.setMouseTracking(True)
+        self.label_hist_coverage.setToolTip(table_start + title + text_start
+                                        + desc + text_end)        
+        # OMA ref
+        title = "<b>OMA (Ref)</b></td></tr>"
+        desc = ("This value (Optical Modulation Amplitude) will be used to " +
+                "calculate the VECP. When left blank, the OMA will be calculated " +
+                "based on the histogram settings defined above.")
+        self.label_oma_ref.setMouseTracking(True)
+        self.label_oma_ref.setToolTip(table_start + title + text_start
+                                        + desc + text_end)        
+        # OMA
+        title = "<b>OMA</b></td></tr>"
+        desc = ("Calculated value of the OMA (<i>Mean_L1_hist - Mean_L0_hist</i>). " +
+                "This value is only calculated when the <b>OMA (Ref)</b> field is empty.")
+        self.label_oma.setMouseTracking(True)
+        self.label_oma.setToolTip(table_start + title + text_start
+                                        + desc + text_end)        
+        # Eye height
+        title = "<b>Eye height (Ao)</b></td></tr>"
+        desc = ("Calculated value of the Eye height. </td></tr>" +
+                " <i>(Mean_L1_hist - Width_L1_hist/2) - </td></tr>" +
+                "(Mean_L0_hist + Width_L0_hist/2)</i>")
+        self.label_eye_height.setMouseTracking(True)
+        self.label_eye_height.setToolTip(table_start + title + text_start
+                                        + desc + text_end)        
+        # VECP
+        title = "<b>VECP (dB)</b></td></tr>"
+        desc = ("Vertical eye closure penalty. </td></tr>" +
+                " <i>VECP = 10 x Log10(OMA/Ao)</i>")
+        self.label_vecp.setMouseTracking(True)
+        self.label_vecp.setToolTip(table_start + title + text_start
+                                        + desc + text_end)
         
         '''Signal data tab (dataFrameSignal)==========================================='''
         #Iterations group box
         iterations = len(self.signals) # MV 20.01.r1 20-Jan-20  
         self.spinBoxSignalData.setMaximum(iterations)
+        self.spinBoxSignalData.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsSignalData.setText(str(iterations))
         self.spinBoxSignalData.valueChanged.connect(self.iteration_change_signal_data)
         #Domain setting group box
@@ -213,6 +358,10 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         #Iterations group box
         iterations = len(self.signals) # MV 20.01.r1 20-Jan-20 
         self.spinBoxSignalMetrics.setMaximum(iterations)
+        self.spinBoxSignalMetrics.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalMetrics.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalMetrics.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalMetrics.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsSignalMetrics.setText(str(iterations))
         self.spinBoxSignalData.valueChanged.connect(self.iteration_change_signal_metrics)
         
@@ -223,6 +372,18 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         self.noise = signal_default[6] #Noise samples
         self.carrier = signal_default[2]
         
+        # MV 20.01.r3 18-Jun-20: Calculate avg value of signal 
+        # & apply to decision threshold
+        avg_sig = np.mean(np.real(self.signal))
+        try:        
+            if cfg_special.decision_threshold: # Is not None
+                val = cfg_special.decision_threshold
+                self.decisionThreshold.setText(str(format(val, '0.3E')))
+            else:
+                self.decisionThreshold.setText(str(format(avg_sig, '0.3E')))
+        except:
+            self.decisionThreshold.setText(str(format(avg_sig, '0.3E')))
+        
         '''Setup frequency domain analysis============================================='''
         # REF:  Fast Fourier Transform in matplotlib, 
         # An example of FFT audio analysis in matplotlib and the fft function.
@@ -232,13 +393,22 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         k = np.arange(self.n)
         self.frq = k/T # Positive/negative freq (double sided)
         self.frq_pos = self.frq[range(int(self.n/2))] # Positive freq only     
-        #FFT computations (signal, noise, signal+noise)
+        # FFT computations (signal, noise, signal+noise)
         self.Y = np.fft.fft(self.signal)
         self.Y_pos = self.Y[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_pos = self.Y_pos*np.sqrt(2)
+        self.Y_pos[0] = self.Y_pos[0]/np.sqrt(2) # DC component is not doubled
         self.N = np.fft.fft(self.noise)
         self.N_pos = self.N[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.N_pos = self.N_pos*np.sqrt(2) 
+        self.N_pos[0] = self.N_pos[0]/np.sqrt(2) # DC component is not doubled
         self.Y_N = np.fft.fft(self.signal+self.noise)
         self.Y_N_pos = self.Y_N[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_N_pos = self.Y_N_pos*np.sqrt(2) 
+        self.Y_N_pos[0] = self.Y_N_pos[0]/np.sqrt(2) # DC component is not doubled
 
         '''Setup background colors for frames=========================================='''
         # MV 20.01.r1 29-Oct-19 Added link to port viewers config file (frame bkrd clr)
@@ -344,8 +514,8 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
             self.ax.clear()
             
             #http://greg-ashton.physics.monash.edu/setting-nice-axes-labels-in-matplotlib.html
-            self.ax.yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
-            self.ax.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
+            self.ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
+            self.ax.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
                 
             if axis_adjust == 1:
                 if self.minTime.text() and self.maxTime.text():
@@ -358,7 +528,7 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
                     self.ax.set_ylim(float(start_val), float(end_val))
                 
             if self.radioButtonMag.isChecked() == 1:
-                self.ax.set_ylabel('Magnitude (V)')
+                self.ax.set_ylabel('Magnitude') # MV 20.01.v3 17-Sep-20: Removed V
             elif self.radioButtonLinearPwr.isChecked() == 1:   
                 self.ax.set_ylabel('Power (W)')
             else:
@@ -370,24 +540,44 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
             self.ax.tick_params(axis='both', which ='both', 
                                 colors=cfg_elec.electrical_time_labels_axes_color)
             
-            sig = np.real(self.signal)
-            noise = np.real(self.noise)
-            sig_noise = np.real(self.signal + self.noise) # MV 20.01.r1 (Bug fix, previously
+            #sig = np.real(self.signal)
+            #sig = np.abs(self.signal)
+            #sig = np.imag(self.signal)
+            #noise = np.real(self.noise)
+            #sig_noise = np.real(self.signal + self.noise) # MV 20.01.r1 (Bug fix, previously
                                                           # was adding np.real(sig) + 
                                                           # np.real(noise))
+                                                          
+                                                          
+            # Tests MV 20.01.r3 4-Jul-20
+            '''sig_sign = np.sign(np.real(self.signal))
+            sig_sign = np.sign(np.arctan2(sig_real, sig_imag)) 
+            sig = np.abs(self.signal)*sig_sign'''
+            
+            '''sig_real = np.real(self.signal) 
+            sig_imag = np.imag(self.signal) 
+            sign = np.sign(np.arctan2(sig_imag, sig_real))          
+            sig = np.abs(self.signal)*sign'''                                            
+                                                          
+            '''noise_real = np.real(self.noise) 
+            noise_imag = np.imag(self.noise) 
+            sign = np.sign(np.arctan2(noise_real, noise_imag))           
+            noise = np.abs(self.noise)*sign'''                                                  
+                                                          
     
             #20.01.r1 2 Sep 19 - Updated this section by introducing new functions
             #for plotting=====================================================================
             if self.signalCheckBox.checkState() == 2:
-                sig = self.adjust_units_for_plotting_time(sig)
+                sig = self.adjust_units_for_plotting_time(self.signal)
                 self.set_signal_plot_time_domain(self.time, sig)    
     
             if self.noiseCheckBox.checkState() == 2:
-                noise = self.adjust_units_for_plotting_time(noise)
-                self.set_noise_plot_time_domain(self.time, noise)    
+                noise = self.adjust_units_for_plotting_time(self.noise)
+                self.set_noise_plot_time_domain(self.time, noise)  
+                self.set_noise_plot_time_domain(self.time, noise) 
                 
             if self.sigandnoiseCheckBox.checkState() == 2:
-                sig_and_noise = self.adjust_units_for_plotting_time(sig_noise)
+                sig_and_noise = self.adjust_units_for_plotting_time(self.signal + self.noise)
                 self.set_signal_and_noise_plot_time_domain(self.time, sig_and_noise)  
             #=================================================================================
             
@@ -418,6 +608,8 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
             self.ax.set_title('Time data (' + str(self.fb_name) + ', Port:' + str(self.port_name) +
                                               ', Dir:' + str(self.direction) + ')')
             
+            # MV 20.01.r3 5-Jun-20
+            self.ax.title.set_color(cfg_elec.electrical_time_labels_axes_color)
             self.ax.set_xlabel('Time (sec)')
             self.ax.set_aspect('auto')
             self.ax.format_coord = self.format_coord_time
@@ -461,12 +653,15 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
     #20.01.r1 2 Sep 19 - Added new functions for plotting=================================
     def adjust_units_for_plotting_time(self, signal):
         if self.radioButtonMag.isChecked() == 1:
-            pass
+            signal = np.real(signal)
         elif self.radioButtonLinearPwr.isChecked() == 1:
-            signal = signal*signal
+            signal = signal*np.conjugate(signal) #MV 20.01.r3 4-Jul-20
+            #signal = signal*signal 
         else:
 #            if np.count_nonzero(signal) == np.size(signal): 
-            signal = 10*np.log10(signal*signal*1e3)
+            signal = 10*np.log10(signal*np.conjugate(signal)*1e3) #MV 20.01.r3 4-Jul-20
+            #signal = 10*np.log10(signal*signal*1e3)
+            
 #            else:
 #                signal += 1e-15 #Set to very low value
 #                signal = 10*np.log10(signal*signal*1e3)  
@@ -511,10 +706,19 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
         signal_updated = self.signals[new_iteration]   
         self.Y = np.fft.fft(signal_updated[5])
         self.Y_pos = self.Y[range(int(self.n/2))]
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_pos = self.Y_pos*np.sqrt(2)
+        self.Y_pos[0] = self.Y_pos[0]/np.sqrt(2) # DC component is not doubled
         self.N = np.fft.fft(signal_updated[6])
-        self.N_pos = self.N[range(int(self.n/2))] # Positive freq only  
+        self.N_pos = self.N[range(int(self.n/2))] # Positive freq only
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.N_pos = self.N_pos*np.sqrt(2)
+        self.N_pos[0] = self.N_pos[0]/np.sqrt(2) # DC component is not doubled
         self.Y_N = np.fft.fft(signal_updated[5]+signal_updated[6])
-        self.Y_N_pos = self.Y_N[range(int(self.n/2))] # Positive freq only  
+        self.Y_N_pos = self.Y_N[range(int(self.n/2))] # Positive freq only
+        # MV 20.01.r3 20-Jul-20: Folding of spectrum
+        self.Y_N_pos = self.Y_N_pos*np.sqrt(2)
+        self.Y_N_pos[0] = self.Y_N_pos[0]/np.sqrt(2) # DC component is not doubled
         self.tabData.setCurrentWidget(self.tab_freq)       
         self.plot_freq_domain(0)
         self.canvas_freq.draw()
@@ -554,44 +758,53 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
                 self.af.set_ylabel('Power (dBm/Hz)')    
             else:
                 self.af.set_ylabel('Power (dBm)')
-            
-            #20.01.r1 2 Sep 19 - Updated this section by introducing new function=============
-            #to adjust plotting (adjust_units_for_plotting_freq)
+                
+            #==================================================================
+            # 20.01.r1 2 Sep 19 - Updated this section by introducing new 
+            # function to adjust plotting (adjust_units_for_plotting_freq)
+            # MV 20.01.r3 8-Jul-20: Changed to Y*conj(Y), from abs(Y)*abs(Y)
+            # MV 20.01.r3 18-Sep-20 Bug fix:
+            # Y*conj(Y) is now divided by n^2, previously was incorrectly
+            # dividing by n
             if self.signalCheckBoxFreq.checkState() == 2:
+
                 if self.checkBoxDisplayNegFreq.checkState() == 2:
-                    sig_pwr = np.square(np.abs(self.Y))/self.n
+                    sig_pwr = self.Y*np.conjugate(self.Y)/(self.n*self.n)
                     sig_pwr = self.adjust_units_for_plotting_freq(sig_pwr)
                     self.set_signal_plot_freq_domain(self.frq, sig_pwr)                
                 else:
-                    sig_pwr = np.square(np.abs(self.Y_pos))/self.n
+                    sig_pwr = self.Y_pos*np.conjugate(self.Y_pos)/(self.n*self.n)
                     sig_pwr = self.adjust_units_for_plotting_freq(sig_pwr)
                     self.set_signal_plot_freq_domain(self.frq_pos, sig_pwr) 
                         
             if self.noiseCheckBoxFreq.checkState() == 2:
                 if self.checkBoxDisplayNegFreq.checkState() == 2:
-                    noise_pwr = np.square(np.abs(self.N))/self.n 
+                    noise_pwr = self.N*np.conjugate(self.N)/(self.n*self.n)
                     noise_pwr = self.adjust_units_for_plotting_freq(noise_pwr)
                     self.set_noise_plot_freq_domain(self.frq, noise_pwr) 
                 else:
-                    noise_pwr = np.square(np.abs(self.N_pos))/self.n
+                    noise_pwr = self.N_pos*np.conjugate(self.N_pos)/(self.n*self.n)
                     noise_pwr = self.adjust_units_for_plotting_freq(noise_pwr)
                     self.set_noise_plot_freq_domain(self.frq_pos, noise_pwr) 
                         
             if self.sigandnoiseCheckBoxFreq.checkState() == 2:
                 if self.checkBoxDisplayNegFreq.checkState() == 2:
-                    sig_noise_pwr = np.square(np.abs(self.Y_N))/self.n  
+                    sig_noise_pwr = self.Y_N*np.conjugate(self.Y_N)/(self.n*self.n)
                     sig_noise_pwr = self.adjust_units_for_plotting_freq(sig_noise_pwr)
                     self.set_signal_and_noise_plot_freq_domain(self.frq, sig_noise_pwr)
                 else:
-                    sig_noise_pwr = np.square(np.abs(self.Y_N_pos))/self.n
+                    sig_noise_pwr = self.Y_N_pos*np.conjugate(self.Y_N_pos)/(self.n*self.n)
                     sig_noise_pwr = self.adjust_units_for_plotting_freq(sig_noise_pwr)
                     self.set_signal_and_noise_plot_freq_domain(self.frq_pos, sig_noise_pwr)
-            #=================================================================================
+            #==================================================================
             
             # MV 20.01.r1 15-Sep-19 (Cleaned up title - was getting too long & causing 
             # issues with tight layout)
             self.af.set_title('Freq data (' + str(self.fb_name) + ', Port:' + str(self.port_name) +
                                               ', Dir:' + str(self.direction) + ')')
+            
+            # MV 20.01.r3 5-Jun-20
+            self.af.title.set_color(cfg_elec.electrical_freq_labels_axes_color)
     
             self.af.set_xlabel('Freq (Hz)')
             self.af.set_aspect('auto')
@@ -718,40 +931,148 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
             self.eye = self.figure_eye.add_subplot(111, facecolor = back_color)
             self.eye.clear()
             
-            #Build arrays for plotting eye diagram=================================
+            eye_num = 3
+            eye_win = self.sym_period*eye_num 
+            
+            #Build arrays for plotting eye diagram=============================
             if (self.signalCheckBoxEye.checkState() == 2
                 or self.sigandnoiseCheckBoxEye.checkState() == 2):
-                eye_num = 3
+                #eye_num = 3
+                #eye_win = self.sym_period*eye_num 
                 if self.windowEye.text():
                     eye_num = int(round(float(self.windowEye.text())))
-                    eye_win = self.sym_period*eye_num #Convert to time units
-                else:
-                    eye_win = self.sym_period*eye_num       
+                    eye_win = self.sym_period*eye_num #Convert to time units      
+                # Initialize array for time window associated with eye
                 eye_section = np.array([])
     
-                #Sample time data to be used for tiling
+                # Sample time data to be used for tiling
                 # MV 20.01.r1 1-Nov-19 (replaced append operation with searchsorted)
-                index_eye_win = np.searchsorted(self.time, eye_win, side='left')
+                index_eye_win = np.searchsorted(self.time, eye_win, side='right')
                 eye_section = self.time[0:index_eye_win]            
-    #            i = 0
-    #            while self.time[i] < eye_win:
-    #                eye_section = np.append(eye_section, self.time[i])
-    #                i += 1
     
                 #Rebuild time array by "tiling" time window defined for eye
-                num_tiles =  round(self.n/np.size(eye_section))
+                num_tiles = round(self.n/np.size(eye_section))
                 eye_len = np.size(eye_section)
                 time_wrapped = np.tile(eye_section, num_tiles)
+                # Shorten arrays to be within a multiple of eye window                            
                 time_wrapped = np.resize(time_wrapped, num_tiles*eye_len)
-                signal = np.resize(np.real(self.signal), num_tiles*eye_len)
-                noise = np.resize(np.real(self.noise), num_tiles*eye_len)
+                signal = np.resize(self.signal, num_tiles*eye_len) # MV 20.01.r3 7-Jul-20
+                noise = np.resize(self.noise, num_tiles*eye_len) # MV 20.01.r3 7-Jul-20
+                # Re-organize arrays to match eye length
                 time_wrapped = np.reshape(time_wrapped, (num_tiles, eye_len))
                 signal = np.reshape(signal, (num_tiles, eye_len))
                 noise = np.reshape(noise, (num_tiles, eye_len))
+                
+                #------------------------------------------------------------------
+                # Eye metrics calculations
+                # MV 20.01.r3 18-Jun-20
+                if (self.decisionThreshold.text() and self.decisionPoint.text() 
+                    and self.histWidth.text() and self.histCoverage.text()):
+                    decision_th = float(self.decisionThreshold.text())
+                    decision_pt = float(self.decisionPoint.text())
+                    hist_width = float(self.histWidth.text())
+                    hist_coverage = float(self.histCoverage.text())
+                
+                oma_ref = None
+                if self.omaRef.text(): #Use as reference for VECP 
+                    oma_ref = float(self.omaRef.text())
+    
+                # Find min/max time sampling points for eye window
+                t_width_half = hist_width*0.01/2
+                t_start = self.sym_period*(decision_pt - t_width_half)
+                t_end = self.sym_period*(decision_pt + t_width_half)
+                t_start_index = np.min(np.where(time_wrapped[0] >= t_start))
+                t_end_index = np.max(np.where(time_wrapped[0] <= t_end))
+                
+                # Collect all samples that fall within time slice and 
+                # split into upper (binary 1) and lower (binary 0) histograms
+                # https://www.tutorialspoint.com/numpy/numpy_indexing_and_slicing.htm
+                # https://thispointer.com/python-numpy-select-elements-or-indices-
+                # by-conditions-from-numpy-array/
+                signal_hist = np.real(signal[...,t_start_index:t_end_index+1])    
+                signal_hist_upper = signal_hist[signal_hist > decision_th]
+                signal_hist_lower = signal_hist[signal_hist <= decision_th]
+                
+                # Upper histogram statistics---------------------------------------
+                clip_percent = (100 - hist_coverage)/2
+                if np.size(signal_hist_upper) > 0:
+                    upper_percentile_max = np.percentile(signal_hist_upper, 
+                                                     hist_coverage + clip_percent)
+                    upper_percentile_min =  np.percentile(signal_hist_upper,
+                                             (100 - hist_coverage) - clip_percent)           
+                    # Adjust histogram coverage (remove % of edges)
+                    signal_hist_upper = signal_hist_upper[signal_hist_upper < 
+                                                      upper_percentile_max]
+                    signal_hist_upper = signal_hist_upper[signal_hist_upper >= 
+                                                      upper_percentile_min]  
+                # Calculate mean, min, and max values
+                upper_histgr_mean = 0
+                upper_histgr_max = 0
+                upper_histgr_min = 0  
+                if np.size(signal_hist_upper) > 0:
+                    upper_histgr_mean = np.mean(signal_hist_upper)
+                    upper_histgr_max = np.max(signal_hist_upper)
+                    upper_histgr_min = np.min(signal_hist_upper)            
+          
+                # Lower histogram statistics---------------------------------------
+                if np.size(signal_hist_lower) > 0:
+                    lower_percentile_max = np.percentile(signal_hist_lower, 
+                                                     hist_coverage + clip_percent)
+                    lower_percentile_min =  np.percentile(signal_hist_lower,
+                                             (100 - hist_coverage) - clip_percent)           
+                    # Adjust histogram coverage (remove % of edges)           
+                    signal_hist_lower = signal_hist_lower[signal_hist_lower < 
+                                                      lower_percentile_max]
+                    signal_hist_lower = signal_hist_lower[signal_hist_lower >= 
+                                                      lower_percentile_min]
+                # Calculate mean, min, and max values
+                lower_histgr_mean = 0
+                lower_histgr_max = 0
+                lower_histgr_min = 0 
+                if np.size(signal_hist_lower) > 0:
+                    lower_histgr_mean = np.mean(signal_hist_lower)
+                    lower_histgr_max = np.max(signal_hist_lower)
+                    lower_histgr_min = np.min(signal_hist_lower)                
+                
+                # Calculate OMA
+                if not oma_ref: # is None
+                    oma_ref = upper_histgr_mean - lower_histgr_mean
+                
+                # Calculate Ao and VECP
+                upper_edge = upper_histgr_mean - (upper_histgr_max - upper_histgr_min)/2
+                lower_edge = lower_histgr_mean + (lower_histgr_max - lower_histgr_min)/2
+                a_0 = upper_edge - lower_edge
+                if a_0 > 0:
+                    vecp = 10*np.log10(oma_ref/a_0)
+                else:
+                    vecp = 0
+                
+                # Output results
+                self.resultOMA.setText(str(format(oma_ref, '0.3E')))
+                self.resultA0.setText(str(format(a_0, '0.3E')))
+                self.resultVECP.setText(str(format(vecp, '0.2f')))
+                
+                # Create bars for histograms---------------------------------------
+                if self.checkBoxHistBoxes.checkState() == 2:
+                    h_upper = upper_histgr_max - upper_histgr_min
+                    h_lower = lower_histgr_max - lower_histgr_min
+                    w = t_end - t_start
+                    color_hist = cfg_elec.electrical_eye_hist_color
+                    alpha_hist = cfg_elec.electrical_eye_hist_alpha
+                    self.eye.bar(t_start, h_upper, w, upper_histgr_min, 
+                                 alpha=alpha_hist, fill=1, color=color_hist, 
+                                 zorder=20, edgecolor=color_hist,
+                                 align='edge')
+                    
+                    self.eye.bar(t_start, h_lower, w, lower_histgr_min, 
+                                 alpha=alpha_hist, fill=1, color=color_hist, 
+                                 zorder=20, edgecolor=color_hist,
+                                 align='edge')
+                #------------------------------------------------------------------
             
             #Y-axis label settings
             if self.radioButtonMagEye.isChecked() == 1:
-                self.eye.set_ylabel('Magnitude (V)')
+                self.eye.set_ylabel('Magnitude') # MV 20.01.r3 17-Sep-20 Removed V
             elif self.radioButtonLinearPwrEye.isChecked() == 1:   
                 self.eye.set_ylabel('Power (W)')
             else:
@@ -782,9 +1103,16 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
             self.eye.set_title('Eye diagram (' + str(self.fb_name) + ', Port:' + str(self.port_name) +
                                               ', Dir:' + str(self.direction) + ')')
             
+            # MV 20.01.r3 5-Jun-20
+            self.eye.title.set_color(cfg_elec.electrical_eye_labels_axes_color)
+            
             self.eye.set_xlabel('Time (sec)')
             self.eye.set_aspect('auto')
             self.eye.format_coord = self.format_coord_eye
+            
+            # MV 20.01.r3 18-Jun-20 Set x-axis limits to exactly match
+            # symbol period
+            self.eye.set_xlim([0,eye_win])
             
             # MV 20.01.r1 3-Nov-2019 Color settings for x and y-axis labels and tick marks                   
             self.eye.xaxis.label.set_color(cfg_elec.electrical_eye_labels_axes_color)
@@ -831,33 +1159,54 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
     # ability to manage look and feel of plots)  
     def set_signal_plot_eye_diagram(self, time_wrapped, signal, signal_format):
         for i in range(len(time_wrapped)):
+            if signal_format == 0: # MV 20.01.r3 7-Jul-20
+                signal[i] = np.real(signal[i])
             if signal_format == 1:
-                signal[i] = signal[i]*signal[i]
+                signal[i] = signal[i]*np.conjugate(signal[i]) # MV 20.01.r3 4-Jul-20
+                #signal[i] = signal[i]*signal[i]
             if signal_format == 2:
-                signal[i] = 10*np.log10(signal[i]*signal[i]*1e3)
+                signal[i] = 10*np.log10(signal[i]*np.conjugate(signal[i])*1e3) # MV 20.01.r3 4-Jul-20
+                #signal[i] = 10*np.log10(signal[i]*signal[i]*1e3)
+            # MV 20.01.r3 10-Jul-20 Added alpha parameter to create density effect
+            # Thanks to posters on stack overflow!
+            # https://stackoverflow.com/questions/61574246/how-can-i-draw-an-eye-diagram-
+            # like-plot-in-pandas (accessed 10-Jul-20)
             self.eye.plot(time_wrapped[i], signal[i], 
                           color = cfg_elec.electrical_eye_signal_color,
                           linestyle = cfg_elec.electrical_eye_signal_linestyle, 
                           linewidth = cfg_elec.electrical_eye_signal_linewidth, 
                           marker = cfg_elec.electrical_eye_signal_marker,
                           markersize = cfg_elec.electrical_eye_signal_markersize, 
-                          label ='Electrical signal')
+                          zorder = 10, label ='Electrical signal',
+                          alpha = cfg_elec.electrical_eye_signal_alpha)
             
     def set_signal_noise_plot_eye_diagram(self, time_wrapped, signal,
                                           noise, signal_format):
         for i in range(len(time_wrapped)):
-            signal_noise = signal[i]+noise[i]
+            signal_noise = signal[i] + noise[i]
+            if signal_format == 0: # MV 20.01.r3 7-Jul-20
+                signal_noise = np.real(signal_noise)
             if signal_format == 1:
-                signal_noise = signal_noise*signal_noise
+                signal_noise = signal_noise*np.conjugate(signal_noise) # MV 20.01.r3 4-Jul-20
+                #signal_noise = signal_noise*signal_noise
             if signal_format == 2:
-                signal_noise = 10*np.log10(signal_noise*signal_noise*1e3)
+                signal_noise = 10*np.log10(signal_noise*np.conjugate(signal_noise)*1e3) # MV 20.01.r3 4-Jul-20
+                #signal_noise = 10*np.log10(signal_noise*signal_noise*1e3)
             self.eye.plot(time_wrapped[i], signal_noise, 
                           color = cfg_elec.electrical_eye_sig_noise_color,
                           linestyle = cfg_elec.electrical_eye_sig_noise_linestyle, 
                           linewidth = cfg_elec.electrical_eye_sig_noise_linewidth, 
                           marker = cfg_elec.electrical_eye_sig_noise_marker,
-                          markersize = cfg_elec.electrical_eye_sig_noise_markersize, 
-                          label = 'Electrical signal + noise')
+                          markersize = cfg_elec.electrical_eye_sig_noise_markersize,
+                          label = 'Electrical signal + noise',
+                          alpha = cfg_elec.electrical_eye_sig_noise_alpha)
+            
+    '''def set_signal_plot_eye_hist(self, time_wrapped, signal, signal_format):
+        time_wrapped_all = np.ravel(time_wrapped)
+        signal_all = np.ravel(signal)
+        from matplotlib import colors
+        self.eye.hist2d(time_wrapped_all, signal_all, bins=300, cmap='inferno',
+                        norm=colors.PowerNorm(0.5))'''
             
     def format_coord_eye(self, x, y):
         return 'Time=%0.7E, Mag/Power=%0.7E' % (x, y)
@@ -943,10 +1292,12 @@ class ElectricalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Electrical
                 data1['x'] = self.frq[self.start_index-1:self.end_index-1]
                 if self.radioButtonComplexSignalData.isChecked() == 1:
                     self.signalBrowser.append('Signal data (index, freq(Hz), real, imag):') 
-                    data1['y'] = self.Y[self.start_index-1:self.end_index-1]
+                    # MV 20.01.r3 18-Sep-20, FFT is not normalized, so need to divide by n
+                    data1['y'] = self.Y[self.start_index-1:self.end_index-1]/self.n
                 else:
                     self.signalBrowser.append('Signal data (index, freq(Hz), mag, phase):') 
-                    data1['y1'] = np.abs(self.Y[self.start_index-1:self.end_index-1])
+                    # MV 20.01.r3 18-Sep-20, FFT is not normalized, so need to divide by n
+                    data1['y1'] = np.abs(self.Y[self.start_index-1:self.end_index-1])/self.n
                     data1['y2'] = np.angle(self.Y[self.start_index-1:self.end_index-1])
                     
             # Adjust for linewidth setting      

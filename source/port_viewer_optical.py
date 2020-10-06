@@ -41,6 +41,7 @@ cfg_special = importlib.import_module(cfg_special_path)
 
 
 import numpy as np
+import matplotlib
 from scipy import constants
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
@@ -56,14 +57,24 @@ qtOpticalPortDataViewerFile = os.path.join(gui_ui_path, 'syslab_gui_files', 'Opt
 qtOpticalPortDataViewerFile = os.path.normpath(qtOpticalPortDataViewerFile)
 Ui_PortDataWindow_Optical, QtBaseClass = uic.loadUiType(qtOpticalPortDataViewerFile)
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 80
+#import matplotlib as mpl
+matplotlib.rcParams['figure.dpi'] = 80
 
 # https://matplotlib.org/api/ticker_api.html#matplotlib.ticker.Formatter
-mpl.rcParams['axes.formatter.useoffset'] = False # Removes offset from all plots
-mpl.rcParams['axes.formatter.limits'] = [-4, 4] # Limits for exponential notation
+matplotlib.rcParams['axes.formatter.useoffset'] = False # Removes offset from all plots
+matplotlib.rcParams['axes.formatter.limits'] = [-4, 4] # Limits for exponential notation
 
 style = """QLineEdit { background-color: rgb(245, 245, 245); color: rgb(50, 50, 50) }"""
+
+# MV 20.01.r3 15-Jun-20
+style_spin_box = """QSpinBox {color: darkBlue; background: white;
+                              selection-color: darkBlue;
+                              selection-background-color: white;}"""
+
+style_combo_box = """QComboBox {color: darkBlue; background: white;
+                              selection-color: darkBlue;
+                              selection-background-color: white;}"""
+
 
 class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
     '''Optical: portID(0), signal_type(1), wave_key(2), wave_channel(3), jones_vector(4), sample_rate(5), 
@@ -81,9 +92,23 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         self.fb_name = fb_name
         self.port_name = port_name
         self.direction = direction
-        self.iteration = 1  
         self.signals = signal_data # List of signals for each iteration      
         self.fs = design_settings['sampling_rate'] 
+        
+        # MV 20.01.r3 15-Jun-20 Set iteration to reflect main application setting
+        # (iterators spin box)
+        current_iter = int(design_settings['current_iteration'])
+        if (current_iter - 1) <= len(self.signals):
+            self.iteration = current_iter
+        else:
+            self.iteration = int(len(self.signals))
+
+        # MV 20.01.r3 13-Jun-20 Added functional block and port data info to
+        # Window title box
+        self.setWindowTitle('Optical signal data analyzer (' + 
+                            str(self.fb_name) + ', Port: ' + 
+                            str(self.port_name) + ', Dir: ' + 
+                            str(self.direction) + ')')
         
         self.dual_pol_data = False # MV 20.01.r1 5-Dec-2019
         
@@ -95,8 +120,14 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         #Iterations/Channels group box (Time data tab)
         iterations = len(signal_data)   
         self.spinBoxTime.setMaximum(iterations)
+        self.spinBoxTime.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxTime.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsTime.setText(str(iterations))        
-        self.spinBoxTime.valueChanged.connect(self.iteration_change_time)  
+        self.spinBoxTime.valueChanged.connect(self.iteration_change_time) 
+
+        self.waveKeyListTime.setStyleSheet(style_combo_box) # MV 20.01.r3 15-Jun-20  
         self.waveKeyListTime.currentIndexChanged.connect(self.iteration_change_time)
         #Signal type group box (Time data)
         self.signalCheckBox.stateChanged.connect(self.check_signal_changed_time)
@@ -128,8 +159,14 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         self.samplingRate.setText(str(format(self.fs, '0.3E')))
         #Iterations group box (Main sub-tab)        
         self.spinBoxFreq.setMaximum(iterations)
+        self.spinBoxFreq.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxFreq.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsFreq.setText(str(iterations))
         self.spinBoxFreq.valueChanged.connect(self.iteration_change_freq) 
+        #self.waveKeyListFreq.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.waveKeyListFreq.setStyleSheet(style_combo_box) # MV 20.01.r3 15-Jun-20
         self.waveKeyListFreq.currentIndexChanged.connect(self.iteration_change_freq)
         #Spectral resolution group box (Main sub-tab) 
         self.signalCheckBoxEnableResolution.stateChanged.connect(self.check_signal_changed_freq)
@@ -179,8 +216,14 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         self.numberOptChannels.setText(str(1))
         #Iterations group box (Main sub-tab)        
         self.spinBoxPol.setMaximum(iterations)
+        self.spinBoxPol.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxPol.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxPol.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxPol.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsPol.setText(str(iterations))
         self.spinBoxPol.valueChanged.connect(self.iteration_change_pol)
+        #self.waveKeyListPol.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.waveKeyListPol.setStyleSheet(style_combo_box) # MV 20.01.r3 15-Jun-20
         self.waveKeyListPol.currentIndexChanged.connect(self.iteration_change_pol)
         #Adjust view box
         self.elevationPosCurrent.setStyleSheet(style)
@@ -193,8 +236,14 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         #Iterations group box
         iterations = len(signal_data)   
         self.spinBoxSignalData.setMaximum(iterations)
+        self.spinBoxSignalData.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalData.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsSignalData.setText(str(iterations))
         self.spinBoxSignalData.valueChanged.connect(self.iteration_change_signal_data)
+        #self.waveKeyListSignalData.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.waveKeyListSignalData.setStyleSheet(style_combo_box) # MV 20.01.r3 15-Jun-20
         self.waveKeyListSignalData.currentIndexChanged.connect(self.iteration_change_signal_data)
         #Domain setting group box
         self.radioButtonSigFreq.toggled.connect(self.update_signal_data)
@@ -220,8 +269,14 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         #Iterations group box
         iterations = len(signal_data)   
         self.spinBoxSignalMetrics.setMaximum(iterations)
+        self.spinBoxSignalMetrics.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalMetrics.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalMetrics.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxSignalMetrics.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsSignalMetrics.setText(str(iterations))
         self.spinBoxSignalMetrics.valueChanged.connect(self.iteration_change_signal_metrics)
+        #self.waveKeyListSignalMetrics.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.waveKeyListSignalMetrics.setStyleSheet(style_combo_box) # MV 20.01.r3 15-Jun-20
         self.waveKeyListSignalMetrics.currentIndexChanged.connect(self.iteration_change_signal_metrics)
         #Polarization group box 
         self.radioButtonPolXYSignalMetrics.toggled.connect(self.update_signal_metrics)
@@ -234,7 +289,14 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         self.samplingRateAllCh.setText(str(format(self.fs, '0.3E')))
         #Iterations group box (Main sub-tab)        
         self.spinBoxAllCh.setMaximum(iterations)
+        self.spinBoxAllCh.setValue(self.iteration) # MV 20.01.r3 15-Jun-20
+        self.spinBoxAllCh.lineEdit().setReadOnly(True) # MV 20.01.r3 15-Jun-20
+        self.spinBoxAllCh.lineEdit().setAlignment(QtCore.Qt.AlignCenter) # MV 20.01.r3 15-Jun-20
+        self.spinBoxAllCh.setStyleSheet(style_spin_box) # MV 20.01.r3 15-Jun-20
         self.totalIterationsAllCh.setText(str(iterations))
+        # MV 20.01.r3 14-Jun-20 Was missing call to update channels after selecting
+        # spin box
+        self.spinBoxAllCh.valueChanged.connect(self.check_signal_changed_all_ch)
         #Spectral resolution group box (Main sub-tab) 
         self.signalCheckBoxEnableResolutionAllCh.stateChanged.connect(self.check_signal_changed_all_ch)
         self.actionResolutionWindowAllCh.clicked.connect(self.check_signal_changed_all_ch)
@@ -433,6 +495,9 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
     '''Time data tab (plotting methods)================================================'''
     def iteration_change_time(self):
         new_iteration = int(self.spinBoxTime.value())
+        lineEdit = self.spinBoxTime.findChildren(QtWidgets.QLineEdit)
+        lineEdit[0].deselect()
+        config.app.processEvents()
         signal_updated = self.signals[new_iteration]
         optical_list = signal_updated[5] #MV 20.01.r1 (previously signal_updated[4])
         
@@ -471,8 +536,8 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         self.ax.clear() #MV Rel 20.01.r1 15-Sep-19
         
         #http://greg-ashton.physics.monash.edu/setting-nice-axes-labels-in-matplotlib.html
-        self.ax.yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
-        self.ax.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
+        self.ax.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
+        self.ax.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
                     
         if axis_adjust == 1:
             if self.minTime.text() and self.maxTime.text():
@@ -502,24 +567,29 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         #to adjust plotting (adjust_units_for_plotting_time)
         if self.signalCheckBox.checkState() == 2:
             if self.radioButtonLinear.isChecked() == 1:
-                self.set_signal_plot_time_domain(sig_pwr)
+                self.set_signal_plot_time_domain(sig_pwr) 
             else:
-                sig_pwr = self.adjust_units_for_plotting_time(sig_pwr)
-                self.set_signal_plot_time_domain(sig_pwr)
+                # MV 20.01.r3 9-Jun-20: Changed sig_pwr to sig_pwr_dbm
+                sig_pwr_dbm = self.adjust_units_for_plotting_time(sig_pwr)
+                self.set_signal_plot_time_domain(sig_pwr_dbm)
             
         if self.noiseCheckBox.checkState() == 2:
             if self.radioButtonLinear.isChecked() == 1:
                 self.set_noise_plot_time_domain(noise_pwr)
             else:
-                noise_pwr = self.adjust_units_for_plotting_time(noise_pwr)
-                self.set_noise_plot_time_domain(noise_pwr)
+                # MV 20.01.r3 9-Jun-20: Changed noise_pwr to noise_pwr_dbm
+                noise_pwr_dbm = self.adjust_units_for_plotting_time(noise_pwr)
+                self.set_noise_plot_time_domain(noise_pwr_dbm)
             
         if self.sigandnoiseCheckBox.checkState() == 2:
+            # MV 20.01.r3 9-Jun-20 Bug fix, was adding sig_pwr+noise_pwr directly
+            # Correct calculation: np.abs(sig + noise)*np.abs(sig + noise)
+            sig_noise_pwr = np.abs(sig + noise)*np.abs(sig + noise)
             if self.radioButtonLinear.isChecked() == 1:
-                self.set_signal_and_noise_plot_time_domain(sig_pwr+noise_pwr)
-            else:
-                sig_noise_pwr = self.adjust_units_for_plotting_time(sig_pwr+noise_pwr)
                 self.set_signal_and_noise_plot_time_domain(sig_noise_pwr)
+            else:
+                sig_noise_pwr_dbm = self.adjust_units_for_plotting_time(sig_noise_pwr)
+                self.set_signal_and_noise_plot_time_domain(sig_noise_pwr_dbm)
         #=================================================================================
         if self.sigPhaseCheckBox.checkState() == 2:
             self.ax2 = self.ax.twinx()           
@@ -553,6 +623,10 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         # MV 20.01.r1 15-Sep-19 (Shortended title - causing issues with tight layout)
         self.ax.set_title('Carrier envelope (' + str(self.fb_name) + ', Port:' + str(self.port_name) +
                                           ', Dir:' + str(self.direction) + ', Pol:' + str(pol) + ')')
+        
+        # MV 20.01.r3 5-Jun-20
+        self.ax.title.set_color(cfg_opt.optical_time_labels_axes_color)
+            
         self.ax.set_xlabel('Time (sec)')
         self.ax.set_aspect('auto')
         self.ax.format_coord = self.format_coord_time
@@ -678,6 +752,9 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         
     def iteration_change_freq(self):
         new_iteration = int(self.spinBoxFreq.value())
+        lineEdit = self.spinBoxFreq.findChildren(QtWidgets.QLineEdit)
+        lineEdit[0].deselect()
+        config.app.processEvents()
         signal_updated = self.signals[new_iteration]
         optical_list = signal_updated[5] #MV 20.01.r1 (previously signal_updated[4])
         
@@ -739,17 +816,21 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
             # Calculate fft for signal
             self.Y = np.fft.fft(sig)
             self.Y = np.fft.fftshift(self.Y)
-            optical_power_fft = np.abs(self.Y)*np.abs(self.Y)/self.n
+            # MV 20.01.r3 18-Sep-20 Bug fix:
+            # np.abs(self.Y)*np.abs(self.Y) is now divided by n^2, 
+            # previously was incorrectly dividing by n
+            # Same applies for noise and sig+noise
+            optical_power_fft = np.abs(self.Y)*np.abs(self.Y)/(self.n*self.n)
             
             # Calculate fft for noise
             self.N = np.fft.fft(noise)
             self.N = np.fft.fftshift(self.N)
-            optical_noise_fft = np.abs(self.N)*np.abs(self.N)/self.n
+            optical_noise_fft = np.abs(self.N)*np.abs(self.N)/(self.n*self.n)
             
             # Calculate fft for signal + noise
             self.Y_N = np.fft.fft(sig + noise)
             self.Y_N = np.fft.fftshift(self.Y_N)
-            optical_signal_and_noise_fft = np.abs(self.Y_N)*np.abs(self.Y_N)/self.n
+            optical_signal_and_noise_fft = np.abs(self.Y_N)*np.abs(self.Y_N)/(self.n*self.n)
             
             self.figure_freq.clf()
             # MV 20.01.r1 Added new feature to select plot area background color
@@ -758,8 +839,8 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
             self.af.clear() #MV Rel 20.01.r1 15-Sep-19
                                                                                           
             #http://greg-ashton.physics.monash.edu/setting-nice-axes-labels-in-matplotlib.html
-            self.af.yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
-            self.af.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
+            self.af.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
+            self.af.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
             
             if axis_adjust == 1:
                 if self.minFreq.text() and self.maxFreq.text():
@@ -839,6 +920,9 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
             self.af.set_title('Freq data (' + str(self.fb_name) + ', Port:' + str(self.port_name) +
                                               ', Dir:' + str(self.direction) + ', Pol:' + str(pol) + ')')
             
+            # MV 20.01.r3 5-Jun-20
+            self.af.title.set_color(cfg_opt.optical_freq_labels_axes_color)
+            
             self.af.set_aspect('auto')
             self.af.format_coord = self.format_coord_freq
             
@@ -856,15 +940,15 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                 self.af.grid(True)  
                 self.af.grid(which='major', 
                              linestyle = cfg_opt.optical_freq_maj_grid_linestyle, 
-                             linewidth = cfg_opt.optical_freq__maj_grid_linewidth, 
+                             linewidth = cfg_opt.optical_freq_maj_grid_linewidth, 
                              color = cfg_opt.optical_freq_maj_grid_color)
             # Display minor grid (if checked)
             if self.checkBoxMinorGridFreq.checkState() == 2:
                 self.af.minorticks_on()
                 self.af.grid(which='minor', 
-                             linestyle = cfg_opt.optical_freq__min_grid_linestyle, 
-                             linewidth = cfg_opt.optical_freq__min_grid_linewidth, 
-                             color = cfg_opt.optical_freq__min_grid_color)
+                             linestyle = cfg_opt.optical_freq_min_grid_linestyle, 
+                             linewidth = cfg_opt.optical_freq_min_grid_linewidth, 
+                             color = cfg_opt.optical_freq_min_grid_color)
             # Display legend (if checked)    
             if self.checkBoxLegendFreq.isChecked() == 1:
                 self.af.legend()
@@ -1044,6 +1128,9 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
     '''Polarization analysis tab (plotting methods)===================================='''
     def iteration_change_pol(self):
         new_iteration = int(self.spinBoxPol.value())
+        lineEdit = self.spinBoxPol.findChildren(QtWidgets.QLineEdit)
+        lineEdit[0].deselect()
+        config.app.processEvents()
         signal_updated = self.signals[new_iteration]
         optical_list = signal_updated[5] #MV 20.01.r1 (previously signal_updated[4])
         
@@ -1113,7 +1200,7 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                 self.stokesPar0.setText(str(format(S0_avg, '0.3E')))
                 self.stokesPar1.setText(str(format(S1_avg, '0.3E')))
                 self.stokesPar2.setText(str(format(S2_avg, '0.3E')))
-                self.stokesPar3.setText(str(format(S3_avg, '0.3E')))        
+                self.stokesPar3.setText(str(format(S3_avg, '0.3E')))  
                 deg_of_pol = np.sqrt((S1_avg*S1_avg)+(S2_avg*S2_avg)+(S3_avg*S3_avg))/S0_avg
                 azimuth = 0.5*np.arctan(S2_avg/S1_avg)
                 ellipticity = 0.5*np.arcsin(S3_avg/S0_avg)
@@ -1201,6 +1288,9 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
     '''Signal data tab================================================================='''
     def iteration_change_signal_data(self):
         new_iteration = int(self.spinBoxSignalData.value())
+        lineEdit = self.spinBoxSignalData.findChildren(QtWidgets.QLineEdit)
+        lineEdit[0].deselect()
+        config.app.processEvents()
         signal_updated = self.signals[new_iteration]
         optical_list = signal_updated[5] #MV 20.01.r1 (previously signal_updated[4])
         
@@ -1298,10 +1388,12 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                 data1['x'] = self.frq[self.start_index-1:self.end_index-1]
                 if self.radioButtonComplexSignalData.isChecked() == 1:
                     self.signalBrowser.append('Signal data (index, freq(Hz), e_field):')
-                    data1['y'] = self.Y[self.start_index-1:self.end_index-1]
+                    # MV 20.01.r3 18-Sep-20 Divide by n added (FFT normalization is set to None)
+                    data1['y'] = self.Y[self.start_index-1:self.end_index-1]/self.n
                 else:
                     self.signalBrowser.append('Signal data (index, freq(Hz), e_field(mag), e-field(ph)):')
-                    data1['y1'] = np.abs(self.Y[self.start_index-1:self.end_index-1])
+                    # MV 20.01.r3 18-Sep-20 Divide by n added (FFT normalization is set to None)
+                    data1['y1'] = np.abs(self.Y[self.start_index-1:self.end_index-1])/self.n
                     data1['y2'] = np.angle(self.Y[self.start_index-1:self.end_index-1])
             self.signalBrowser.setCurrentFont(self.font_normal)
                     
@@ -1326,10 +1418,12 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                 data2['x'] = self.frq[self.start_index-1:self.end_index-1]
                 if self.radioButtonComplexSignalData.isChecked() == 1:
                     self.signalBrowser.append('Noise data (index, freq(Hz), e_field):')
-                    data1['y'] = self.N[self.start_index-1:self.end_index-1]
+                    # MV 20.01.r3 18-Sep-20 Divide by n added (FFT normalization is set to None)
+                    data1['y'] = self.N[self.start_index-1:self.end_index-1]/self.n
                 else:
                     self.signalBrowser.append('Noise data (index, freq(Hz), e_field(mag), e-field(ph)):')
-                    data1['y1'] = np.abs(self.N[self.start_index-1:self.end_index-1])
+                    # MV 20.01.r3 18-Sep-20 Divide by n added (FFT normalization is set to None)
+                    data1['y1'] = np.abs(self.N[self.start_index-1:self.end_index-1])/self.n
                     data1['y2'] = np.angle(self.N[self.start_index-1:self.end_index-1]) 
             self.signalBrowser.setCurrentFont(self.font_normal)
             self.signalBrowser.append(np.array2string(data2, max_line_width = self.linewidth))
@@ -1369,6 +1463,9 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
     '''
     def iteration_change_signal_metrics(self):
         new_iteration = int(self.spinBoxSignalMetrics.value())
+        lineEdit = self.spinBoxSignalMetrics.findChildren(QtWidgets.QLineEdit)
+        lineEdit[0].deselect()
+        config.app.processEvents()
         signal_updated = self.signals[new_iteration]
         optical_list = signal_updated[5] #MV 20.01.r1 (previously signal_updated[4])
         
@@ -1481,19 +1578,33 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
     '''   
     def iteration_change_all_ch(self):
         new_iteration = int(self.spinBoxAllCh.value())
+        lineEdit = self.spinBoxAllCh.findChildren(QtWidgets.QLineEdit)
+        lineEdit[0].deselect()
+        config.app.processEvents()
         signal_updated = self.signals[new_iteration]
         optical_list = signal_updated[5] #MV 20.01.r1 (previously signal_updated[4])
-        # Find min and max optical carrier frequencies & build extended freq axis                
-        freq_min = optical_list[0][1]
+        # Find min and max optical carrier frequencies & build extended freq axis  
+        
+        # MV 20.01.r3 17-Jun-20 Clean up of min/max frequency calculations
+        frequencies = []
+        for k in range(0, len(optical_list)):
+            frequencies.append(optical_list[k][1])
+        freq_min = min(frequencies)
+        freq_max = max(frequencies)
+              
+        '''freq_min = optical_list[0][1]
         freq_max = optical_list[0][1]
         freq_sum = 0
-        for k in range(1,len(optical_list)):
+        for k in range(1, len(optical_list)):
             freq = optical_list[k][1]
             freq_sum += freq
             if freq_max < freq:
                 freq_max = freq
             if freq_min > freq: 
-                freq_min = freq
+                freq_min = freq'''
+        
+        # Calculate center frequency of channel list
+        freq_sum = 0       
         if freq_sum > 1:
             freq_ctr = freq_sum/(len(optical_list)-1)
         else:
@@ -1501,7 +1612,7 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         self.opticalCtrFreq.setText(str(format(freq_ctr, '0.5E')))
         self.numberOptChannelsAllCh.setText(str(format(len(optical_list), 'n')))
         
-        # Build freq axis      
+        # Build consolidated freq axis      
         self.freq_x_axis = np.arange( freq_min - (self.fs/2), freq_max + (self.fs/2), 
                                 int(np.round((self.fs/self.n))) )
         
@@ -1558,14 +1669,18 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                 self.Y_N = np.fft.fftshift(self.Y_N)  
             
                 # Map field envelopes to extended frequency axis
-                j = 0
+                # MV 20.01.r3 17-Jun-20 Cleaned up code for field envelope
+                # mapping
+                j = np.max(np.where(self.freq_x_axis <= frq[0]))
+                
+                '''j = 0
                 while True:
                     if self.freq_x_axis[j] == self.freq_x_axis[-1]: #Last element of array
                         break
                     if (frq[0] >= self.freq_x_axis[j] and frq[0] < self.freq_x_axis[j+1]):
                         break
                     else:
-                        j += 1
+                        j += 1'''
             
                 self.all_ch_field_env_fft[j:j+self.n] += self.Y[0:self.n]
                 self.all_ch_noise_env_fft[j:j+self.n] += self.N[0:self.n]
@@ -1594,12 +1709,12 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                     
             self.figure_all_ch.clf()
             # MV 20.01.r1 Added new feature to select plot area background color
-            back_color = cfg_opt.opt_chnls_freq_plot_back_color = '#f9f9f9'
+            back_color = cfg_opt.opt_chnls_freq_plot_back_color # MV 20.01.r3 (5-Jun-20)
             self.a_ch = self.figure_all_ch.add_subplot(111, facecolor = back_color)
                                                                                           
             #http://greg-ashton.physics.monash.edu/setting-nice-axes-labels-in-matplotlib.html
-            self.a_ch.yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
-            self.a_ch.xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True))
+            self.a_ch.yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
+            self.a_ch.xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True))
             
             if axis_adjust == 1:
                 if self.minFreqAllCh.text() and self.maxFreqAllCh.text():
@@ -1612,16 +1727,20 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                     self.a_ch.set_ylim(float(start_val), float(end_val))   
                 
             if self.signalCheckBoxAllCh.checkState() == 2:
+                # MV 20.01.r3 18-Sep-20 Bug fix:
+                # np.abs(self.Y)*np.abs(self.Y) is now divided by n^2, 
+                # previously was incorrectly dividing by n
+                # Same applies for noise and sig+noise
                 self.optical_power_fft = (abs(self.all_ch_field_env_fft)
-                                          *abs(self.all_ch_field_env_fft)/self.n)  
+                                          *abs(self.all_ch_field_env_fft)/(self.n*self.n))  
             
             if self.noiseCheckBoxAllCh.checkState() == 2:
                 self.optical_noise_fft = (abs(self.all_ch_noise_env_fft)
-                                          *abs(self.all_ch_noise_env_fft)/self.n)
+                                          *abs(self.all_ch_noise_env_fft)/(self.n*self.n))
             
             if self.sigandnoiseCheckBoxAllCh.checkState() == 2:
                 self.optical_signal_and_noise_fft = (abs(self.all_ch_field_noise_env_fft)
-                                              *abs(self.all_ch_field_noise_env_fft)/self.n)
+                                              *abs(self.all_ch_field_noise_env_fft)/(self.n*self.n))
             
             #Update spectral resolution for plot (if selected)
             if self.signalCheckBoxEnableResolutionAllCh.checkState() == 2:
@@ -1695,6 +1814,9 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
                                                      + str(self.port_name) + ', Dir:'
                                                      + str(self.direction) + ', Pol:' 
                                                      + str(pol) + ')')
+            
+            # MV 20.01.r3 5-Jun-20
+            self.a_ch.title.set_color(cfg_opt.opt_chnls_freq_labels_axes_color)
             
             self.a_ch.set_aspect('auto')
             self.a_ch.format_coord = self.format_coord_all_ch
@@ -1809,7 +1931,7 @@ class OpticalPortDataAnalyzer(QtWidgets.QDialog, Ui_PortDataWindow_Optical):
         plt.close(self.figure_freq)
         plt.close(self.figure_pol)
         plt.close(self.figure_all_ch)
-               
+                       
 '''FUNCTIONS================================================================'''
 #def set_mpl_cursor():
 #    mplcursors.cursor(multiple=False).connect("add", 

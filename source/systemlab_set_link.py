@@ -31,12 +31,16 @@
     Source - Creating a diagram editor,
     http://www.windel.nl/?section=pyqtdiagrameditor (downloaded 11 Feb 2018)
 '''
- # MV 20.01.r1 3-Nov-2019
+# MV 20.01.r1 3-Nov-2019
 import importlib
 config_special_path = str('syslab_config_files.config_special')
 config_sp = importlib.import_module(config_special_path)
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+# MV 20.01.r2.custom 3-Jun-20
+import sys
+import traceback
 
 class SetLink(): 
     '''Used to create signal links between FB ports
@@ -53,31 +57,37 @@ class SetLink():
             self.pos1 = fromPort.scenePos()  
             fromPort.posCallbacks.append(self.setBeginPos)
             self.toPort = toPort
-        #Create connection items (GraphicsLineItem or GraphicsPathItem) and add to scene
+            
+        # Create connection items (GraphicsLineItem or GraphicsPathItem)
+        # and add to scene
         signal = fromPort.signal_type       
         self.portlink = LinksDesignPathView(signal, None, None, None, None, None, self.project_scene) 
         self.project_scene.addItem(self.portlink)         
       
-    def setFromPort(self, fromPort):
+    def setFromPort(self, fromPort): # Beginning of of link creation (hover start port)
         self.fromPort = fromPort
         if self.fromPort:
             self.pos1 = fromPort.scenePos()
             self.fromPort.posCallbacks.append(self.setBeginPos)
+            #print(self.fromPort.posCallbacks)
          
-    def setToPort(self, toPort):
+    def setToPort(self, toPort): # End of of link creation (hover end port)
         self.toPort = toPort
         if self.toPort:
             self.pos2 = toPort.scenePos()
             self.toPort.posCallbacks.append(self.setEndPos)
+            #print(self.toPort.posCallbacks)
             
-    def setEndPos(self, endpos):
+    def setEndPos(self, endpos): # End position re-set (from movement)
+        #print('Set end position')
         self.pos2 = endpos        
         if self.lineMode == True:
             self.set_linear_link()
         else:
             self.set_polygon_link() 
-
-    def setBeginPos(self, pos1):
+            
+    def setBeginPos(self, pos1): # End position re-set (from movement)
+        #print('Set begin position')
         self.pos1 = pos1        
         if self.lineMode == True:
             self.set_linear_link()
@@ -86,17 +96,50 @@ class SetLink():
             
     def set_linear_link(self): #Create straight line connection 
         path = QtGui.QPainterPath()
-        pos_start = QtCore.QPointF(self.pos1)        
-        pos_end = QtCore.QPointF(self.pos2)
+        try: # MV 20.01.r3 9-Jun-20
+            pos_start = QtCore.QPointF(self.pos1)        
+            pos_end = QtCore.QPointF(self.pos2)
+        except:
+            e0 = sys.exc_info() [0]
+            e1 = sys.exc_info() [1]
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText('Error processing reset links')
+            msg.setInformativeText(str(e0) + ' ' + str(e1))
+            msg.setInformativeText(str(traceback.format_exc()))
+            msg.setStyleSheet("QLabel{height: 150px; min-height: 150px; max-height: 150px;}")
+            msg.setStyleSheet("QLabel{width: 500px; min-width: 500px; max-width: 500px;}")
+            msg.setWindowTitle("Processing error: Reset links")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)	
+            rtnval = msg.exec()
+            if rtnval == QtWidgets.QMessageBox.Ok:
+                msg.close()
         
         path.addPolygon(QtGui.QPolygonF([pos_start, pos_end]))
         self.portlink.setPath(path)
 
     def set_polygon_link(self): #Create elbow connection
         path = QtGui.QPainterPath()
-        pos_start = QtCore.QPointF(self.pos1)   
-        delta_x = abs(self.pos2.x() - self.pos1.x())
-        delta_y = abs(self.pos2.y() - self.pos1.y())
+        try: # MV 20.01.r3 9-Jun-20
+            pos_start = QtCore.QPointF(self.pos1)
+            delta_x = abs(self.pos2.x() - self.pos1.x())
+            delta_y = abs(self.pos2.y() - self.pos1.y())
+        except:
+            e0 = sys.exc_info() [0]
+            e1 = sys.exc_info() [1]
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setText('Error processing reset links')
+            msg.setInformativeText(str(e0) + ' ' + str(e1))
+            msg.setInformativeText(str(traceback.format_exc()))
+            msg.setStyleSheet("QLabel{height: 150px; min-height: 150px; max-height: 150px;}")
+            msg.setStyleSheet("QLabel{width: 500px; min-width: 500px; max-width: 500px;}")
+            msg.setWindowTitle("Processing error: Reset links")
+            msg.setStandardButtons(QtWidgets.QMessageBox.Ok)	
+            rtnval = msg.exec()
+            if rtnval == QtWidgets.QMessageBox.Ok:
+                msg.close()
+                
         pos_int_count = 2
         
         #Upper left quadrant to lower right quadrant===========================
@@ -729,12 +772,19 @@ class LinksDesignPathView(QtWidgets.QGraphicsPathItem):
                         #Update affected ports to reflect changes to link status
                         start_fb.ports[fb_start_portID].link_key = None
                         start_fb.ports[fb_start_portID].link_name = None
-                        start_fb.ports[fb_start_portID].connected = False
-                        end_fb =  self.project_scene.fb_design_view_list[fb_end_key]
+                        start_fb.ports[fb_start_portID].connected = False                       
+                        end_fb = self.project_scene.fb_design_view_list[fb_end_key]
                         end_fb.ports[fb_end_portID].link_key = None
                         end_fb.ports[fb_end_portID].link_name = None
                         end_fb.ports[fb_end_portID].connected = False
-                        #Remove and delete qgraphicslineitem
+                        
+                        # MV 20.01.r3 25-Jun-20
+                        # The signal object for the port is deleted and
+                        # re-instantiated (clears port data, for example 
+                        # after completion of a simulation)
+                        end_fb.update_port(fb_end_key, fb_end_portID)
+                        
+                        # Remove and delete qgraphicslineitem
                         self.project_scene.removeItem(line_item)                        
                         del line_item
                         #Delete associated signal link class                      

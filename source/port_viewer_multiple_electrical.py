@@ -39,6 +39,7 @@ cfg_special_path = str('syslab_config_files.config_special')
 cfg_special = importlib.import_module(cfg_special_path)
 
 import numpy as np
+import matplotlib
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets
 import matplotlib.pyplot as plt
@@ -53,12 +54,17 @@ qtElectricalMultiPortViewerFile = os.path.join(gui_ui_path, 'syslab_gui_files',
 qtElectricalMultiPortViewerFile = os.path.normpath(qtElectricalMultiPortViewerFile)
 Ui_MultiPortDataWindow_Electrical, QtBaseClass = uic.loadUiType(qtElectricalMultiPortViewerFile)
 
-import matplotlib as mpl
-mpl.rcParams['figure.dpi'] = 80
+#import matplotlib as mpl
+matplotlib.rcParams['figure.dpi'] = 80
 
 # https://matplotlib.org/api/ticker_api.html#matplotlib.ticker.Formatter
-mpl.rcParams['axes.formatter.useoffset'] = False # Removes offset from all plots
-mpl.rcParams['axes.formatter.limits'] = [-4, 4] # Limits for exponential notation
+matplotlib.rcParams['axes.formatter.useoffset'] = False # Removes offset from all plots
+matplotlib.rcParams['axes.formatter.limits'] = [-4, 4] # Limits for exponential notation
+
+# MV 20.01.r3 15-Jun-20
+style_spin_box = """QSpinBox {color: darkBlue; background: white;
+                              selection-color: darkBlue;
+                              selection-background-color: white;}"""
 
 class ElectricalDataAnalyzerMultiplePort(QtWidgets.QDialog, Ui_MultiPortDataWindow_Electrical):
     '''
@@ -179,14 +185,23 @@ class ElectricalDataAnalyzerMultiplePort(QtWidgets.QDialog, Ui_MultiPortDataWind
         for i in range(0, len(signal_default)):
             Y = np.fft.fft(signal_default[i][5])
             Y_pos = Y[range(int(self.n/2))]
+            # MV 20.01.r3 20-Jul-20: Folding of spectrum
+            Y_pos = Y_pos*np.sqrt(2)
+            Y_pos[0] = Y_pos[0]/np.sqrt(2) # DC component is not doubled
             self.Y.append(Y)
             self.Y_pos.append(Y_pos)
             N = np.fft.fft(signal_default[i][6])
             N_pos = N[range(int(self.n/2))]
+            # MV 20.01.r3 20-Jul-20: Folding of spectrum
+            N_pos = N_pos*np.sqrt(2)
+            N_pos[0] = N_pos[0]/np.sqrt(2) # DC component is not doubled
             self.N.append(N)
             self.N_pos.append(N_pos)
             Y_N = np.fft.fft(signal_default[i][5]+signal_default[i][6])
             Y_N_pos = Y_N[range(int(self.n/2))]
+            # MV 20.01.r3 20-Jul-20: Folding of spectrum
+            Y_N_pos = Y_N_pos*np.sqrt(2)
+            Y_N_pos[0] = Y_N_pos[0]/np.sqrt(2) # DC component is not doubled
             self.Y_N.append(Y_N)
             self.Y_N_pos.append(Y_N_pos)
 
@@ -281,18 +296,18 @@ class ElectricalDataAnalyzerMultiplePort(QtWidgets.QDialog, Ui_MultiPortDataWind
             
             #http://greg-ashton.physics.monash.edu/setting-nice-axes-labels-in-matplotlib.html
             if self.radioButtonOverlay.isChecked() == 1:
-                self.ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                self.ax[0].yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                        useOffset=False))
-                self.ax[0].xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                self.ax[0].xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                        useOffset=False))
             else:
                 for x in range(0, m):
                     if x < m-1:
                         self.ax[x].xaxis.set_major_formatter(plt.NullFormatter())
                     else:
-                        self.ax[x].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                        self.ax[x].yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                            useOffset=False))
-                        self.ax[x].xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                        self.ax[x].xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                            useOffset=False))
                 
             if axis_adjust == 1:
@@ -533,14 +548,23 @@ class ElectricalDataAnalyzerMultiplePort(QtWidgets.QDialog, Ui_MultiPortDataWind
         for i in range(0, len(signal_updated)):
             Y = np.fft.fft(signal_updated[i][5])
             Y_pos = Y[range(int(self.n/2))]
+            # MV 20.01.r3 20-Jul-20: Folding of spectrum
+            Y_pos = Y_pos*np.sqrt(2)
+            Y_pos[0] = Y_pos[0]/np.sqrt(2) # DC component is not doubled
             self.Y.append(Y)
             self.Y_pos.append(Y_pos)
             N = np.fft.fft(signal_updated[i][6])
             N_pos = N[range(int(self.n/2))]
+            # MV 20.01.r3 20-Jul-20: Folding of spectrum
+            N_pos = N_pos*np.sqrt(2)
+            N_pos[0] = N_pos[0]/np.sqrt(2) # DC component is not doubled
             self.N.append(N)
             self.N_pos.append(N_pos)
             Y_N = np.fft.fft(signal_updated[i][5]+signal_updated[i][6])
             Y_N_pos = Y_N[range(int(self.n/2))]
+            # MV 20.01.r3 20-Jul-20: Folding of spectrum
+            Y_N_pos = Y_N_pos*np.sqrt(2)
+            Y_N_pos[0] = Y_N_pos[0]/np.sqrt(2) # DC component is not doubled
             self.Y_N.append(Y_N)
             self.Y_N_pos.append(Y_N_pos)
 
@@ -576,18 +600,18 @@ class ElectricalDataAnalyzerMultiplePort(QtWidgets.QDialog, Ui_MultiPortDataWind
                     
             #http://greg-ashton.physics.monash.edu/setting-nice-axes-labels-in-matplotlib.html
             if self.radioButtonFreqOverlay.isChecked() == 1:
-                self.af[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                self.af[0].yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                        useOffset=False))
-                self.af[0].xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                self.af[0].xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                        useOffset=False))
             else:
                 for x in range(0, m):
                     if x < m-1:
                         self.af[x].xaxis.set_major_formatter(plt.NullFormatter())
                     else:
-                        self.af[x].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                        self.af[x].yaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                            useOffset=False))
-                        self.af[x].xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(useMathText=True, 
+                        self.af[x].xaxis.set_major_formatter(matplotlib.ticker.ScalarFormatter(useMathText=True, 
                            useOffset=False))
             
             if axis_adjust == 1:
@@ -654,32 +678,35 @@ class ElectricalDataAnalyzerMultiplePort(QtWidgets.QDialog, Ui_MultiPortDataWind
             
             for i in range(0, m):             
                 if self.signalCheckBoxFreq.checkState() == 2:
-                    if self.checkBoxDisplayNegFreq.checkState() == 2:
-                        sig_pwr = np.square(np.abs(self.Y[i]))/self.n
+                    if self.checkBoxDisplayNegFreq.checkState() == 2:            
+                        # MV 20.01.r3 18-Sep-20, 
+                        # abs(Y)*abs(Y) is now divided by n^2, previously was incorrectly
+                        # dividing by n. Same applies to noise and sig+noise
+                        sig_pwr = np.square(np.abs(self.Y[i]))/(self.n*self.n)
                         sig_pwr = self.adjust_units_for_plotting_freq(sig_pwr)
                         self.set_signal_plot_freq_domain(self.frq, sig_pwr, i+1)                
                     else:
-                        sig_pwr = np.square(np.abs(self.Y_pos[i]))/self.n
+                        sig_pwr = np.square(np.abs(self.Y_pos[i]))/(self.n*self.n)
                         sig_pwr = self.adjust_units_for_plotting_freq(sig_pwr)
                         self.set_signal_plot_freq_domain(self.frq_pos, sig_pwr, i+1) 
                             
                 if self.noiseCheckBoxFreq.checkState() == 2:
                     if self.checkBoxDisplayNegFreq.checkState() == 2:
-                        noise_pwr = np.square(np.abs(self.N[i]))/self.n 
+                        noise_pwr = np.square(np.abs(self.N[i]))/(self.n*self.n) 
                         noise_pwr = self.adjust_units_for_plotting_freq(noise_pwr)
                         self.set_noise_plot_freq_domain(self.frq, noise_pwr, i+1) 
                     else:
-                        noise_pwr = np.square(np.abs(self.N_pos[i]))/self.n
+                        noise_pwr = np.square(np.abs(self.N_pos[i]))/(self.n*self.n)
                         noise_pwr = self.adjust_units_for_plotting_freq(noise_pwr)
                         self.set_noise_plot_freq_domain(self.frq_pos, noise_pwr, i+1) 
                             
                 if self.sigandnoiseCheckBoxFreq.checkState() == 2:
                     if self.checkBoxDisplayNegFreq.checkState() == 2:
-                        sig_noise_pwr = np.square(np.abs(self.Y_N[i]))/self.n  
+                        sig_noise_pwr = np.square(np.abs(self.Y_N[i]))/(self.n*self.n) 
                         sig_noise_pwr = self.adjust_units_for_plotting_freq(sig_noise_pwr)
                         self.set_signal_and_noise_plot_freq_domain(self.frq, sig_noise_pwr, i+1)
                     else:
-                        sig_noise_pwr = np.square(np.abs(self.Y_N_pos[i]))/self.n
+                        sig_noise_pwr = np.square(np.abs(self.Y_N_pos[i]))/(self.n*self.n)
                         sig_noise_pwr = self.adjust_units_for_plotting_freq(sig_noise_pwr)
                         self.set_signal_and_noise_plot_freq_domain(self.frq_pos, sig_noise_pwr, i+1)
             
