@@ -11,7 +11,7 @@ def run (x, y):
     icon_path_1.addEllipse(x-12.5, y-12.5, 12.5, 12.5)
     icon_1.setPath(icon_path_1)
     icon_1.setPen(QtGui.QPen(QtGui.QBrush(QtCore.Qt.blue), 1 ))
-    icon_1.setBrush(QtGui.QBrush(QtGui.QColor('#feffb7')))
+    icon_1.setBrush(QtGui.QBrush(QtGui.QColor('#f5f5f5')))
     #icon_1.setOpacity(0.5)
     
     icon_paths = [icon_1]

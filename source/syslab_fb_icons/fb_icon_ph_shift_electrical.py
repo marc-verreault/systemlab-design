@@ -15,7 +15,7 @@ def run (x, y):
     
     icon_1 = QtWidgets.QGraphicsPathItem()
     icon_path_1 = QtGui.QPainterPath() 
-    font = QtGui.QFont("Arial", 12)
+    font = QtGui.QFont("Arial", 11)
     font.setItalic(True)
     icon_path_1.addText(x, y, font, phi_sym)
     icon_1.setPath(icon_path_1)
