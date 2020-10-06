@@ -53,15 +53,15 @@ def run(input_signal_data, parameters_input, settings):
     num_errors = ['Bit errors', err_count, ' ', ' ', False]
     ber_results = [res_ber, num_errors]
     
-    '''#Send update to data panel
-    config.data_tables['ber_1'] = []
-    data_1 = ['Iteration #', iteration, '.0f', ' ']
+    #Send update to data panel
+    config.data_tables['ber_metrics'] = []
+    data_1 = ['Iteration #', iteration, '.0f', ' ', ' ', '#0000ff']
     data_2 = ['Binary sequence length', binary_seq_length, '.0f', ' ']
     data_3 = ['Errored bits', err_count, '.0f', ' ']
     data_4 = ['Bit error rate', ber, '0.3E', ' ']
-    data_5 = ['Bit error rate (th)', project.ber_th[iteration-1], '0.3E', ' ']
-    data_list = [data_1, data_2, data_3, data_4, data_5]
-    config.data_tables['ber_1'].extend(data_list)'''
+    #data_5 = ['Bit error rate (th)', project.ber_th[iteration-1], '0.3E', ' ']
+    data_list = [data_1, data_2, data_3, data_4]
+    config.data_tables['ber_metrics'].extend(data_list)
     
     '''#Prepare data for ber waterfall curve
     if iteration == 1:

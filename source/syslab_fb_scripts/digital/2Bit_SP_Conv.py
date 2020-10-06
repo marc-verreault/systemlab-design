@@ -4,7 +4,6 @@ Version 1.0 (19.02 23 Feb 2019)
 """
 import numpy as np
 import config
-import project_optical_qpsk as project
 
 def run(input_signal_data, parameters_input, settings):
     
