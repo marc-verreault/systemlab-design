@@ -38,7 +38,7 @@ VSVersionInfo(
         StringStruct(u'LegalTrademarks', u''),
         StringStruct(u'OriginalFilename', u'SystemLab-Design-20.01.exe'),
         StringStruct(u'ProductName', u'SystemLab-Design'),
-        StringStruct(u'ProductVersion', u'20.01.r2')])
+        StringStruct(u'ProductVersion', u'20.01.r3')])
       ]),
 VarFileInfo([VarStruct(u'Translation', [0, 1200])])
   ]
