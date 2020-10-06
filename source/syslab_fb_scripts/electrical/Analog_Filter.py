@@ -1,7 +1,7 @@
 """
-SystemLab-Design Version 19.02
+SystemLab-Design Version 19.02/20.01.r3
 Functional block script: Analog Filter
-Version 1.0 (13-Mar-2019)
+Version 1.0 (13-Mar-2019/21-Jun-20)
 
 Refs:
 1) Chapter 8, Analog Filters 
@@ -67,7 +67,11 @@ def run(input_signal_data, parameters_input, settings):
     carrier = 0
     time = input_signal_data[0][4]
     signal = input_signal_data[0][5]
-    noise = np.zeros(n)    
+    # MV 20.01.r3 21-Jun-20
+    # Noise array was not being retrieved from to input port. Now fixed.
+    # Not required to update fb script version
+    # noise = np.zeros(n)  
+    noise = input_signal_data[0][6]
     
     '''==CALCULATIONS=====================================================================
     '''
@@ -76,29 +80,54 @@ def run(input_signal_data, parameters_input, settings):
     w_z = np.pi*2*freq_zero
 
     # Apply FFT (time -> freq domain)
-    T = n/fs 
+    T = n/fs
     k = np.arange(n)
     frq = k/T # Positive/negative freq (double sided)
     Y = np.fft.fft(signal)
-    N = np.fft.fft(noise)
+    N = np.fft.fft(noise) # MV 20.01.r3 21-Jun-20
+    
+
+    
+    Y = np.fft.fftshift(Y)
+    N = np.fft.fftshift(N)
+    frq = frq - fs/2
+
+    #frq = frq - frq[int(round(fft_size/2))]
+    
+    #Y = np.fft.fft(signal)
+    #N = np.fft.fft(noise) # MV 20.01.r3 21-Jun-20
     
     # Apply transfer function (freq domain)
     if filter_type == 'Low-pass (n=1)':
         Y_trans = transfer_lowpass_1st_order(Y, frq, w_0, n)
+        # MV 20.01.r3 21-Jun-20
+        N_trans = transfer_lowpass_1st_order(N, frq, w_0, n)
     elif filter_type == 'High-pass (n=1)':
         Y_trans = transfer_highpass_1st_order(Y, frq, w_0, n)
+        # MV 20.01.r3 21-Jun-20
+        N_trans = transfer_highpass_1st_order(N, frq, w_0, n)
     elif filter_type == 'Low-pass (n=2)':
         Y_trans = transfer_lowpass_2nd_order(Y, frq, w_0, Q, n)  
+        # MV 20.01.r3 21-Jun-20
+        N_trans = transfer_lowpass_2nd_order(N, frq, w_0, Q, n)  
     elif filter_type == 'High-pass (n=2)':
         Y_trans = transfer_highpass_2nd_order(Y, frq, w_0, Q, n) 
+        # MV 20.01.r3 21-Jun-20
+        N_trans = transfer_highpass_2nd_order(N, frq, w_0, Q, n) 
     elif filter_type == 'Band-pass (n=2)':
-        Y_trans = transfer_bandpass_2nd_order(Y, frq, w_0, Q, n) 
+        Y_trans = transfer_bandpass_2nd_order(Y, frq, w_0, Q, n)
+        # MV 20.01.r3 21-Jun-20 
+        N_trans = transfer_highpass_2nd_order(N, frq, w_0, Q, n)         
     elif filter_type == 'Notch (n=2)':
         Y_trans = transfer_notch_2nd_order(Y, frq, w_0, w_z, Q, n) 
+        # MV 20.01.r3 21-Jun-20
+        N_trans = transfer_notch_2nd_order(N, frq, w_0, w_z, Q, n) 
     elif filter_type == 'All-pass (n=2)':
         Y_trans = transfer_allpass_2nd_order(Y, frq, w_0, Q, n) 
-    
-    #Create 
+        # MV 20.01.r3 21-Jun-20
+        N_trans = transfer_allpass_2nd_order(N, frq, w_0, Q, n)
+        
+    # Building freq response curves
     if freq_resp_curves == 2:
         if config.sim_status_win_enabled == True:
             config.sim_status_win.textEdit.append('Building freq response curves...')
@@ -111,9 +140,13 @@ def run(input_signal_data, parameters_input, settings):
                                                              mag, ph, n, freq_cut_off,
                                                              filter_type)
         config.analog_filter_graph.show()
-        
-    sig_out = np.fft.ifft(Y_trans*2) 
-    # NOTE: Multiply by 2 to account for dual-power spectrum (neg/pos frequencies)
+    
+    #Y_trans = np.fft.ifftshift(Y_trans)
+    sig_out = np.fft.ifft(np.fft.ifftshift(Y_trans)) 
+    
+    #N_trans = np.fft.ifftshift(N_trans)
+    noise_out = np.fft.ifft(np.fft.ifftshift(N_trans))
+    #https://www.mathworks.com/matlabcentral/answers/17885-time-domain-signal-reconstruction-from-frequency-domain
     
     '''==OUTPUT PARAMETERS LIST===========================================================
     '''
@@ -125,9 +158,9 @@ def run(input_signal_data, parameters_input, settings):
     script_results = []
     
     '''==RETURN (Output Signals, Parameters, Results)=================================='''
-
-    return ([[2, sig_type, carrier, fs, time, sig_out, noise]], 
-            script_parameters, script_results)
+    #MV 20.01.r3 21-Jun-20: Changed "noise" to "noise_out"
+    return ([[2, sig_type, carrier, fs, time, sig_out, noise_out]], 
+                 script_parameters, script_results)
 
 def transfer_lowpass_1st_order(Y, frq, w_0, n):
     # w_0 / (s + w_0) Source: REFs 5,7

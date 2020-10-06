@@ -48,6 +48,7 @@ def run(input_signal_data, parameters_input, settings):
     if dc_block == 2:
         sig_avg = np.mean(np.real(sampled_sig_in))
         sampled_sig_in = sampled_sig_in - sig_avg
+        config.display_xy_data('Signal after DC block', time, 'Time (s)', sampled_sig_in, 'Magnitude')
     
     for sym in range(0, n_sym):
         sampling_index = int(sym*samples_per_sym + round(samples_per_sym*decision_pt))

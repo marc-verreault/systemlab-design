@@ -1,20 +1,17 @@
 """
-SystemLab-Design Version 19.02
+ELECTRICAL AMPLIFIER
+Version: 1.0 Date: 5-March-2019
+Version: 2.0 20.01.r3 9-Jun-20
 
-SCRIPT TEMPLATE FOR FUNCTIONAL BLOCKS
-Version: 1.0
-Date: 5-March-2019
-
-REF 1: Keysight Technologies, Application Note,
+Ref 1:
+Keysight Technologies, Application Note,
 Fundamentals of RF and Microwave Noise Figure Measurements,
 http://literature.cdn.keysight.com/litweb/pdf/5952-8255E.pdf (accessed 9 APr 2019)
-REF 2: RF/microwave noise, Part 1: Noise figure basics, Bill Schweber, 25-Jul-2018
-https://www.analogictips.com/rf-microwave-noise-part-1-noise-figure-basics-faq/
 """
 
 import numpy as np
 import config
-from scipy import signal
+from scipy import constants
 
 def run(input_signal_data, parameters_input, settings):
     
@@ -52,6 +49,9 @@ def run(input_signal_data, parameters_input, settings):
     '''
     gain_db = float(parameters_input[0][1])
     nf_db = float(parameters_input[1][1])
+    noise_temp = float(parameters_input[2][1]) #Temp for calculating source thermal noise (K)
+    add_noise_to_sig = int(parameters_input[3][1]) #Add noise to signal
+    
     
     '''==INPUT SIGNALS====================================================================
     '''
@@ -73,10 +73,20 @@ def run(input_signal_data, parameters_input, settings):
     # Calculate noise (from Ref 1, Fig 2-1, page 8)
     # Noise (variance) from input (upstream source noise) = Na = total_noise_pwr_in*gain
     # Noise (variance) from amplifier (added noise) = Na_amp = (F - 1)*total_noise_pwr_in*gain
+    # If noise_pwr_in is zero (noise has been integrated into signal array), then set based on 
+    # system temperature
     # Total noise power out = Na + Na_amp
+    
+    # Calculate noise power in
     noise_pwr_in = np.sum(np.abs(noise_in)*np.abs(noise_in))
     nf_linear = np.power(10, nf_db/10)
+    
+    if noise_pwr_in == 0: #Use source noise model (system temp)
+        noise_pwr_in = constants.k*noise_temp*fs
+    
+    # Calculate output noise added by amplifier
     noise_amp_var = (nf_linear - 1)*noise_pwr_in*gain_linear
+
     #Calculate standard deviation (sigma) & build output noise array (Gaussian noise dist)
     sigma = np.sqrt(noise_amp_var/n) #Amplifier contribution to noise 
     noise_array = np.random.normal(0, sigma, n) + noise_in*np.sqrt(gain_linear) # Add input noise
@@ -93,6 +103,10 @@ def run(input_signal_data, parameters_input, settings):
     
     noise_factor = snr_in/snr_out
     noise_figure = 10*np.log10(noise_factor)
+    
+    if add_noise_to_sig == 2:
+        sig_array += noise_array
+        noise_array = np.zeros(n)
 
     '''==OUTPUT PARAMETERS LIST===========================================================
     '''

@@ -1,6 +1,6 @@
 """
 Integrate & Dump module
-Version 1.0 (19.02 23 Feb 2019)
+Version 2.0 (20.01.r3 21-Jun-20)
 """
 import numpy as np
 import config
@@ -32,12 +32,16 @@ def run(input_signal_data, parameters_input, settings):
     int_dump_parameters = parameters_input
     
     '''==CALCULATIONS======================================================='''    
-    psk_sig_in = input_signal_data[0][5]
-    psk_noise_in = input_signal_data[0][6]
+    sig_in = input_signal_data[0][5]
+    noise_in = input_signal_data[0][6]
     time = input_signal_data[0][4]
     
     bit_rate = 10e9
     symbol_rate = 5e9
+    
+    if add_noise_to_signal == 2:
+        sig_in += noise_in
+        noise_in = np.zeros(n)
    
     samples_per_bit = int(fs/bit_rate)
     samples_per_symbol = int(fs/symbol_rate)
@@ -48,15 +52,15 @@ def run(input_signal_data, parameters_input, settings):
     
     for s in range(0, n_sym):
         i = 0
-        start_value = psk_sig_in[int(s*samples_per_symbol)]
-        start_value_noise = psk_noise_in[int(s*samples_per_symbol)]
+        start_value = sig_in[int(s*samples_per_symbol)]
+        start_value_noise = noise_in[int(s*samples_per_symbol)]
         while i < int(samples_per_symbol):
             integrated_sig_out[int(s*samples_per_symbol)+i] = (start_value 
-                               + psk_sig_in[int(s*samples_per_symbol)+i])
+                               + sig_in[int(s*samples_per_symbol)+i])
             start_value = integrated_sig_out[int(s*samples_per_symbol)+i]
             
             integrated_noise_out[int(s*samples_per_symbol)+i] = (start_value_noise
-                                 + psk_noise_in[int(s*samples_per_symbol)+i])
+                                 + noise_in[int(s*samples_per_symbol)+i])
             start_value_noise = integrated_noise_out[int(s*samples_per_symbol)+i]
             i += 1
      

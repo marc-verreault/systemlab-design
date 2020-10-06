@@ -1,5 +1,5 @@
 """
-1x2 Pwr Splitter module
+Multiplier module
 """
 
 import numpy as np
@@ -8,7 +8,7 @@ import config
 def run(input_signal_data, parameters_input, settings):
     
     '''==PROJECT SETTINGS==================================================='''
-    module_name = '1x2 Pwr Splitter' 
+    module_name = 'Multiplier' 
     n = settings['num_samples']
     n = int(round(n))
     iteration = settings['current_iteration']
@@ -26,22 +26,32 @@ def run(input_signal_data, parameters_input, settings):
     
     '''==INPUT PARAMETERS==================================================='''
     #Parameters table
-    pwr_splitter_parameters = []
+    add_noise_to_signal = int(parameters_input[0][1])
+    multiplier_parameters = []
+    multiplier_parameters = parameters_input
     
     '''==CALCULATIONS======================================================='''
     time = input_signal_data[0][4]
     signal = input_signal_data[0][5]
     noise = input_signal_data[0][6]
     
-    sig_out = np.array(n, dtype = float) 
+    lo_signal = input_signal_data[1][5]
+    lo_noise = input_signal_data[1][6]
+    
+    if add_noise_to_signal == 2:
+        signal += noise
+        lo_signal += lo_noise
+        noise = np.zeros(n)
+        lo_noise= np.zeros(n)
+    
+    sig_out = np.array(n, dtype = float)
     noise_out = np.array(n, dtype = float)
     
-    sig_out = np.multiply(signal, 1/np.sqrt(2))
-    noise_out = np.multiply(noise, 1/np.sqrt(2))
+    sig_out = np.multiply(signal, lo_signal)
+    noise_out = np.multiply(noise, lo_noise)
   
     '''==RESULTS============================================================'''
-    pwr_splitter_results = []
+    multiplier_results = []
 
-    return ([[2, sig_type_out, carrier, fs, time, sig_out, noise_out],
-            [3, sig_type_out, carrier, fs, time, sig_out,  noise_out]], 
-            pwr_splitter_parameters, pwr_splitter_results)
+    return ([[3, sig_type_out, carrier, fs, time, sig_out, noise_out]], 
+            multiplier_parameters, multiplier_results)
