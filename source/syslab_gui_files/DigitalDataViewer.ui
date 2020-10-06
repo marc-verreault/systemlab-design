@@ -121,7 +121,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>150</width>
+           <width>155</width>
            <height>350</height>
           </size>
          </property>
@@ -143,7 +143,7 @@
          <widget class="QLineEdit" name="totalSamples">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>10</y>
             <width>61</width>
             <height>16</height>
@@ -159,7 +159,7 @@
          <widget class="QLabel" name="label">
           <property name="geometry">
            <rect>
-            <x>4</x>
+            <x>10</x>
             <y>10</y>
             <width>76</width>
             <height>16</height>
@@ -175,7 +175,7 @@
          <widget class="QLineEdit" name="totalBits">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>30</y>
             <width>61</width>
             <height>16</height>
@@ -191,7 +191,7 @@
          <widget class="QLabel" name="label_3">
           <property name="geometry">
            <rect>
-            <x>14</x>
+            <x>20</x>
             <y>30</y>
             <width>66</width>
             <height>16</height>
@@ -210,7 +210,7 @@
          <widget class="QLabel" name="label_4">
           <property name="geometry">
            <rect>
-            <x>8</x>
+            <x>14</x>
             <y>50</y>
             <width>71</width>
             <height>16</height>
@@ -229,7 +229,7 @@
          <widget class="QLineEdit" name="totalSymbols">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>50</y>
             <width>61</width>
             <height>16</height>
@@ -245,7 +245,7 @@
          <widget class="QLineEdit" name="bitRate">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>70</y>
             <width>61</width>
             <height>16</height>
@@ -261,7 +261,7 @@
          <widget class="QLabel" name="label_5">
           <property name="geometry">
            <rect>
-            <x>12</x>
+            <x>18</x>
             <y>70</y>
             <width>68</width>
             <height>16</height>
@@ -280,7 +280,7 @@
          <widget class="QLabel" name="label_6">
           <property name="geometry">
            <rect>
-            <x>4</x>
+            <x>10</x>
             <y>90</y>
             <width>75</width>
             <height>16</height>
@@ -299,7 +299,7 @@
          <widget class="QLineEdit" name="symbolRate">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>90</y>
             <width>61</width>
             <height>16</height>
@@ -315,9 +315,9 @@
          <widget class="QGroupBox" name="groupBox">
           <property name="geometry">
            <rect>
-            <x>3</x>
-            <y>318</y>
-            <width>141</width>
+            <x>6</x>
+            <y>298</y>
+            <width>144</width>
             <height>68</height>
            </rect>
           </property>
@@ -357,7 +357,7 @@
          <widget class="QLabel" name="label_16">
           <property name="geometry">
            <rect>
-            <x>8</x>
+            <x>14</x>
             <y>110</y>
             <width>71</width>
             <height>16</height>
@@ -376,7 +376,7 @@
          <widget class="QLineEdit" name="symbolOrder">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>110</y>
             <width>61</width>
             <height>16</height>
@@ -392,11 +392,14 @@
          <widget class="QGroupBox" name="groupBox_2">
           <property name="geometry">
            <rect>
-            <x>4</x>
+            <x>6</x>
             <y>172</y>
-            <width>140</width>
-            <height>74</height>
+            <width>144</width>
+            <height>54</height>
            </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox:title {color: darkBlue;}</string>
           </property>
           <property name="title">
            <string>Iterations</string>
@@ -404,11 +407,14 @@
           <widget class="QLineEdit" name="totalIterationsTime">
            <property name="geometry">
             <rect>
-             <x>94</x>
-             <y>48</y>
+             <x>24</x>
+             <y>28</y>
              <width>31</width>
-             <height>17</height>
+             <height>18</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{color: darkBlue}</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -417,14 +423,17 @@
           <widget class="QLabel" name="label_8">
            <property name="geometry">
             <rect>
-             <x>2</x>
-             <y>46</y>
-             <width>85</width>
+             <x>-4</x>
+             <y>26</y>
+             <width>27</width>
              <height>20</height>
             </rect>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {color: darkBlue;}</string>
+           </property>
            <property name="text">
-            <string>Total iterations:</string>
+            <string>Tot:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -433,10 +442,10 @@
           <widget class="QSpinBox" name="spinBoxTime">
            <property name="geometry">
             <rect>
-             <x>94</x>
-             <y>22</y>
+             <x>100</x>
+             <y>26</y>
              <width>41</width>
-             <height>20</height>
+             <height>23</height>
             </rect>
            </property>
            <property name="readOnly">
@@ -455,11 +464,14 @@
           <widget class="QLabel" name="label_7">
            <property name="geometry">
             <rect>
-             <x>45</x>
-             <y>24</y>
+             <x>58</x>
+             <y>28</y>
              <width>46</width>
              <height>16</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {color: darkBlue;}</string>
            </property>
            <property name="text">
             <string>Current:</string>
@@ -469,7 +481,7 @@
          <widget class="QLineEdit" name="samplesBit">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>130</y>
             <width>61</width>
             <height>16</height>
@@ -485,7 +497,7 @@
          <widget class="QLabel" name="label_17">
           <property name="geometry">
            <rect>
-            <x>14</x>
+            <x>20</x>
             <y>130</y>
             <width>66</width>
             <height>16</height>
@@ -504,7 +516,7 @@
          <widget class="QLineEdit" name="samplesSymbol">
           <property name="geometry">
            <rect>
-            <x>84</x>
+            <x>90</x>
             <y>150</y>
             <width>61</width>
             <height>16</height>
@@ -520,7 +532,7 @@
          <widget class="QLabel" name="label_18">
           <property name="geometry">
            <rect>
-            <x>8</x>
+            <x>14</x>
             <y>149</y>
             <width>72</width>
             <height>17</height>
@@ -539,9 +551,9 @@
          <widget class="QGroupBox" name="groupBox_9">
           <property name="geometry">
            <rect>
-            <x>4</x>
-            <y>388</y>
-            <width>141</width>
+            <x>6</x>
+            <y>370</y>
+            <width>144</width>
             <height>99</height>
            </rect>
           </property>
@@ -617,9 +629,9 @@
          <widget class="QGroupBox" name="groupBox_6">
           <property name="geometry">
            <rect>
-            <x>4</x>
-            <y>250</y>
-            <width>139</width>
+            <x>6</x>
+            <y>230</y>
+            <width>144</width>
             <height>65</height>
            </rect>
           </property>
@@ -795,8 +807,11 @@
             <x>5</x>
             <y>76</y>
             <width>149</width>
-            <height>72</height>
+            <height>55</height>
            </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox:title {color: darkBlue;}</string>
           </property>
           <property name="title">
            <string>Iterations</string>
@@ -804,14 +819,17 @@
           <widget class="QLabel" name="label_15">
            <property name="geometry">
             <rect>
-             <x>5</x>
-             <y>46</y>
-             <width>81</width>
+             <x>0</x>
+             <y>26</y>
+             <width>24</width>
              <height>20</height>
             </rect>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {color: darkBlue;}</string>
+           </property>
            <property name="text">
-            <string>Total iterations:</string>
+            <string>Tot:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -820,11 +838,14 @@
           <widget class="QLineEdit" name="totalIterationsFreq">
            <property name="geometry">
             <rect>
-             <x>94</x>
-             <y>48</y>
+             <x>26</x>
+             <y>28</y>
              <width>31</width>
-             <height>17</height>
+             <height>18</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{color: darkBlue}</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -833,11 +854,14 @@
           <widget class="QLabel" name="label_11">
            <property name="geometry">
             <rect>
-             <x>44</x>
-             <y>22</y>
+             <x>60</x>
+             <y>28</y>
              <width>46</width>
              <height>16</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {color: darkBlue;}</string>
            </property>
            <property name="text">
             <string>Current:</string>
@@ -846,8 +870,8 @@
           <widget class="QSpinBox" name="spinBoxFreq">
            <property name="geometry">
             <rect>
-             <x>94</x>
-             <y>20</y>
+             <x>104</x>
+             <y>26</y>
              <width>41</width>
              <height>23</height>
             </rect>
@@ -899,7 +923,7 @@
           <property name="geometry">
            <rect>
             <x>4</x>
-            <y>222</y>
+            <y>202</y>
             <width>151</width>
             <height>128</height>
            </rect>
@@ -1006,7 +1030,7 @@
           <property name="geometry">
            <rect>
             <x>4</x>
-            <y>152</y>
+            <y>134</y>
             <width>151</width>
             <height>65</height>
            </rect>
@@ -1066,7 +1090,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>145</width>
+           <width>155</width>
            <height>280</height>
           </size>
          </property>
@@ -1080,8 +1104,8 @@
           <property name="geometry">
            <rect>
             <x>6</x>
-            <y>84</y>
-            <width>131</width>
+            <y>62</y>
+            <width>144</width>
             <height>63</height>
            </rect>
           </property>
@@ -1126,9 +1150,12 @@
            <rect>
             <x>6</x>
             <y>4</y>
-            <width>131</width>
-            <height>75</height>
+            <width>144</width>
+            <height>57</height>
            </rect>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QGroupBox:title {color: darkBlue;}</string>
           </property>
           <property name="title">
            <string>Iterations</string>
@@ -1136,8 +1163,8 @@
           <widget class="QSpinBox" name="spinBoxSignalData">
            <property name="geometry">
             <rect>
-             <x>70</x>
-             <y>46</y>
+             <x>100</x>
+             <y>28</y>
              <width>41</width>
              <height>23</height>
             </rect>
@@ -1158,11 +1185,14 @@
           <widget class="QLineEdit" name="totalIterationsSignalData">
            <property name="geometry">
             <rect>
-             <x>70</x>
-             <y>22</y>
-             <width>31</width>
+             <x>26</x>
+             <y>30</y>
+             <width>28</width>
              <height>18</height>
             </rect>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit{color: darkBlue}</string>
            </property>
            <property name="readOnly">
             <bool>true</bool>
@@ -1171,14 +1201,17 @@
           <widget class="QLabel" name="label_22">
            <property name="geometry">
             <rect>
-             <x>18</x>
-             <y>48</y>
+             <x>54</x>
+             <y>30</y>
              <width>46</width>
              <height>16</height>
             </rect>
            </property>
            <property name="layoutDirection">
             <enum>Qt::RightToLeft</enum>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {color: darkBlue;}</string>
            </property>
            <property name="text">
             <string>Current:</string>
@@ -1190,17 +1223,20 @@
           <widget class="QLabel" name="label_23">
            <property name="geometry">
             <rect>
-             <x>18</x>
-             <y>22</y>
-             <width>46</width>
+             <x>-2</x>
+             <y>30</y>
+             <width>25</width>
              <height>16</height>
             </rect>
            </property>
            <property name="layoutDirection">
             <enum>Qt::RightToLeft</enum>
            </property>
+           <property name="styleSheet">
+            <string notr="true">QLabel {color: darkBlue;}</string>
+           </property>
            <property name="text">
-            <string>Total:</string>
+            <string>Tot:</string>
            </property>
            <property name="alignment">
             <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1211,8 +1247,8 @@
           <property name="geometry">
            <rect>
             <x>7</x>
-            <y>222</y>
-            <width>132</width>
+            <y>194</y>
+            <width>144</width>
             <height>109</height>
            </rect>
           </property>
@@ -1318,8 +1354,8 @@
           <property name="geometry">
            <rect>
             <x>6</x>
-            <y>152</y>
-            <width>131</width>
+            <y>126</y>
+            <width>144</width>
             <height>65</height>
            </rect>
           </property>
@@ -1362,9 +1398,9 @@
          <widget class="QGroupBox" name="groupBox_28">
           <property name="geometry">
            <rect>
-            <x>8</x>
-            <y>336</y>
-            <width>131</width>
+            <x>6</x>
+            <y>302</y>
+            <width>144</width>
             <height>74</height>
            </rect>
           </property>

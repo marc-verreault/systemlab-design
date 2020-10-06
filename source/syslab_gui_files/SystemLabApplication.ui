@@ -18,8 +18,8 @@
   </property>
   <property name="font">
    <font>
-    <family>Segoe UI</family>
-    <pointsize>9</pointsize>
+    <family>MS Shell Dlg 2</family>
+    <pointsize>8</pointsize>
     <weight>50</weight>
     <italic>false</italic>
     <bold>false</bold>
@@ -46,8 +46,11 @@
   <widget class="QWidget" name="centralwidget">
    <property name="font">
     <font>
-     <family>Segoe UI</family>
+     <family>MS Shell Dlg 2</family>
      <pointsize>8</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
     </font>
    </property>
    <layout class="QGridLayout" name="gridLayout">
@@ -70,7 +73,11 @@
       </property>
       <property name="font">
        <font>
-        <family>Segoe UI</family>
+        <family>MS Shell Dlg 2</family>
+        <pointsize>8</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
        </font>
       </property>
       <property name="toolTipDuration">
@@ -142,6 +149,12 @@
     </rect>
    </property>
    <widget class="QMenu" name="menu_File">
+    <property name="font">
+     <font>
+      <family>MS Shell Dlg 2</family>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
     <property name="title">
      <string>&amp;File</string>
     </property>
@@ -158,6 +171,12 @@
      <string>&amp;Edit</string>
     </property>
     <widget class="QMenu" name="menu_config">
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Special config file</string>
      </property>
@@ -165,6 +184,12 @@
      <addaction name="action_ReloadConfigSpecial"/>
     </widget>
     <widget class="QMenu" name="menu_port_viewers_config">
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Port viewers config file</string>
      </property>
@@ -172,6 +197,12 @@
      <addaction name="action_ReloadPortViewers"/>
     </widget>
     <widget class="QMenu" name="menu_graph_utilities_config">
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Custom viewers/graph utilities file</string>
      </property>
@@ -179,6 +210,12 @@
      <addaction name="action_ReloadCustomViewers"/>
     </widget>
     <widget class="QMenu" name="menu_fb_library_config">
+     <property name="font">
+      <font>
+       <family>MS Shell Dlg 2</family>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="title">
       <string>Functional block library config file</string>
      </property>
@@ -199,7 +236,7 @@
     <addaction name="menu_port_viewers_config"/>
     <addaction name="menu_graph_utilities_config"/>
    </widget>
-   <widget class="QMenu" name="menuDesign">
+   <widget class="QMenu" name="menu_Project">
     <property name="title">
      <string>Project</string>
     </property>
@@ -216,7 +253,12 @@
     <addaction name="action_SceneBackgroundColor"/>
     <addaction name="action_SaveImageScene"/>
    </widget>
-   <widget class="QMenu" name="menuSimulation">
+   <widget class="QMenu" name="menu_Simulation">
+    <property name="font">
+     <font>
+      <family>Segoe UI</family>
+     </font>
+    </property>
     <property name="title">
      <string>Simulation</string>
     </property>
@@ -224,22 +266,23 @@
     <addaction name="actionPause"/>
     <addaction name="actionEnd"/>
    </widget>
-   <widget class="QMenu" name="menuHelp">
+   <widget class="QMenu" name="menu_Help">
     <property name="title">
      <string>Help</string>
     </property>
     <addaction name="actionHelp"/>
     <addaction name="actionAbout"/>
    </widget>
-   <widget class="QMenu" name="menuTools">
+   <widget class="QMenu" name="menu_Tools">
     <property name="title">
      <string>Tools</string>
     </property>
     <addaction name="action_WaveFreq"/>
     <addaction name="separator"/>
     <addaction name="action_PrintSceneObjects"/>
+    <addaction name="action_PrintSceneObjects_2"/>
    </widget>
-   <widget class="QMenu" name="menuView">
+   <widget class="QMenu" name="menu_View">
     <property name="title">
      <string>View</string>
     </property>
@@ -250,11 +293,11 @@
    </widget>
    <addaction name="menu_File"/>
    <addaction name="menu_Edit"/>
-   <addaction name="menuDesign"/>
-   <addaction name="menuSimulation"/>
-   <addaction name="menuTools"/>
-   <addaction name="menuView"/>
-   <addaction name="menuHelp"/>
+   <addaction name="menu_Project"/>
+   <addaction name="menu_Simulation"/>
+   <addaction name="menu_Tools"/>
+   <addaction name="menu_View"/>
+   <addaction name="menu_Help"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QToolBar" name="toolBar">
@@ -302,6 +345,9 @@
    <property name="text">
     <string>&amp;New project</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_Undo">
    <property name="text">
@@ -317,10 +363,16 @@
    <property name="text">
     <string>Delete selected items</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_CopyPaste">
    <property name="text">
     <string>Copy/paste selected items</string>
+   </property>
+   <property name="font">
+    <font/>
    </property>
   </action>
   <action name="action_Paste">
@@ -337,6 +389,9 @@
    <property name="text">
     <string>&amp;Save project</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_StartSimulation">
    <property name="text">
@@ -350,6 +405,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -366,6 +422,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -388,6 +445,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -416,6 +474,9 @@
    <property name="text">
     <string>&amp;Close project</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_OpenProject">
    <property name="icon">
@@ -426,15 +487,24 @@
    <property name="text">
     <string>&amp;Open project</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_SaveProjectAs">
    <property name="text">
     <string>Save project as...</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_QuitApplication">
    <property name="text">
     <string>Quit application</string>
+   </property>
+   <property name="font">
+    <font/>
    </property>
   </action>
   <action name="action_ProjectSettings">
@@ -457,6 +527,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -482,6 +553,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -495,6 +567,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -508,6 +581,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -521,6 +595,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -540,6 +615,7 @@
    </property>
    <property name="font">
     <font>
+     <family>Segoe UI</family>
      <pointsize>8</pointsize>
     </font>
    </property>
@@ -598,6 +674,9 @@
    <property name="text">
     <string>Copy/paste selected items to another project</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_LinksSelectable">
    <property name="checkable">
@@ -610,6 +689,9 @@
   <action name="action_OpenScriptEditor">
    <property name="text">
     <string>Open Python code/script editor</string>
+   </property>
+   <property name="font">
+    <font/>
    </property>
   </action>
   <action name="action_EditDataPanelFile">
@@ -659,10 +741,16 @@
    <property name="text">
     <string>Reload</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_EditConfigSpecial">
    <property name="text">
     <string>Edit</string>
+   </property>
+   <property name="font">
+    <font/>
    </property>
   </action>
   <action name="actionFunctional_block_config">
@@ -714,6 +802,9 @@
    <property name="text">
     <string>Undo</string>
    </property>
+   <property name="font">
+    <font/>
+   </property>
   </action>
   <action name="action_RedoCommand">
    <property name="text">
@@ -747,6 +838,11 @@
   <action name="action_FitItemsIntoView">
    <property name="text">
     <string>Adjust to view all items in layout</string>
+   </property>
+  </action>
+  <action name="action_PrintSceneObjects_2">
+   <property name="text">
+    <string>Print scene objects</string>
    </property>
   </action>
  </widget>

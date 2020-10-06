@@ -19,16 +19,11 @@
   <property name="modal">
    <bool>false</bool>
   </property>
-  <widget class="QTextEdit" name="dataEdit">
-   <property name="geometry">
-    <rect>
-     <x>5</x>
-     <y>5</y>
-     <width>651</width>
-     <height>431</height>
-    </rect>
-   </property>
-  </widget>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTextEdit" name="dataEdit"/>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>
