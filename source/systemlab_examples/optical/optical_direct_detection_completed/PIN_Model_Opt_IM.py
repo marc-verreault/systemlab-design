@@ -67,7 +67,7 @@ def run(input_signal_data, parameters_input, settings):
     #Additional parameters
     qe = 1 #Quantum efficiency of detector
     r_load = 50 #Load resistance (ohm)
-    T = 290 #Temperature (K)
+    T = 295 #Temperature (K)
     signal_type = 'Electrical'
     
     '''==INPUT SIGNAL======================================================='''
