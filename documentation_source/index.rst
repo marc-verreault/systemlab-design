@@ -42,6 +42,7 @@ Welcome to SystemLab|Design's documentation!
    syslab_documents/CreatingCustomizedGraphs
    syslab_documents/WorkingWithFunctionalBlockLibrary
    syslab_documents/MatlabEngineAPI
+   syslab_documents/Installation_MS_VS_Code
    
 .. toctree::
    :caption: References

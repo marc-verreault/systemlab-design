@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'Systemlab|Design'
-copyright = '2019-2020, SystemLab Inc. (Last updated: 27-Jan-2020)'
+copyright = '2019-2020, SystemLab Inc. (Last updated: 2-Nov-2020)'
 author = 'Marc Verreault'
 
 # The full version, including alpha/beta/rc tags
