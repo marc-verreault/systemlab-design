@@ -15,7 +15,7 @@ improving the capabilities of SystemLab-Design, please contact the primary
 author for further information (marc.verreault@systemlabdesign.com)
 
 For an overview of the software architecture please see the intro comments in the file 
-*systemlab_main_v2001_r2.py* (under *systemlab-design/source*). This file is the main 
+*systemlab_main_v2001_r3.py* (under *systemlab-design/source*). This file is the main 
 application module for the software.
 
 Development and testing of the software can be done through the Spyder IDE and can be installed 
