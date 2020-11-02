@@ -2,10 +2,10 @@
 Signal models
 =============
 
-SystemLab|Design uses port and signal objects to model data flows between functional blocks. 
-Each port is assigned one signal object (only one signal is allocated per port) and can be 
-interconnected to another compatible port through a port link. The data associated with a 
-signal is held within a Python list. When multiple signals (ports) are present, either 
+SystemLab|Design uses **port**, **signal** and **signal link** objects to model data flows 
+between functional blocks. Each **port** is assigned one **signal** object and can be 
+interconnected to another compatible port through a **signal link**. The data associated 
+with a **signal** is held within a Python list. When multiple ports are present, either 
 entering or leaving a functional block, the data is held within a list of lists, for example: :: 
 
     signal_data_list = [[signal_port_a], [signal_port_b],...]
@@ -16,25 +16,28 @@ block script module. Each data element is accessed as follows: ::
     data_element_1 = signal_data_list[i][j]
     # where i is the list index and j is the element index for list i
 
-SystemLab|Design 19.02 provides support for optical, electrical, digital and generic analog 
+SystemLab|Design 20.01 provides support for optical, electrical, digital and generic analog 
 signal types. A description of each data model follows.
 
 Optical signal
 --------------
  
-The **Optical** signal type can be used to represent an optical analog signal (continuously 
+The **optical signal** type can be used to represent an optical analog signal (continuously 
 varying with time) that is either guided (e.g. fiber or waveguide confined) or un-guided 
-(free space - geometric). To model the optical signal in a simulation environment, the 
+(free space - geometric). To model the **optical signal** in a simulation environment, the 
 slowly varying envelope approximation is used **[Ref 1]**: 
 
 .. math:: E(z,t) = E_{o}(z,t)exp(i(kz-w_{0}t))
 
 where *k* and *w* are the wave number and angular frequency of the optical carrier, and 
 E\ :sub:`o` is the complex field envelope of the forward propagating wave (which is 
-assumed to be slowly varying compared to the optical carrier wavelength cycle). The data 
-structure of the optical signal includes data common to all channels and an optical 
-group list (the collection of optical channels or carriers that is linked to the optical 
-signal port): ::
+assumed to be slowly varying compared to the optical carrier wavelength cycle). The complex 
+envelope of the electric field can be represented in either a single array, E\ :sub:`xy`, 
+or a two dimensional array, E\ :sub:`x` and E\ :sub:`y`.
+
+The data structure of the **optical signal** is comprised of data common to all wavelength channels 
+(such as port ID, time samples, and power spectral density) and an optical group list 
+(the collection of optical channels or wavelengths that is linked to the optical signal port): ::
 
     optical_signal = [portID, sig_type, fs, time_array, psd_array, optical group]
     
@@ -42,18 +45,18 @@ signal port): ::
     # sig_type (string): The signal type, identified by 'Optical'
     # fs (float): The sampling frequency used to capture the sampled signal data
     # time_array (1D array): Time samples for the signal
-	# psd_array (2D array-freq points,psd_points): Optical noise groups (wide bandwidth)
+    # psd_array (2D array-freq points,psd_points): Optical noise groups (wide bandwidth)
     # optical group: The list of optical channels
     
-	# Example of two channel optical group:
+    # Example of two channel optical group:
     channel_1 = [wave_key_1, wave_freq_1, jones_vector_1, e_field_array_1, noise_array_1]
-	channel_2 = [wave_key_2, wave_freq_2, jones_vector_2, e_field_array_2, noise_array_2]
-	optical_group = [channel_1, channel_2]
+    channel_2 = [wave_key_2, wave_freq_2, jones_vector_2, e_field_array_2, noise_array_2]
+    optical_group = [channel_1, channel_2]
     
     # wave_key (int): Wavelength channel key
     # wave_freq (float): Frequency of the optical carrier (THz)
     # jones_vector: Polarization state data for the electric field
-    # e_field_array (1D array): Complex envelope of the the electric field (Eo)
+    # e_field_array (1D or 2D array): Complex envelope of the the electric field (Eo)
     # noise_array (1D array): Time-domain noise values (narrow bandwidth - centered @ optical freq)
     
 An example of an optical signal output for a continuous wave laser is shown in Fig 1. The 
@@ -72,12 +75,12 @@ section).
 Electrical signal
 -----------------
 
-The **Electrical** signal type can be used to represent an electrical analog signal 
+The **electrical signal** type can be used to represent an electrical analog signal 
 (continuously varying with time) in the form of either a current or voltage. It can also 
 be used to model free space propagation but only as a scalar appromixation (loss, temporal 
 fluctuations, etc.).  
 
-The data structure of the electrical signal is as follows: ::
+The data structure of the **electrical signal** is as follows: ::
 
     electrical_signal = [portID, sig_type, carrier, fs, time_array, sig_array, noise_array]
     
@@ -92,13 +95,13 @@ The data structure of the electrical signal is as follows: ::
 Digital signal
 --------------
 
-The **Digital** signal type can be used to represent a discrete time signal, or a signal 
+The **digital signal** type can be used to represent a discrete time signal, or a signal 
 that maintains a set value over a given time period. A common example is the 
 binary digital signal which holds a value of 1 or 0 over a specified time period 
 (also called bit period). Multi-level digital signals can also be modeled (for example 
 when analog signals are discretized by analog-to-digital convertors).
 
-The data structure of the digital signal is as follows: ::
+The data structure of the **digital signal** is as follows: ::
 
     digital_signal = [portID, sig_type, symbol_rate, bit_rate, order, time_array, dig_array]
     
@@ -113,7 +116,7 @@ The data structure of the digital signal is as follows: ::
 Analog (1-3) signals
 --------------------
 
-The **Analog (1)**, **Analog (2)**, and **Analog (3)** signals can be used to represent any kind of 
+The **analog (1)**, **analog (2)**, and **analog (3) signals** can be used to represent any kind of 
 analog signal (continuously varying with time); including temperature, pressure, force, sound, 
 etc. 
 

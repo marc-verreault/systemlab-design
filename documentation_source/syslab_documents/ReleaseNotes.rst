@@ -3,6 +3,115 @@
 Release Notes
 =============
 
+Version: 20.01.r3 (28 Sep 2020)
+---------------------------------
+
+**Highlights**
+
+Version 20.01.r3 is a minor release of the SystemLab|Design 20.01 release stream
+and includes the following new features and improvements:
+
+*  The following new functional blocks have been added to the Functional block library:
+   
+   * Optical (Sources/Transmitters): **WDM Transmitter**
+   * Electrical (Mathematical operators): **Time shift (electrical)**
+   * Electrical (Amplifiers): **TIA/LA** (Transimpedance + Limiting Amplifier)
+   
+*  The following functional blocks have been updated with new parameters/features:
+   
+   * Optical (Sources/Transmitters): **CW Laser**, **CW Laser Array**, **Noise Source (Optical)**
+   * Optical (Signal processing/routing): **Optical Filter (Band Pass)**
+   * Optical (Detectors/Receivers): **PIN-APD Detector**
+   * Optical (Analyzers): **Measurement Node (Optical)**
+   * Electrical (Signal processing): **Analog Filter**
+   * Electrical (Receivers): **Decision Circuit**
+   * Digital (Analyzers): **BER Analysis**
+   
+*  A shortcut key sequence (Ctrl + D) is now available to allow for the rapid duplication
+   (copy/paste) of selected project items.
+*  The value field for **Data panels** now includes support for the text (string) format.
+*  A new parameters help feature has been added to several components including the **WDM Transmitter**, 
+   **CW Laser**, **CW Laser Array**, **Optical Amplifier**, **PIN-APD Detector**, **TIA/LA** and **Decision Circuit**. 
+   The feature is activated by hovering over any parameter field within the
+   **Functional block properties/Input Parameters** menu.
+*  A new eye metrics calculation feature has been added to the **Eye diagram** tab of 
+   the **Electrical signal data analyzer** port viewer
+
+**Notes about this release**
+
+*  SystemLab|Design project files (.slb) can only be opened from the SystemLab|Design 
+   main application (it is not currently possible to double-click on a project design file 
+   to initiate a SystemLab|Design session).
+*  The properties dialog windows for **Functional blocks**, **Project settings**, **Data panels**, 
+   **Text boxes**, **Description boxes** and **Line-Arrows** are modal. When one of these 
+   windows is activated, interactions with other open windows will not be possible until 
+   these dialogs are closed.
+   
+**Bug fixes**
+
+*  A normalization error in the frequency data tab of the Electrical, Optical and Analog ports
+   has been fixed. Spectral power data (square of absolute value of FFT transform) is now 
+   normalized by dividing the data sample by the square of the number of samples (n^2) - previously
+   these data samples were being divided by n.
+   
+Version: 20.01.r2 (5 Mar 2020)
+---------------------------------
+
+**Highlights**
+
+Version 20.01.r2 is a minor release of the SystemLab|Design 20.01 release stream
+and includes the following new features and improvements:
+
+*  The Functional block library for optical components has been re-organized as follows:
+   
+   * The *Optical-Signal processing* folder has been renamed to *Optical-Signal processing/routing*
+   * The *Optical-Passive devices(fiber)* folder has been renamed to *Optical-Fibers*
+   * The *Optical-Passive devices(couplers/splitters)* folder has been renamed to *Optical-Couplers/splitters/attenuators*
+   * The *Optical-Passive devices(other)* folder has been removed and associated
+     components have been moved to the above folders
+   
+*  New data fields for specifying project parameters (*proj_parameters.txt*) and 
+   project configuration files (*project_config.py*) have been added to the 
+   **Advanced settings** tab of the **Project Settings** panel. To directly access and edit these 
+   files, new menu items (**Update/Edit project parameters** & **Update/Edit project config file**) 
+   have been added to the **Project design space** context menu.
+*  A new quick graphing function has been added to the *config.py* file and allows for the 
+   viewing of arbitrary x/y data sets while running a component script. The graphing function 
+   can be called using: **config.display_xy_data(title, x_data, x_units, y_data, y_units)**
+*  New functions for displaying data, **display_data(text, data, new_line)**, or issuing status messages,
+   **config.status_message(test)**, while running component scripts have been added to the *config.py* file. 
+*  The **Functional block library** tree menu feature has been updated to allow for any arbitrary number
+   of functional libraries to be defined and designed by a user (using the *config_fb_library.py* module). 
+*  An optional background color setting has been added to the **Text Box** feature of the **Project design space**.
+*  A new **Sampling period overlay** feature has been added to the **Electrical signal data analyzer** port viewer
+
+**Notes about this release**
+
+*  SystemLab|Design project files (.slb) can only be opened from the SystemLab|Design 
+   main application (it is not currently possible to double-click on a project design file 
+   to initiate a SystemLab|Design session).
+*  The properties dialog windows for **Functional blocks**, **Project settings**, **Data panels**, 
+   **Text boxes**, **Description boxes** and **Line-Arrows** are modal. When one of these 
+   windows is activated, interactions with other open windows will not be possible until 
+   these dialogs are closed.
+   
+**Bug fixes**
+
+*  When attempting to connect ports between functional blocks, the downstream port was allowing
+   connections to be completed even if it was already connected to another upstream port. This 
+   issue has been fixed in this release.
+*  Primary signal statistics for the **Electrical signal data analyzer** port viewer
+   are now derived directly from the received signal (project settings were used previously). 
+   This was corrected to handle signal processing functions such as re-sampling, where local settings
+   for a functional block were different than project settings.  
+   
+**Known bugs**
+
+*  The SystemLab|Design application may remain open after several attempts are made to shut down 
+   the application (**Quit application** procedure). To force the application to shut down, 
+   activate the Windows Task Manager (**ctrl-alt-delete**), and right-click select **End task** 
+   on the application *Multi-domain system simulator*. Target release for fixing is TBD.
+
 Version: 20.01.r1 (27 Jan 2020)
 ---------------------------------
 
